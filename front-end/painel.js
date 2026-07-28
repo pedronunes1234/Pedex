@@ -105,7 +105,7 @@ async function carregarPedidos() {
         );
 
         if (pedidosAnteriores.length > 0 && novos.length > 0) {
-            som.play().catch(() => {});
+            som.play().catch(() => { });
         }
 
         const aguardando = dados.pedidos.filter(p => p.status === "Aguardando Pagamento").length;
@@ -146,6 +146,8 @@ function renderizarPedidos(pedidos) {
 
         let botao = "";
         if (pedido.status === "Aguardando Pagamento") {
+            botao = `<button class="btn-status preparo" onclick="atualizarStatus(${pedido.id}, 'Em preparo')">✅ Confirmar e preparar</button>`;
+        } else if (pedido.status === "Aguardando Preparo") {
             botao = `<button class="btn-status preparo" onclick="atualizarStatus(${pedido.id}, 'Em preparo')">✅ Confirmar e preparar</button>`;
         } else if (pedido.status === "Em preparo") {
             botao = `<button class="btn-status saiu" onclick="atualizarStatus(${pedido.id}, 'Saiu para entrega')">🛵 Saiu para entrega</button>`;
