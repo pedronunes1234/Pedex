@@ -29,6 +29,7 @@ exports.listarPedidosPorLoja = (req, res) => {
         FROM pedidos p
         JOIN itens_pedido i ON i.pedido_id = p.id
         WHERE p.loja = ? AND p.oculto = 0
+            AND NOT (p.pagamento = 'Pix' AND p.status = 'Aguardando Pagamento')
         GROUP BY p.id
         ORDER BY p.id DESC
     `;
