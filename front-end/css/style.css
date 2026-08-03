@@ -22,12 +22,12 @@ html, body {
 
 .header {
   background: #ff0000;
-  padding: 24px 0;
+  padding: 0px 0;
   text-align: center;
 }
 
 .logo {
-  height: 70px;
+  height: 200px;
 }
 
 
