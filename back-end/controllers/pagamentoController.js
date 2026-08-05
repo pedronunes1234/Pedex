@@ -79,8 +79,13 @@ exports.criarPix = async (req, res) => {
         };
 
         // Só aplica taxa/split quando o pagamento é criado no nome do lojista
+        // E só envia application_fee se o valor calculado for maior que zero
+        // (o Mercado Pago rejeita application_fee = 0)
         if (usaSplit) {
-            corpoPagamento.application_fee = Number((Number(total) * TAXA_PLATAFORMA).toFixed(2));
+            const taxaCalculada = Number((Number(total) * TAXA_PLATAFORMA).toFixed(2));
+            if (taxaCalculada > 0) {
+                corpoPagamento.application_fee = taxaCalculada;
+            }
         }
 
         try {
