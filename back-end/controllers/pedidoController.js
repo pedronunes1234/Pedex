@@ -136,3 +136,18 @@ exports.dadosLoja = (req, res) => {
         }
     );
 };
+
+// BUSCAR UM PEDIDO ESPECÍFICO PELO ID (usado pelo carrinho para verificar status do pagamento)
+exports.buscarPedidoPorId = (req, res) => {
+    const { id } = req.params;
+
+    db.query(
+        "SELECT id, status FROM pedidos WHERE id = ?",
+        [id],
+        (err, results) => {
+            if (err) return res.status(500).json({ sucesso: false, erro: err.message });
+            if (results.length === 0) return res.status(404).json({ sucesso: false, mensagem: "Pedido não encontrado." });
+            res.json({ sucesso: true, pedido: results[0] });
+        }
+    );
+};

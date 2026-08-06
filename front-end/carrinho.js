@@ -321,7 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
     modal.innerHTML = `
-        <div style="background:#fff; border-radius:20px; padding:24px; max-width:360px; width:100%; text-align:center;">
+        <div id="conteudoModalPix" style="background:#fff; border-radius:20px; padding:24px; max-width:360px; width:100%; text-align:center;">
             <h2 style="color:#c40000; margin-bottom:4px;">Pagar via Pix</h2>
             <p style="color:#888; font-size:14px; margin-bottom:16px;">Pedido #${pedidoId}</p>
 
@@ -346,17 +346,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 📋 Copiar código Pix
             </button>
 
-            <p style="font-size:12px; color:#888; margin-bottom:10px;">
-                Após pagar, clique no botão abaixo para confirmar.
+            <p id="statusAguardando" style="font-size:13px; color:#c40000; font-weight:bold; margin-bottom:6px;">
+                ⏳ Aguardando pagamento...
             </p>
-
-            <button id="btnConfirmarPix" style="
-                width:100%; padding:14px; background:#c40000;
-                color:#fff; border:none; border-radius:12px;
-                font-size:16px; font-weight:bold; cursor:pointer; margin-bottom:10px;
-            ">
-                ✅ Já paguei
-            </button>
+            <p style="font-size:12px; color:#888; margin-bottom:0;">
+                Essa tela atualiza sozinha assim que o pagamento for confirmado.
+            </p>
         </div>
     `;
 
@@ -367,13 +362,46 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("btnCopiarPix").textContent = "✅ Código copiado!";
     });
 
-    document.getElementById("btnConfirmarPix").addEventListener("click", () => {
-      localStorage.removeItem("carrinho");
-      carrinho = {};
-      renderizarCarrinho();
-      document.body.removeChild(modal);
-      alert(`Pedido #${pedidoId} confirmado! Aguarde a confirmação do pagamento.`);
-    });
+    // Verifica o status do pedido a cada 3 segundos
+    const intervaloVerificacao = setInterval(async () => {
+      try {
+        const res = await fetch(`https://pedido-certo-production.up.railway.app/api/pedidos/${pedidoId}`);
+        const dados = await res.json();
+
+        if (dados.sucesso && dados.pedido.status !== "Aguardando Pagamento") {
+          clearInterval(intervaloVerificacao);
+          mostrarPagamentoConfirmado(modal, pedidoId);
+        }
+      } catch (err) {
+        console.error("Erro ao verificar status do pagamento:", err);
+      }
+    }, 3000);
+
+    function mostrarPagamentoConfirmado(modal, pedidoId) {
+      const conteudo = document.getElementById("conteudoModalPix");
+      conteudo.innerHTML = `
+          <div style="font-size:56px; margin-bottom:12px;">✅</div>
+          <h2 style="color:#2e9e4f; margin-bottom:4px;">Pagamento confirmado!</h2>
+          <p style="color:#888; font-size:14px; margin-bottom:20px;">Pedido #${pedidoId}</p>
+          <p style="font-size:14px; color:#444; margin-bottom:20px;">
+              Seu pedido já foi enviado para a loja e está sendo preparado.
+          </p>
+          <button id="btnFecharConfirmado" style="
+              width:100%; padding:14px; background:#2e9e4f;
+              color:#fff; border:none; border-radius:12px;
+              font-size:16px; font-weight:bold; cursor:pointer;
+          ">
+              Ok, entendi!
+          </button>
+      `;
+
+      document.getElementById("btnFecharConfirmado").addEventListener("click", () => {
+        localStorage.removeItem("carrinho");
+        carrinho = {};
+        renderizarCarrinho();
+        document.body.removeChild(modal);
+      });
+    }
   }
 
 }); // fecha DOMContentLoaded
