@@ -105,7 +105,7 @@ async function carregarPedidos() {
         );
 
         if (pedidosAnteriores.length > 0 && novos.length > 0) {
-            som.play().catch(() => { });
+            som.play().catch(() => {});
         }
 
         const aguardando = dados.pedidos.filter(p => p.status === "Aguardando Pagamento").length;
@@ -147,8 +147,6 @@ function renderizarPedidos(pedidos) {
         let botao = "";
         if (pedido.status === "Aguardando Pagamento") {
             botao = `<button class="btn-status preparo" onclick="atualizarStatus(${pedido.id}, 'Em preparo')">✅ Confirmar e preparar</button>`;
-        } else if (pedido.status === "Aguardando Preparo") {
-            botao = `<button class="btn-status preparo" onclick="atualizarStatus(${pedido.id}, 'Em preparo')">✅ Confirmar e preparar</button>`;
         } else if (pedido.status === "Em preparo") {
             botao = `<button class="btn-status saiu" onclick="atualizarStatus(${pedido.id}, 'Saiu para entrega')">🛵 Saiu para entrega</button>`;
         } else if (pedido.status === "Saiu para entrega") {
@@ -167,6 +165,7 @@ function renderizarPedidos(pedidos) {
                 <p><strong>${pedido.nome_cliente}</strong></p>
                 <p>📍 ${pedido.endereco}</p>
                 <p>💳 ${pedido.pagamento}</p>
+                ${pedido.troco_para ? `<p>💵 Troco para: R$ ${parseFloat(pedido.troco_para).toFixed(2)}</p>` : ""}
             </div>
             <div class="pedido-itens">${itens}</div>
             <div class="pedido-total">Total: R$ ${parseFloat(pedido.total).toFixed(2)}</div>

@@ -5,7 +5,7 @@
   <title>Pedex</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="shortcut icon" href="imagens/logo-pedex.png" type="">
+  <link rel="shortcut icon" href="imagens/logopedexpainel.png" type="">
 </head>
 
 <body>
@@ -18,33 +18,24 @@
   <section class="endereco-wrapper">
     <div class="endereco-card">
 
-      <div class="toggle-entrega">
-        <button class="toggle-btn ativo" id="btnEntrega">Entrega</button>
-        <button class="toggle-btn" id="btnRetirada">Retirar na loja</button>
+      <div class="endereco-texto">
+        <span class="titulo">Entregar em</span>
+        <span class="endereco" id="textoEndereco">Informe seu endereço</span>
       </div>
 
-      <div id="blocoEntrega">
-        <div class="endereco-texto">
-          <span class="titulo">Entregar em</span>
-          <span class="endereco" id="textoEndereco">Informe seu endereço</span>
-        </div>
+      <button class="btn-endereco" id="btnEndereco">
+        Adicionar endereço <span class="seta">➜</span>
+      </button>
 
-        <button class="btn-endereco" id="btnEndereco">
-          Adicionar endereço <span class="seta">➜</span>
-        </button>
-
-        <div id="camposEndereco" style="display:none;">
-          <input type="text" id="inputRua" class="input-endereco" placeholder="Nome da rua">
-          <input type="text" id="inputNumero" class="input-endereco" placeholder="Número da casa">
-          <input type="text" id="inputComplemento" class="input-endereco" placeholder="Complemento (apto, bloco...)">
-          <input type="text" id="inputReferencia" class="input-endereco" placeholder="Ponto de referência">
-          <button class="btn-salvar" id="btnSalvarEndereco">Salvar endereço</button>
-        </div>
+      <div id="camposEndereco" style="display:none;">
+        <input type="text" id="inputRua" class="input-endereco" placeholder="Nome da rua">
+        <input type="text" id="inputNumero" class="input-endereco" placeholder="Número da casa">
+        <input type="text" id="inputComplemento" class="input-endereco" placeholder="Complemento (apto, bloco...)">
+        <input type="text" id="inputReferencia" class="input-endereco" placeholder="Ponto de referência">
+        <button class="btn-salvar" id="btnSalvarEndereco">Salvar endereço</button>
       </div>
 
-      <div id="blocoRetirada" style="display:none;">
-        <p class="aviso-retirada">Você vai retirar o pedido direto na loja escolhida. Não precisa informar endereço.</p>
-      </div>
+<!-- Criaro o botão de retirada do local, CSS simples e coloca para salvar no banco de dados e a mensagem seja guardada no pedido e no painel do do lojista-->
 
     </div>
   </section>
@@ -73,7 +64,7 @@
          onclick="window.location.href='pizzaria.html'">
       <img src="imagens/logo.pizzaria.png" class="logo-loja">
       <div class="info-loja">
-        <span class="nome-loja">Peixodá Pizzaria</span>
+        <span class="nome-loja">Alô Pizza!</span>
         <span class="status-loja"></span>
       </div>
       <span class="seta-loja">➜</span>
@@ -93,6 +84,16 @@
     </div>
 
   </section>
+
+  <footer style="text-align:center; padding:24px 16px 8px; color:#999; font-size:12px;">
+    <a href="privacidade.html" style="color:#c40000; text-decoration:none; font-weight:bold;">
+      Política de Privacidade
+    </a>
+    &nbsp;•&nbsp;
+    <a href="termos.html" style="color:#c40000; text-decoration:none; font-weight:bold;">
+      Termos de Uso
+    </a>
+  </footer>
 
   <script src="js/lojas.js"></script>
   <script src="js/script.js"></script>

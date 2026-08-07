@@ -74,15 +74,15 @@ exports.criarPedido = (req, res) => {
 
     console.log(req.body);
 
-    const { loja, nome_cliente, endereco, telefone, pagamento, total, itens } = req.body;
+    const { loja, nome_cliente, endereco, telefone, pagamento, total, troco_para, itens } = req.body;
 
     const sqlPedido = `
         INSERT INTO pedidos
-        (loja, nome_cliente, endereco, telefone, pagamento, total)
-        VALUES (?, ?, ?, ?, ?, ?)
+        (loja, nome_cliente, endereco, telefone, pagamento, total, troco_para)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
 
-    db.query(sqlPedido, [loja, nome_cliente, endereco, telefone, pagamento, total], (err, result) => {
+    db.query(sqlPedido, [loja, nome_cliente, endereco, telefone, pagamento, total, troco_para || null], (err, result) => {
         if (err) {
             return res.status(500).json({ sucesso: false, erro: err.message });
         }

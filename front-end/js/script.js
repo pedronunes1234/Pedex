@@ -125,6 +125,16 @@ document.addEventListener("DOMContentLoaded", () => {
   window.carrinho = JSON.parse(localStorage.getItem("carrinho")) || {};
   const totalEl = document.getElementById("total-carrinho");
   atualizarTotal();
+
+  // 🔹 Corrige o carrinho "desatualizado" quando o navegador restaura a página
+  // pelo botão de voltar (bfcache), sem recarregar o script do zero.
+  window.addEventListener("pageshow", (evento) => {
+    if (evento.persisted) {
+      window.carrinho = JSON.parse(localStorage.getItem("carrinho")) || {};
+      atualizarTotal();
+    }
+  });
+
   const lista = document.getElementById("lista-produtos");
 
   const modal = document.getElementById("modalProduto");
@@ -164,6 +174,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     totalEl.textContent = "R$ " + total.toFixed(2);
+
+    // 🔹 Salva o carrinho imediatamente, sempre que ele muda nesta página
+    // (evita que uma versão antiga guardada só na memória sobrescreva
+    // uma remoção feita na tela do carrinho)
+    localStorage.setItem("carrinho", JSON.stringify(window.carrinho));
   }
 
   // ===============================
@@ -393,7 +408,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const id = Date.now();
 
       carrinho[id] = {
-        nome: `${produto.nome} (${tamanho})`,
+        nome: produto.nome,
         preco: basePrice,
         qtd: 1,
         tamanho: tamanho,
@@ -565,7 +580,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const id = gerarId(produto, tamanho, "pizza") + "-" + Date.now();
 
       carrinho[id] = {
-        nome: `${produto.nome} (${tamanho})`,
+        nome: produto.nome,
         preco: basePrice,
         qtd: 1,
         tamanho: tamanho,
@@ -856,6 +871,5 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function abrirCarrinho() {
-  localStorage.setItem("carrinho", JSON.stringify(window.carrinho));
   window.location.href = "carrinho.html";
 }

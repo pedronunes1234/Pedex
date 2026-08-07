@@ -201,6 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // TROCO
+    let trocoParaEnviar = null;
     if (pagamentoSelecionado.value === "Dinheiro") {
       const trocoSim = document.querySelector('input[name="troco"]:checked');
       if (trocoSim && trocoSim.value === "Sim") {
@@ -216,6 +217,8 @@ document.addEventListener("DOMContentLoaded", () => {
           alert(`O valor do troco (R$ ${valorTroco.toFixed(2)}) é menor que o total (R$ ${totalPedido.toFixed(2)}).`);
           return;
         }
+
+        trocoParaEnviar = valorTroco;
       }
     }
 
@@ -271,6 +274,7 @@ document.addEventListener("DOMContentLoaded", () => {
           telefone: "",
           pagamento: pagamentoSelecionado.value,
           total: totalPedido,
+          troco_para: trocoParaEnviar,
           itens
         })
       });
@@ -288,12 +292,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // TROCO NA MENSAGEM
       let msgTroco = "";
-      if (pagamentoSelecionado.value === "Dinheiro") {
-        const trocoSim = document.querySelector('input[name="troco"]:checked');
-        if (trocoSim && trocoSim.value === "Sim") {
-          const valorTroco = parseFloat(document.getElementById("valorTrocoInput").value);
-          msgTroco = ` | Troco para: R$ ${valorTroco.toFixed(2)}`;
-        }
+      if (trocoParaEnviar) {
+        msgTroco = ` | Troco para: R$ ${trocoParaEnviar.toFixed(2)}`;
       }
 
       alert(`Pedido #${pedidoId} confirmado! Acompanhe pelo painel.${msgTroco}`);

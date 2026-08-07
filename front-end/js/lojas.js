@@ -1,7 +1,7 @@
 const LOJAS = {
 
   pizzaria: {
-    nome: "Peixodá Pizzaria",
+    nome: "Alô Pizza!",
 
     abre: "18:00",
     fecha: "23:30",
