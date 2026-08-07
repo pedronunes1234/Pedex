@@ -6,6 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/style.css">
   <link rel="shortcut icon" href="imagens/logopedexpainel.png" type="">
+  <style>
+    .btn-tipo-entrega {
+      flex: 1;
+      padding: 12px;
+      border-radius: 8px;
+      border: 2px solid #ff0000;
+      background: #fff;
+      color: #ff0000;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .btn-tipo-entrega.ativo {
+      background: #ff0000;
+      color: #fff;
+    }
+  </style>
 </head>
 
 <body>
@@ -18,24 +35,43 @@
   <section class="endereco-wrapper">
     <div class="endereco-card">
 
-      <div class="endereco-texto">
-        <span class="titulo">Entregar em</span>
-        <span class="endereco" id="textoEndereco">Informe seu endereço</span>
+      <!-- TOGGLE ENTREGA / RETIRADA -->
+      <div style="display:flex; gap:8px; margin-bottom:16px;">
+        <button id="btnEntrega" class="btn-tipo-entrega ativo">
+           Entrega
+        </button>
+        <button id="btnRetirada" class="btn-tipo-entrega">
+          Retirar na loja
+        </button>
       </div>
 
-      <button class="btn-endereco" id="btnEndereco">
-        Adicionar endereço <span class="seta">➜</span>
-      </button>
+      <!-- BLOCO ENTREGA -->
+      <div id="blocoEntrega">
+        <div class="endereco-texto">
+          <span class="titulo" id="labelEnderecoCarrinho">Entregar em</span>
+          <span class="endereco" id="textoEndereco">Informe seu endereço</span>
+        </div>
 
-      <div id="camposEndereco" style="display:none;">
-        <input type="text" id="inputRua" class="input-endereco" placeholder="Nome da rua">
-        <input type="text" id="inputNumero" class="input-endereco" placeholder="Número da casa">
-        <input type="text" id="inputComplemento" class="input-endereco" placeholder="Complemento (apto, bloco...)">
-        <input type="text" id="inputReferencia" class="input-endereco" placeholder="Ponto de referência">
-        <button class="btn-salvar" id="btnSalvarEndereco">Salvar endereço</button>
+        <button class="btn-endereco" id="btnEndereco">
+          Adicionar endereço <span class="seta">➜</span>
+        </button>
+
+        <div id="camposEndereco" style="display:none;">
+          <input type="text" id="inputRua" class="input-endereco" placeholder="Nome da rua">
+          <input type="text" id="inputNumero" class="input-endereco" placeholder="Número da casa">
+          <input type="text" id="inputComplemento" class="input-endereco" placeholder="Complemento (apto, bloco...)">
+          <input type="text" id="inputReferencia" class="input-endereco" placeholder="Ponto de referência">
+          <button class="btn-salvar" id="btnSalvarEndereco">Salvar endereço</button>
+        </div>
       </div>
 
-<!-- Criaro o botão de retirada do local, CSS simples e coloca para salvar no banco de dados e a mensagem seja guardada no pedido e no painel do do lojista-->
+      <!-- BLOCO RETIRADA -->
+      <div id="blocoRetirada" style="display:none;">
+        <div class="endereco-texto">
+          <span class="titulo">Retirada</span><br>
+          <span class="endereco">Você vai retirar o pedido diretamente na loja</span>
+        </div>
+      </div>
 
     </div>
   </section>
