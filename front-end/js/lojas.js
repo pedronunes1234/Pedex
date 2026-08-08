@@ -353,6 +353,301 @@ const LOJAS = {
         }
       ]
     }
+  },
+
+  babacu: {
+    nome: "Babaçu Steakhouse",
+
+    // AJUSTAR: coloquei um horário provisório, me confirma o horário real de funcionamento
+    abre: "17:00",
+    fecha: "23:30",
+
+    categorias: {
+
+      lanches: [
+        {
+          nome: "X-Burguer",
+          preco: 8.00,
+          img: "imagens/babacu/x-burguer.png",
+          descricao: "Pão, hambúrguer, queijo.",
+          adicionais: [
+            { nome: "Bacon", preco: 3 },
+            { nome: "Queijo Extra", preco: 3 },
+            { nome: "Presunto", preco: 2 },
+            { nome: "Ovo", preco: 2 },
+            { nome: "Calabresa", preco: 4 },
+            { nome: "Hambúrguer Extra", preco: 5 }
+          ]
+        },
+        {
+          nome: "X-Salada",
+          preco: 10.00,
+          img: "imagens/babacu/x-salada.png",
+          descricao: "Pão, hambúrguer, queijo, salada.",
+          adicionais: [
+            { nome: "Bacon", preco: 3 },
+            { nome: "Queijo Extra", preco: 3 },
+            { nome: "Presunto", preco: 2 },
+            { nome: "Ovo", preco: 2 },
+            { nome: "Calabresa", preco: 4 },
+            { nome: "Hambúrguer Extra", preco: 5 }
+          ]
+        },
+        {
+          nome: "Americano",
+          preco: 12.00,
+          img: "imagens/babacu/americano.png",
+          descricao: "Pão, presunto, queijo, salada, ovo.",
+          adicionais: [
+            { nome: "Bacon", preco: 3 },
+            { nome: "Queijo Extra", preco: 3 },
+            { nome: "Presunto Extra", preco: 2 },
+            { nome: "Calabresa", preco: 4 },
+            { nome: "Hambúrguer", preco: 5 }
+          ]
+        },
+        {
+          nome: "Bauru",
+          preco: 8.00,
+          img: "imagens/babacu/bauru.png",
+          descricao: "Pão, presunto, queijo, tomate.",
+          adicionais: [
+            { nome: "Bacon", preco: 3 },
+            { nome: "Queijo Extra", preco: 3 },
+            { nome: "Presunto Extra", preco: 2 },
+            { nome: "Ovo", preco: 2 },
+            { nome: "Calabresa", preco: 4 }
+          ]
+        },
+        {
+          nome: "X-Egg",
+          preco: 10.00,
+          img: "imagens/babacu/x-egg.png",
+          descricao: "Pão, queijo, ovo, hambúrguer.",
+          adicionais: [
+            { nome: "Bacon", preco: 3 },
+            { nome: "Queijo Extra", preco: 3 },
+            { nome: "Presunto", preco: 2 },
+            { nome: "Ovo Extra", preco: 2 },
+            { nome: "Calabresa", preco: 4 },
+            { nome: "Hambúrguer Extra", preco: 5 }
+          ]
+        },
+        {
+          nome: "X-Frango",
+          preco: 15.00,
+          img: "imagens/babacu/x-frango.png",
+          descricao: "Pão, frango, queijo, salada.",
+          adicionais: [
+            { nome: "Bacon", preco: 3 },
+            { nome: "Queijo Extra", preco: 3 },
+            { nome: "Presunto", preco: 2 },
+            { nome: "Ovo", preco: 2 },
+            { nome: "Frango Extra", preco: 5 }
+          ]
+        },
+        {
+          nome: "X-Bacon",
+          preco: 15.00,
+          img: "imagens/babacu/x-bacon.png",
+          descricao: "Pão, hambúrguer, bacon, queijo, salada.",
+          adicionais: [
+            { nome: "Bacon Extra", preco: 3 },
+            { nome: "Queijo Extra", preco: 3 },
+            { nome: "Presunto", preco: 2 },
+            { nome: "Ovo", preco: 2 },
+            { nome: "Hambúrguer Extra", preco: 5 }
+          ]
+        },
+        {
+          nome: "X-Calabresa",
+          preco: 15.00,
+          img: "imagens/babacu/x-calabresa.png",
+          descricao: "Pão, hambúrguer, calabresa, queijo, salada.",
+          adicionais: [
+            { nome: "Bacon", preco: 3 },
+            { nome: "Queijo Extra", preco: 3 },
+            { nome: "Presunto", preco: 2 },
+            { nome: "Ovo", preco: 2 },
+            { nome: "Calabresa Extra", preco: 4 },
+            { nome: "Hambúrguer Extra", preco: 5 }
+          ]
+        },
+        {
+          nome: "X-Carne",
+          preco: 18.00,
+          img: "imagens/babacu/x-carne.png",
+          descricao: "Pão, carne, queijo, salada.",
+          adicionais: [
+            { nome: "Bacon", preco: 3 },
+            { nome: "Queijo Extra", preco: 3 },
+            { nome: "Presunto", preco: 2 },
+            { nome: "Ovo", preco: 2 },
+            { nome: "Carne Extra", preco: 6 }
+          ]
+        },
+        {
+          nome: "X-Tudo",
+          preco: 18.00,
+          img: "imagens/babacu/x-tudo.png",
+          descricao: "Pão, hambúrguer, presunto, queijo, ovo, bacon, calabresa, frango e salada.",
+          adicionais: [
+            { nome: "Bacon Extra", preco: 3 },
+            { nome: "Presunto Extra", preco: 2 },
+            { nome: "Ovo Extra", preco: 2 },
+            { nome: "Queijo Extra", preco: 3 },
+            { nome: "Calabresa Extra", preco: 4 },
+            { nome: "Hambúrguer Extra", preco: 5 }
+          ]
+        },
+        {
+          nome: "Completão",
+          preco: 26.00,
+          img: "imagens/babacu/completao.png",
+          descricao: "Pão, 2 hambúrgueres, presunto, queijo, 2 ovos, bacon, calabresa, frango e salada.",
+          adicionais: [
+            { nome: "Bacon Extra", preco: 3 },
+            { nome: "Presunto Extra", preco: 2 },
+            { nome: "Ovo Extra", preco: 2 },
+            { nome: "Queijo Extra", preco: 3 },
+            { nome: "Calabresa Extra", preco: 4 },
+            { nome: "Hambúrguer Extra", preco: 5 }
+          ]
+        }
+      ],
+
+      "menu da casa": [
+        {
+          nome: "Crepe Carne de Sol",
+          preco: 17.00,
+          img: "imagens/babacu/crepe-carne-de-sol.png",
+          descricao: "Carne de sol, queijo, catupiry, milho, ervilha e orégano."
+        },
+        {
+          nome: "Crepe Click",
+          preco: 15.00,
+          img: "imagens/babacu/crepe-click.png",
+          descricao: "Frango, catupiry, orégano e tomate."
+        },
+        {
+          nome: "Crepe Calabresa",
+          preco: 15.00,
+          img: "imagens/babacu/crepe-calabresa.png",
+          descricao: "Calabresa, queijo, cebola, milho, ervilha, tomate e orégano."
+        },
+        {
+          nome: "Crepe Suíço",
+          preco: 15.00,
+          img: "imagens/babacu/crepe-suico.png",
+          descricao: "Queijo, presunto, tomate, milho, ervilha e orégano."
+        },
+        {
+          nome: "Crepe da Casa",
+          preco: 20.00,
+          img: "imagens/babacu/crepe-da-casa.png",
+          descricao: "Carne de sol, presunto, frango, tomate, milho e ervilha."
+        },
+        {
+          nome: "Cuscuz Carne de Sol",
+          preco: 16.00,
+          img: "imagens/babacu/cuscuz-carne-de-sol.png",
+          descricao: "Cuscuz acompanhado de carne de sol."
+        },
+        {
+          nome: "Cuscuz Frango",
+          preco: 15.00,
+          img: "imagens/babacu/cuscuz-frango.png",
+          descricao: "Cuscuz acompanhado de frango desfiado."
+        },
+        {
+          nome: "Batata Normal",
+          preco: 15.00,
+          img: "imagens/babacu/batata-normal.png",
+          descricao: "Porção de batata frita tradicional."
+        },
+        {
+          nome: "Batata Recheada",
+          preco: 28.00,
+          img: "imagens/babacu/batata-recheada.png",
+          descricao: "Bacon, calabresa e cheddar."
+        },
+        {
+          nome: "Arroz de Leite",
+          preco: 8.00,
+          img: "imagens/babacu/arroz-de-leite.png",
+          descricao: "Porção de arroz de leite."
+        },
+        {
+          nome: "Baião Cremoso",
+          preco: 8.00,
+          img: "imagens/babacu/baiao-cremoso.png",
+          descricao: "Porção de baião cremoso."
+        },
+        {
+          nome: "Porção de Carne",
+          tipo: "porcao-carne",
+          img: "imagens/babacu/porcao-carne.png",
+          descricao: "Escolha o tipo de carne e o valor da sua porção. Acompanha farofa e vinagrete.",
+          valorMinimo: 10.00,
+          tiposCarne: [
+            "Boi",
+            "Porco",
+            "Frango",
+            "Linguiça",
+            "Cupim",
+            "Carneiro",
+            "Coração de Boi",
+            "Coração de Frango",
+            "Língua de Boi"
+          ]
+        }
+      ],
+
+      bebidas: [
+        {
+          nome: "Refrigerante Lata",
+          marcas: {
+            Coca: { preco: 6, img: "imagens/babacu/bebidas/coca.lata.png" },
+            Guarana: { preco: 6, img: "imagens/babacu/bebidas/guara.lata.png" },
+            Soda: { preco: 6, img: "imagens/babacu/bebidas/soda.lata.png" },
+            Fanta: { preco: 6, img: "imagens/babacu/bebidas/fanta.lata.png" },
+            "Coca Zero": { preco: 6, img: "imagens/babacu/bebidas/coca.lataz.png" },
+            "Guarana Zero": { preco: 6, img: "imagens/babacu/bebidas/guara.lataz.png" },
+            Schweppes: { preco: 6, img: "imagens/babacu/bebidas/schweppes.lata.png" }
+          }
+        },
+        {
+          nome: "Refrigerante Litro",
+          marcas: {
+            Coca: { preco: 10, img: "imagens/babacu/bebidas/coca.1L.png" },
+            Guarana: { preco: 10, img: "imagens/babacu/bebidas/guara.1L.png" },
+            Soda: { preco: 10, img: "imagens/babacu/bebidas/soda.1L.png" },
+            Fanta: { preco: 10, img: "imagens/babacu/bebidas/fanta.1L.png" },
+            "Coca Zero": { preco: 10, img: "imagens/babacu/bebidas/coca.1Lz.png" },
+            "Guarana Zero": { preco: 10, img: "imagens/babacu/bebidas/guara.1Lz.png" },
+            Cajuina: { preco: 10, img: "imagens/babacu/bebidas/cajuina.1L.png" }
+          }
+        },
+        {
+          nome: "Cerveja 300ml",
+          marcas: {
+            Brahma: { preco: 5, img: "imagens/babacu/bebidas/brahma.300.png" },
+            Skol: { preco: 5, img: "imagens/babacu/bebidas/skol.300.png" }
+          }
+        },
+        {
+          nome: "Long Neck",
+          marcas: {
+            Heineken: { preco: 10, img: "imagens/babacu/bebidas/heineken.png" },
+            Stella: { preco: 10, img: "imagens/babacu/bebidas/stella.png" },
+            Budweiser: { preco: 10, img: "imagens/babacu/bebidas/budweiser.png" },
+            "Cabaré Ice": { preco: 10, img: "imagens/babacu/bebidas/cabare-ice.png" },
+            Corona: { preco: 10, img: "imagens/babacu/bebidas/corona.png" },
+            "Michelob Ultra": { preco: 10, img: "imagens/babacu/bebidas/michelob-ultra.png" }
+          }
+        }
+      ]
+    }
   }
 
 };

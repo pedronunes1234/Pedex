@@ -221,6 +221,11 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    if (produto.tipo === "porcao-carne") {
+      criarModalPorcao(produto);
+      return;
+    }
+
     btnAdicionarCarrinho.onclick = () => {
 
       const adicionaisSelecionadosNomes = adicionaisSelecionados
@@ -627,6 +632,104 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
+  // ===============================
+  // 🔹 MODAL: PORÇÃO DE CARNE (tipo + valor livre a partir do mínimo)
+  // ===============================
+  function criarModalPorcao(produto) {
+
+    modalPrecoBase.textContent =
+      "Valor mínimo: R$ " + produto.valorMinimo.toFixed(2);
+
+    listaAdicionais.innerHTML = "";
+    const contadorSaboresEl = document.getElementById("contadorSabores");
+    if (contadorSaboresEl) contadorSaboresEl.textContent = "";
+
+    // Limpa seções de outros modais, se existirem
+    ["secaoBordas", "secaoAcompanhamento", "secaoCarne", "secaoValorPorcao"]
+      .forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+      });
+
+    let carneSelecionada = produto.tiposCarne[0];
+    let valorPorcao = produto.valorMinimo;
+    const passoValor = 5;
+
+    modalTotal.textContent = "R$ " + valorPorcao.toFixed(2);
+
+    // SEÇÃO: TIPO DE CARNE
+    const secaoCarne = document.createElement("div");
+    secaoCarne.id = "secaoCarne";
+    secaoCarne.style.cssText = "padding: 0 20px 10px;";
+    secaoCarne.innerHTML = `<p style="font-weight:bold; font-size:16px; margin-bottom:10px; color:#222;">Escolha o tipo de carne:</p>`;
+
+    produto.tiposCarne.forEach(carne => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn-borda" + (carne === carneSelecionada ? " ativo" : "");
+      btn.textContent = carne;
+
+      btn.addEventListener("click", () => {
+        secaoCarne.querySelectorAll(".btn-borda").forEach(b => b.classList.remove("ativo"));
+        btn.classList.add("ativo");
+        carneSelecionada = carne;
+      });
+
+      secaoCarne.appendChild(btn);
+    });
+
+    listaAdicionais.before(secaoCarne);
+
+    // SEÇÃO: VALOR LIVRE (mínimo + incrementos ilimitados)
+    const secaoValorPorcao = document.createElement("div");
+    secaoValorPorcao.id = "secaoValorPorcao";
+    secaoValorPorcao.style.cssText = "padding: 0 20px 10px;";
+    secaoValorPorcao.innerHTML = `
+      <p style="font-weight:bold; font-size:16px; margin-bottom:10px; color:#222;">Escolha o valor da porção:</p>
+      <div class="controle-valor-porcao">
+        <button type="button" class="btn-valor-menos">−</button>
+        <span class="valor-porcao-display">R$ ${valorPorcao.toFixed(2)}</span>
+        <button type="button" class="btn-valor-mais">+</button>
+      </div>
+      <small style="color:#666;">Valor mínimo: R$ ${produto.valorMinimo.toFixed(2)} • sem limite máximo</small>
+    `;
+
+    listaAdicionais.before(secaoValorPorcao);
+
+    const displayValor = secaoValorPorcao.querySelector(".valor-porcao-display");
+    const btnValorMais = secaoValorPorcao.querySelector(".btn-valor-mais");
+    const btnValorMenos = secaoValorPorcao.querySelector(".btn-valor-menos");
+
+    btnValorMais.addEventListener("click", () => {
+      valorPorcao += passoValor;
+      displayValor.textContent = "R$ " + valorPorcao.toFixed(2);
+      modalTotal.textContent = "R$ " + valorPorcao.toFixed(2);
+    });
+
+    btnValorMenos.addEventListener("click", () => {
+      if (valorPorcao - passoValor < produto.valorMinimo) return;
+      valorPorcao -= passoValor;
+      displayValor.textContent = "R$ " + valorPorcao.toFixed(2);
+      modalTotal.textContent = "R$ " + valorPorcao.toFixed(2);
+    });
+
+    // BOTÃO ADICIONAR
+    btnAdicionarCarrinho.onclick = () => {
+
+      const id = Date.now();
+
+      carrinho[id] = {
+        nome: produto.nome + " (" + carneSelecionada + ")",
+        preco: valorPorcao,
+        qtd: 1,
+        marca: "Carne: " + carneSelecionada
+      };
+
+      atualizarTotal();
+      modal.style.display = "none";
+    };
+  }
+
   function renderizarCategoria(categoria) {
 
     lista.innerHTML = "";
@@ -653,7 +756,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       let precoAtual = produto.tamanhos
         ? produto.tamanhos[tamanhoSelecionado]
-        : produto.preco;
+        : (produto.tipo === "porcao-carne" ? produto.valorMinimo : produto.preco);
 
       if (produto.marcas) {
         precoAtual = produto.marcas[marcaSelecionada].preco;
@@ -678,7 +781,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ? Object.entries(produto.tamanhos).map(([tam, preco]) =>
         `<span class="preco-tamanho">${tam}: R$ ${preco.toFixed(2)}</span>`
       ).join(" | ")
-    : `R$ ${precoAtual.toFixed(2)}`}
+    : produto.tipo === "porcao-carne"
+      ? `A partir de R$ ${produto.valorMinimo.toFixed(2)}`
+      : `R$ ${precoAtual.toFixed(2)}`}
 </p>
 
           ${produto.marcas ? `
@@ -694,7 +799,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
 
         <div class="controle-qtd">
-  ${produto.tipo === "monte-pizza" || produto.tamanhos || produto.adicionais
+  ${produto.tipo === "monte-pizza" || produto.tipo === "porcao-carne" || produto.tamanhos || produto.adicionais
     ? `<button class="btn-qtd btn-qtd-pizza" id="mais-${baseId}">+</button>`
     : `
       <button class="btn-qtd" id="menos-${baseId}">−</button>
@@ -713,7 +818,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (
         produto.adicionais ||
-        produto.tipo === "monte-pizza"
+        produto.tipo === "monte-pizza" ||
+        produto.tipo === "porcao-carne"
       ) {
 
         card.querySelector(".produto-img")
@@ -826,9 +932,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         e.stopPropagation();
 
-        // Se o produto possui adicionais (mas NÃO monte-pizza)
-        // Se o produto possui adicionais OU é monte-pizza, abre o modal
-        if (produto.adicionais || produto.tipo === "monte-pizza") {
+        // Se o produto possui adicionais OU é monte-pizza OU é porção de carne, abre o modal
+        if (produto.adicionais || produto.tipo === "monte-pizza" || produto.tipo === "porcao-carne") {
           abrirModal(produto);
           return;
         }

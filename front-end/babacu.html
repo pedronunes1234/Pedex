@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Babaçu Steakhouse | Pedex</title>
+
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="shortcut icon" href="imagens/babacu/logobabacu.jpeg" type="image/x-icon">
+</head>
+
+<body data-loja="babacu">
+
+  <!-- HEADER -->
+  <header class="header-loja">
+
+    <div class="topo-loja">
+
+      <button class="btn-voltar" onclick="history.back()">
+        ←
+      </button>
+
+      <img
+        src="imagens/babacu/logobabacu.jpeg"
+        alt="Logo Babaçu Steakhouse"
+        class="logo-loja"
+      >
+
+      <div class="info-topo">
+        <h2 class="nome-loja">Babaçu Steakhouse</h2>
+        <span class="status-text"></span>
+      </div>
+
+    </div>
+
+    <!-- ENDEREÇO -->
+    <div class="endereco-loja">
+      📍 Entregar em:
+      <span id="endereco-usuario">Informe seu endereço</span>
+    </div>
+
+  </header>
+
+  <!-- CATEGORIAS -->
+  <div class="categorias">
+
+    <button class="categoria ativa">Lanches</button>
+
+    <button class="categoria">Menu da Casa</button>
+
+    <button class="categoria">Bebidas</button>
+
+  </div>
+
+  <!-- PRODUTOS -->
+  <main class="produtos">
+
+    <div id="lista-produtos">
+
+      <!-- Produtos carregados pelo JS -->
+
+    </div>
+
+  </main>
+
+  <!-- CARRINHO FIXO -->
+  <div class="carrinho-bar">
+
+    <button class="btn-carrinho" onclick="abrirCarrinho()">
+      Ver Carrinho =
+      <span id="total-carrinho">R$ 0,00</span>
+    </button>
+
+  </div>
+
+  <!-- MODAL DE PERSONALIZAÇÃO -->
+
+<div id="modalProduto" class="modal">
+
+  <div class="modal-content">
+
+    <button id="fecharModal" class="btn-fechar">
+      ✕
+    </button>
+
+    <img id="modalImagem" src="">
+
+    <h2 id="modalNome"></h2>
+
+    <p id="modalPrecoBase"></p>
+
+    <hr>
+
+    <div id="listaAdicionais"></div>
+
+    <hr>
+
+    <div class="modal-total">
+      Total:
+      <span id="modalTotal">R$ 0,00</span>
+    </div>
+
+    <button id="btnAdicionarCarrinho">
+      Adicionar ao Carrinho
+    </button>
+
+  </div>
+
+</div>
+  <!-- SCRIPTS -->
+  <script>
+    localStorage.setItem("lojaSelecionada", "Babaçu Steakhouse");
+  </script>
+  <script src="js/lojas.js"></script>
+  <script src="js/script.js"></script>
+
+</body>
+</html>
