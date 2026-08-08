@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (produto.tipo === "monte-pizza") {
 
-      totalModal = produto.tamanhos.P;
+      totalModal = produto.tamanhos.M;
 
       modalPrecoBase.textContent =
         "Preço Base: R$ " +
@@ -333,6 +333,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let basePrice = precoInicial;
     let precoExtraBorda = 0;
     let bordaSelecionada = { nome: "Sem borda", preco: 0 };
+    let acompanhamentoSelecionado = "M&M";
 
     modalPrecoBase.textContent = "Tamanho: " + tamanho;
     modalTotal.textContent = "R$ " + basePrice.toFixed(2);
@@ -343,6 +344,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const bordaExistente = document.getElementById("secaoBordas");
     if (bordaExistente) bordaExistente.remove();
+
+    const acompanhamentoExistente = document.getElementById("secaoAcompanhamento");
+    if (acompanhamentoExistente) acompanhamentoExistente.remove();
+
+    // SEÇÃO DE ACOMPANHAMENTO (só para pizzas doces)
+    if (produto.temAcompanhamento) {
+      const opcoesAcompanhamento = ["M&M", "Granulado"];
+
+      const secaoAcompanhamento = document.createElement("div");
+      secaoAcompanhamento.id = "secaoAcompanhamento";
+      secaoAcompanhamento.style.cssText = "padding: 0 20px 10px;";
+      secaoAcompanhamento.innerHTML = `<p style="font-weight:bold; font-size:16px; margin-bottom:10px; color:#222;">Escolha o acompanhamento:</p>`;
+
+      opcoesAcompanhamento.forEach(opcao => {
+        const btn = document.createElement("button");
+        btn.className = "btn-borda" + (opcao === acompanhamentoSelecionado ? " ativo" : "");
+        btn.textContent = opcao;
+
+        btn.addEventListener("click", () => {
+          secaoAcompanhamento.querySelectorAll(".btn-borda").forEach(b => b.classList.remove("ativo"));
+          btn.classList.add("ativo");
+          acompanhamentoSelecionado = opcao;
+        });
+
+        secaoAcompanhamento.appendChild(btn);
+      });
+
+      listaAdicionais.before(secaoAcompanhamento);
+    }
 
     // SEÇÃO DE BORDAS
     const opcoesBordas = [
@@ -413,7 +443,8 @@ document.addEventListener("DOMContentLoaded", () => {
         preco: basePrice,
         qtd: 1,
         tamanho: tamanho,
-        borda: bordaSelecionada.nome
+        borda: bordaSelecionada.nome,
+        marca: produto.temAcompanhamento ? `Acompanhamento: ${acompanhamentoSelecionado}` : undefined
       };
 
       atualizarTotal();

@@ -12,7 +12,7 @@ const LOJAS = {
 
         {
           nome: "Pizza Atum",
-          img: "imagens/pizzaria/pizza.fra.cap.png",
+          img: "imagens/pizzaria/pizza.atum.png",
           descricao: "Atum, Mussarela, Cebola Branca, Azeitona e Orégano",
           tamanhos: {
             M: 45,
@@ -32,7 +32,7 @@ const LOJAS = {
 
         {
           nome: "Pizza Carijó",
-          img: "imagens/pizzaria/pizza.calabr.png",
+          img: "imagens/pizzaria/frangocomcatupiry.png",
           descricao: "Frango, Milho Verde, Mussarela, Bacon, Azeitona e Orégano",
           tamanhos: {
             M: 40,
@@ -42,7 +42,7 @@ const LOJAS = {
 
         {
           nome: "Pizza Carne de Sol",
-          img: "imagens/pizzaria/pizza.calabr.png",
+          img: "imagens/pizzaria/carne-seca.png",
           descricao: "Carne de Sol, Mussarela, Cebola Roxa, Azeitona e Orégano",
           tamanhos: {
             M: 40,
@@ -52,7 +52,7 @@ const LOJAS = {
 
         {
           nome: "Pizza Daniel",
-          img: "imagens/pizzaria/pizza.calabr.png",
+          img: "imagens/pizzaria/daniel.png",
           descricao: "Frango, Cream Cheese, Mussarela, Azeitona e Orégano",
           tamanhos: {
             M: 40,
@@ -72,7 +72,7 @@ const LOJAS = {
 
         {
           nome: "Pizza Marguerita",
-          img: "imagens/pizzaria/pizza.fra.cap.png",
+          img: "imagens/pizzaria/nordestina-marguerita.png",
           descricao: "Mussarela, Tomate, Manjericão, Parmesão, Cebola, Azeitona e Orégano",
           tamanhos: {
             M: 40,
@@ -82,7 +82,7 @@ const LOJAS = {
 
         {
           nome: "Pizza Marina",
-          img: "imagens/pizzaria/pizza.fra.cap.png",
+          img: "imagens/pizzaria/mariana.png",
           descricao: "Carne de Sol, Mussarela, Cream Cheese, Cebola Roxa, Azeitona e Orégano",
           tamanhos: {
             M: 45,
@@ -92,7 +92,7 @@ const LOJAS = {
 
         {
           nome: "Pizza Mista",
-          img: "imagens/pizzaria/pizza.fra.cap.png",
+          img: "imagens/pizzaria/daniel.png",
           descricao: "Presunto, Frango, Calabresa, Mussarela, Bacon, Azeitona e Orégano",
           tamanhos: {
             M: 40,
@@ -102,7 +102,7 @@ const LOJAS = {
 
         {
           nome: "Pizza Nordestina",
-          img: "imagens/pizzaria/pizza.fra.cap.png",
+          img: "imagens/pizzaria/nordestina-marguerita.png",
           descricao: "Carne na Nata, Mussarela, Cebola Roxa, Azeitona e Orégano",
           tamanhos: {
             M: 43,
@@ -112,7 +112,7 @@ const LOJAS = {
 
         {
           nome: "Pizza Portuguesa",
-          img: "imagens/pizzaria/pizza.fra.cap.png",
+          img: "imagens/pizzaria/portuguesa.png",
           descricao: "Presunto, Ovo, Cebola, Ervilha, Mussarela, Azeitona e Orégano",
           tamanhos: {
             M: 40,
@@ -122,7 +122,7 @@ const LOJAS = {
 
         {
           nome: "Pizza Quatro Queijos",
-          img: "imagens/pizzaria/pizza.mussa.png",
+          img: "imagens/pizzaria/4queijos.png",
           descricao: "Mussarela, Catupiry, Provolone, Cheddar, Azeitona e Orégano",
           tamanhos: {
             M: 40,
@@ -131,9 +131,21 @@ const LOJAS = {
         },
 
         {
-          nome: "Pizza Doce (Chocolate / Choc. Branco)",
-          img: "imagens/pizzaria/pizza.mussa.png",
-          descricao: "Chocolate ou Chocolate Branco com M&M ou Granulado",
+          nome: "Pizza Chocolate",
+          img: "imagens/pizzaria/pizzadoce.png",
+          descricao: "Chocolate, Acompanhamento à sua escolha",
+          temAcompanhamento: true,
+          tamanhos: {
+            M: 40,
+            F: 45
+          }
+        },
+
+        {
+          nome: "Pizza Chocolate Branco",
+          img: "imagens/pizzaria/pizzadoceb.jpg",
+          descricao: "Chocolate Branco, Acompanhamento à sua escolha",
+          temAcompanhamento: true,
           tamanhos: {
             M: 40,
             F: 45
@@ -177,55 +189,55 @@ const LOJAS = {
         {
           nome: "Esfiha Bacon c/ Mussarela",
           preco: 6.00,
-          img: "imagens/pizzaria/esfiha.png",
+          img: "imagens/pizzaria/esfirrabm.jpg",
           descricao: "Massa artesanal recheada com bacon crocante e mussarela."
         },
         {
           nome: "Esfiha Calabresa c/ Cebola",
           preco: 6.00,
-          img: "imagens/pizzaria/esfiha.png",
+          img: "imagens/pizzaria/esfirracc.jpg",
           descricao: "Massa artesanal recheada com calabresa moída e cebola."
         },
         {
           nome: "Esfiha Carne c/ Queijo",
           preco: 6.00,
-          img: "imagens/pizzaria/esfiha.png",
+          img: "imagens/pizzaria/esfirracm.jpg",
           descricao: "Massa artesanal recheada com carne temperada e queijo."
         },
         {
           nome: "Esfiha Carne c/ Catupiry",
           preco: 6.00,
-          img: "imagens/pizzaria/esfiha.png",
+          img: "imagens/pizzaria/esfirraccc.jpg",
           descricao: "Massa artesanal recheada com carne temperada e catupiry."
         },
         {
           nome: "Esfiha Frango c/ Catupiry",
           preco: 6.00,
-          img: "imagens/pizzaria/esfiha.png",
+          img: "imagens/pizzaria/esfirrafc.jpg",
           descricao: "Massa artesanal recheada com frango desfiado e catupiry."
         },
         {
           nome: "Esfiha Mussarela c/ Tomate",
           preco: 6.00,
-          img: "imagens/pizzaria/esfiha.png",
+          img: "imagens/pizzaria/esfirramt.jpg",
           descricao: "Massa artesanal recheada com mussarela derretida e tomate."
         },
         {
           nome: "Esfiha Queijo",
           preco: 6.00,
-          img: "imagens/pizzaria/esfiha.png",
+          img: "imagens/pizzaria/esfirram.jpg",
           descricao: "Massa artesanal recheada com queijo mussarela."
         },
         {
           nome: "Esfiha Chocolate / Choc. Branco",
           preco: 6.00,
-          img: "imagens/pizzaria/esfiha.png",
+          img: "imagens/pizzaria/esfirrach.jpg",
           descricao: "Esfiha doce com recheio de chocolate ao leite ou branco."
         },
         {
           nome: "Esfiha Nutella",
           preco: 10.00,
-          img: "imagens/pizzaria/esfiha.png",
+          img: "imagens/pizzaria/esfirrant.jpg",
           descricao: "Esfiha doce recheada com creme de avelã Nutella original."
         }
       ],
