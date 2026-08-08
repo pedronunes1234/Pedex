@@ -10,30 +10,30 @@
   <link rel="shortcut icon" href="imagens/logo.pizzaria.png" type="image/x-icon">
 </head>
 
-<!-- IMPORTANTE: identifica qual loja é -->
-<body data-loja="pizzaria">
+<!-- Identificador da loja Alô Pizza no JS -->
+<body data-loja="alo_pizza">
  
   <!-- HEADER DA LOJA -->
   <header class="header-loja">
     <div class="topo-loja">
-        <button class="btn-voltar" onclick="history.back()"> ← </button>
-      <img src="imagens/logo.pizzaria.png" alt="Logo da Pizzaria" class="logo-loja">
+      <button class="btn-voltar" onclick="history.back()"> ← </button>
+      <img src="imagens/logo.pizzaria.png" alt="Logo Alô Pizza" class="logo-loja">
       <div class="info-topo">
         <h2 class="nome-loja">Alô Pizza!</h2>
         <span class="status-text"></span>
       </div>
     </div>
 
-     <!-- ENDEREÇO -->
-  <div class="endereco-loja">
-    📍 Entregar em: <span id="endereco-usuario">Informe seu endereço</span>
-  </div>
-
+    <!-- ENDEREÇO -->
+    <div class="endereco-loja">
+      📍 Entregar em: <span id="endereco-usuario">Informe seu endereço</span>
+    </div>
   </header>
 
   <!-- CATEGORIAS -->
   <section class="categorias">
     <button class="categoria ativa">Comidas</button>
+    <button class="categoria">Esfihas</button>
     <button class="categoria">Bebidas</button>
   </section>
 
@@ -63,9 +63,8 @@
       <p id="modalPrecoBase"></p>
 
       <div class="tamanhos" id="tamanhosModal">
-        <button class="btn-tamanho ativo" data-size="P">P</button>
-        <button class="btn-tamanho" data-size="M">M</button>
-        <button class="btn-tamanho" data-size="G">G</button>
+        <button class="btn-tamanho ativo" data-size="M">M</button>
+        <button class="btn-tamanho" data-size="F">F</button>
       </div>
 
       <p id="contadorSabores"></p>
@@ -83,9 +82,9 @@
   </div>
 
   <!-- JS -->
-   <script>
-  localStorage.setItem("lojaSelecionada", "Alô Pizza!");
-</script>
+  <script>
+    localStorage.setItem("lojaSelecionada", "Alô Pizza!");
+  </script>
 
   <script src="js/lojas.js"></script>
   <script src="js/script.js"></script>

@@ -159,12 +159,11 @@ document.addEventListener("DOMContentLoaded", () => {
   let saboresSelecionados = [];
 
   const limiteSabores = {
-    P: 2,
     M: 2,
-    G: 3
+    F: 3
   };
 
-  let tamanhoPizzaPersonalizada = "P";
+  let tamanhoPizzaPersonalizada = "M";
 
   function atualizarTotal() {
     let total = 0;
@@ -348,9 +347,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // SEÇÃO DE BORDAS
     const opcoesBordas = [
       { nome: "Sem borda", preco: 0 },
-      { nome: "Borda de Catupiry", preco: 5 },
-      { nome: "Borda de Cheddar", preco: 5 },
-      { nome: "Borda de Chocolate", preco: 6 }
+      { nome: "Borda de Catupiry", preco: 10 },
+      { nome: "Borda de Cheddar", preco: 10 },
+      { nome: "Borda de Requeijão", preco: 10 },
+      { nome: "Borda de Chocolate", preco: 12 },
+      { nome: "Borda de Chocolate Branco", preco: 12 }
     ];
 
     const secaoBordas = document.createElement("div");
@@ -429,24 +430,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // BORDAS RECHEADAS
     // VARIÁVEIS PRINCIPAIS (declaradas antes das bordas)
-    let tamanho = "P";
+    let tamanho = "M";
     let saboresSelecionados = [];
     let basePrice = produto.tamanhos[tamanho];
     let precoExtraBorda = 0;
     let bordaSelecionada = { nome: "Sem borda", preco: 0 };
 
     const limiteSabores = {
-      P: 2,
       M: 2,
-      G: 3
+      F: 3
     };
 
     // BORDAS RECHEADAS
     const opcoesBordas = [
       { nome: "Sem borda", preco: 0 },
-      { nome: "Borda de Catupiry", preco: 5 },
-      { nome: "Borda de Cheddar", preco: 5 },
-      { nome: "Borda de Chocolate", preco: 6 }
+      { nome: "Borda de Catupiry", preco: 10 },
+      { nome: "Borda de Cheddar", preco: 10 },
+      { nome: "Borda de Requeijão", preco: 10 },
+      { nome: "Borda de Chocolate", preco: 12 },
+      { nome: "Borda de Chocolate Branco", preco: 12 }
     ];
 
     const bordaExistente = document.getElementById("secaoBordas");
