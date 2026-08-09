@@ -358,9 +358,38 @@ const LOJAS = {
   babacu: {
     nome: "Babaçu Steakhouse",
 
-    // AJUSTAR: coloquei um horário provisório, me confirma o horário real de funcionamento
-    abre: "17:00",
-    fecha: "23:30",
+    // Só abre sexta, sábado e domingo, em janelas específicas.
+    // Cada período tem um "id" que é usado pra filtrar produtos e carnes disponíveis.
+    horarios: {
+      // 0=domingo, 1=segunda...5=sexta, 6=sábado (padrão do JS: Date.getDay())
+      5: [
+        { id: "sexta-noite", periodo: "noite", inicio: "18:00", fim: "00:00" }
+      ],
+      6: [
+        { id: "sabado-manha", periodo: "manha", inicio: "10:00", fim: "13:00" },
+        { id: "sabado-noite", periodo: "noite", inicio: "18:00", fim: "00:00" }
+      ],
+      0: [
+        { id: "domingo-manha", periodo: "manha", inicio: "10:00", fim: "13:00" }
+      ]
+      // segunda a quinta: sem período = loja fechada
+    },
+
+    // Quais "tags" de produto aparecem em cada período
+    produtosPorPeriodo: {
+      "sexta-noite": ["lanche", "porcao"],
+      "sabado-manha": ["marmita", "porcao", "arroz-leite"],
+      "sabado-noite": ["lanche", "porcao"],
+      "domingo-manha": ["marmita", "porcao", "arroz-leite"]
+    },
+
+    // Quais carnes aparecem em cada período (usado pela Porção de Carne E pela Marmita Completa)
+    carnesPorPeriodo: {
+      "sexta-noite": ["Boi", "Porco", "Frango", "Linguiça", "Coração de Frango", "Coração de Boi", "Língua de Boi"],
+      "sabado-manha": ["Boi", "Porco", "Frango", "Linguiça"],
+      "sabado-noite": ["Boi", "Porco", "Frango", "Linguiça", "Cupim", "Coração de Frango", "Coração de Boi", "Língua de Boi"],
+      "domingo-manha": ["Boi", "Porco", "Frango", "Linguiça", "Cupim", "Carneiro"]
+    },
 
     categorias: {
 
@@ -370,6 +399,7 @@ const LOJAS = {
           preco: 8.00,
           img: "imagens/babacu/x-burguer.png",
           descricao: "Pão, hambúrguer, queijo.",
+          tag: "lanche",
           adicionais: [
             { nome: "Bacon", preco: 3 },
             { nome: "Queijo Extra", preco: 3 },
@@ -384,6 +414,7 @@ const LOJAS = {
           preco: 10.00,
           img: "imagens/babacu/x-salada.png",
           descricao: "Pão, hambúrguer, queijo, salada.",
+          tag: "lanche",
           adicionais: [
             { nome: "Bacon", preco: 3 },
             { nome: "Queijo Extra", preco: 3 },
@@ -398,6 +429,7 @@ const LOJAS = {
           preco: 12.00,
           img: "imagens/babacu/americano.png",
           descricao: "Pão, presunto, queijo, salada, ovo.",
+          tag: "lanche",
           adicionais: [
             { nome: "Bacon", preco: 3 },
             { nome: "Queijo Extra", preco: 3 },
@@ -411,6 +443,7 @@ const LOJAS = {
           preco: 8.00,
           img: "imagens/babacu/bauru.png",
           descricao: "Pão, presunto, queijo, tomate.",
+          tag: "lanche",
           adicionais: [
             { nome: "Bacon", preco: 3 },
             { nome: "Queijo Extra", preco: 3 },
@@ -421,9 +454,10 @@ const LOJAS = {
         },
         {
           nome: "X-Egg",
-          preco: 10.00,
+          preco: 12.00,
           img: "imagens/babacu/x-egg.png",
           descricao: "Pão, queijo, ovo, hambúrguer.",
+          tag: "lanche",
           adicionais: [
             { nome: "Bacon", preco: 3 },
             { nome: "Queijo Extra", preco: 3 },
@@ -438,6 +472,7 @@ const LOJAS = {
           preco: 15.00,
           img: "imagens/babacu/x-frango.png",
           descricao: "Pão, frango, queijo, salada.",
+          tag: "lanche",
           adicionais: [
             { nome: "Bacon", preco: 3 },
             { nome: "Queijo Extra", preco: 3 },
@@ -451,6 +486,7 @@ const LOJAS = {
           preco: 15.00,
           img: "imagens/babacu/x-bacon.png",
           descricao: "Pão, hambúrguer, bacon, queijo, salada.",
+          tag: "lanche",
           adicionais: [
             { nome: "Bacon Extra", preco: 3 },
             { nome: "Queijo Extra", preco: 3 },
@@ -464,6 +500,7 @@ const LOJAS = {
           preco: 15.00,
           img: "imagens/babacu/x-calabresa.png",
           descricao: "Pão, hambúrguer, calabresa, queijo, salada.",
+          tag: "lanche",
           adicionais: [
             { nome: "Bacon", preco: 3 },
             { nome: "Queijo Extra", preco: 3 },
@@ -478,6 +515,7 @@ const LOJAS = {
           preco: 18.00,
           img: "imagens/babacu/x-carne.png",
           descricao: "Pão, carne, queijo, salada.",
+          tag: "lanche",
           adicionais: [
             { nome: "Bacon", preco: 3 },
             { nome: "Queijo Extra", preco: 3 },
@@ -491,6 +529,7 @@ const LOJAS = {
           preco: 18.00,
           img: "imagens/babacu/x-tudo.png",
           descricao: "Pão, hambúrguer, presunto, queijo, ovo, bacon, calabresa, frango e salada.",
+          tag: "lanche",
           adicionais: [
             { nome: "Bacon Extra", preco: 3 },
             { nome: "Presunto Extra", preco: 2 },
@@ -505,6 +544,7 @@ const LOJAS = {
           preco: 26.00,
           img: "imagens/babacu/completao.png",
           descricao: "Pão, 2 hambúrgueres, presunto, queijo, 2 ovos, bacon, calabresa, frango e salada.",
+          tag: "lanche",
           adicionais: [
             { nome: "Bacon Extra", preco: 3 },
             { nome: "Presunto Extra", preco: 2 },
@@ -575,7 +615,8 @@ const LOJAS = {
           nome: "Arroz de Leite",
           preco: 8.00,
           img: "imagens/babacu/arroz-de-leite.png",
-          descricao: "Porção de arroz de leite."
+          descricao: "Porção de arroz de leite.",
+          tag: "arroz-leite"
         },
         {
           nome: "Baião Cremoso",
@@ -584,22 +625,20 @@ const LOJAS = {
           descricao: "Porção de baião cremoso."
         },
         {
+          nome: "Marmita Completa",
+          tipo: "marmita",
+          preco: 18.00,
+          img: "imagens/babacu/marmita-completa.png",
+          descricao: "Arroz branco, farofa de feijão, macarrão, salada e batata-doce. Escolha 2 tipos de carne.",
+          tag: "marmita"
+        },
+        {
           nome: "Porção de Carne",
           tipo: "porcao-carne",
           img: "imagens/babacu/porcao-carne.png",
           descricao: "Escolha o tipo de carne e o valor da sua porção. Acompanha farofa e vinagrete.",
           valorMinimo: 10.00,
-          tiposCarne: [
-            "Boi",
-            "Porco",
-            "Frango",
-            "Linguiça",
-            "Cupim",
-            "Carneiro",
-            "Coração de Boi",
-            "Coração de Frango",
-            "Língua de Boi"
-          ]
+          tag: "porcao"
         }
       ],
 

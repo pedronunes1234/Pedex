@@ -101,7 +101,84 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const statusEl = document.querySelector(".status-text");
 
+  // ===============================
+  // 🔹 SISTEMA DE PERÍODOS (lojas com horário por dia/turno, ex: Babaçu)
+  // Não afeta lojas que usam o formato simples loja.abre / loja.fecha
+  // ===============================
+  function obterPeriodoAtual() {
+    if (!loja.horarios) return null;
+
+    const agora = new Date();
+    const diaSemana = agora.getDay(); // 0=domingo ... 6=sábado
+    const minutosAgora = agora.getHours() * 60 + agora.getMinutes();
+
+    const janelasHoje = loja.horarios[diaSemana] || [];
+
+    for (const janela of janelasHoje) {
+      const [ih, im] = janela.inicio.split(":").map(Number);
+      const [fh, fm] = janela.fim.split(":").map(Number);
+
+      const minutosInicio = ih * 60 + im;
+      // "00:00" como horário de fechamento = meia-noite (vira o dia) → tratamos como 24:00
+      const minutosFim = (fh === 0 && fm === 0) ? 24 * 60 : fh * 60 + fm;
+
+      if (minutosAgora >= minutosInicio && minutosAgora < minutosFim) {
+        return janela; // já tem o campo "id" (ex: "sexta-noite")
+      }
+    }
+
+    return null; // loja fechada agora
+  }
+
+  // Um produto sem "tag" é sempre exibido. Um produto com "tag" só aparece
+  // se essa tag estiver liberada para o período atual em loja.produtosPorPeriodo.
+  function produtoDisponivelAgora(produto) {
+    // Lojas sem sistema de período (Burger House, Pizzaria) sempre mostram tudo
+    if (!loja.horarios) return true;
+
+    // Loja com sistema de período: se estiver fechada agora, nada aparece
+    const periodo = obterPeriodoAtual();
+    if (!periodo) return false;
+
+    // Produto sem tag = sem restrição própria, mas só aparece com a loja aberta (já garantido acima)
+    if (!produto.tag) return true;
+    if (!loja.produtosPorPeriodo) return true;
+
+    const tagsLiberadas = loja.produtosPorPeriodo[periodo.id] || [];
+    return tagsLiberadas.includes(produto.tag);
+  }
+
+  // Usado pela Porção de Carne e pela Marmita: pega as carnes do período atual.
+  // Se a loja não tiver carnesPorPeriodo (outras lojas), cai no fallback do produto.
+  function obterCarnesDisponiveis(fallback) {
+    const periodo = obterPeriodoAtual();
+
+    if (loja.carnesPorPeriodo && periodo && loja.carnesPorPeriodo[periodo.id]) {
+      return loja.carnesPorPeriodo[periodo.id];
+    }
+
+    return fallback || [];
+  }
+
   function verificarHorario() {
+
+    // 🔹 Lojas com horário por período (ex: Babaçu)
+    if (loja.horarios) {
+      const periodo = obterPeriodoAtual();
+
+      if (periodo) {
+        const nomePeriodo = periodo.periodo === "manha" ? "Manhã" : "Noite";
+        statusEl.innerHTML = `🟢 Aberto agora • ${nomePeriodo}`;
+        statusEl.style.color = "#28a745";
+      } else {
+        statusEl.innerHTML = "🔴 Fechado no momento • confira nossos dias e horários";
+        statusEl.style.color = "#fff";
+      }
+
+      return;
+    }
+
+    // 🔹 Lojas com horário simples (formato antigo, inalterado)
     const agora = new Date();
     const minutosAgora = agora.getHours() * 60 + agora.getMinutes();
 
@@ -223,6 +300,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (produto.tipo === "porcao-carne") {
       criarModalPorcao(produto);
+      return;
+    }
+
+    if (produto.tipo === "marmita") {
+      criarModalMarmita(produto);
       return;
     }
 
@@ -632,55 +714,41 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
+  // Regra: quantidade de carnes permitida muda conforme a faixa de valor da porção
+  function obterFaixaCarnesPorValor(valor) {
+    if (valor <= 20) return { min: 3, max: 4 };
+    return { min: 5, max: 6 };
+  }
+
   // ===============================
-  // 🔹 MODAL: PORÇÃO DE CARNE (tipo + valor livre a partir do mínimo)
+  // 🔹 MODAL: PORÇÃO DE CARNE
+  // (valor livre a partir do mínimo + seleção de várias carnes,
+  //  quantidade permitida depende do valor escolhido)
   // ===============================
   function criarModalPorcao(produto) {
 
-    modalPrecoBase.textContent =
-      "Valor mínimo: R$ " + produto.valorMinimo.toFixed(2);
+    modalPrecoBase.textContent = "Monte sua porção";
 
     listaAdicionais.innerHTML = "";
     const contadorSaboresEl = document.getElementById("contadorSabores");
     if (contadorSaboresEl) contadorSaboresEl.textContent = "";
 
     // Limpa seções de outros modais, se existirem
-    ["secaoBordas", "secaoAcompanhamento", "secaoCarne", "secaoValorPorcao"]
+    ["secaoBordas", "secaoAcompanhamento", "secaoCarne", "secaoValorPorcao", "secaoMarmitaCarnes"]
       .forEach(id => {
         const el = document.getElementById(id);
         if (el) el.remove();
       });
 
-    let carneSelecionada = produto.tiposCarne[0];
+    const carnesDisponiveis = obterCarnesDisponiveis(produto.tiposCarne);
+
     let valorPorcao = produto.valorMinimo;
+    let carnesSelecionadas = [];
     const passoValor = 5;
 
     modalTotal.textContent = "R$ " + valorPorcao.toFixed(2);
 
-    // SEÇÃO: TIPO DE CARNE
-    const secaoCarne = document.createElement("div");
-    secaoCarne.id = "secaoCarne";
-    secaoCarne.style.cssText = "padding: 0 20px 10px;";
-    secaoCarne.innerHTML = `<p style="font-weight:bold; font-size:16px; margin-bottom:10px; color:#222;">Escolha o tipo de carne:</p>`;
-
-    produto.tiposCarne.forEach(carne => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "btn-borda" + (carne === carneSelecionada ? " ativo" : "");
-      btn.textContent = carne;
-
-      btn.addEventListener("click", () => {
-        secaoCarne.querySelectorAll(".btn-borda").forEach(b => b.classList.remove("ativo"));
-        btn.classList.add("ativo");
-        carneSelecionada = carne;
-      });
-
-      secaoCarne.appendChild(btn);
-    });
-
-    listaAdicionais.before(secaoCarne);
-
-    // SEÇÃO: VALOR LIVRE (mínimo + incrementos ilimitados)
+    // SEÇÃO 1: VALOR LIVRE (vem primeiro pois define quantas carnes dá pra escolher)
     const secaoValorPorcao = document.createElement("div");
     secaoValorPorcao.id = "secaoValorPorcao";
     secaoValorPorcao.style.cssText = "padding: 0 20px 10px;";
@@ -696,6 +764,70 @@ document.addEventListener("DOMContentLoaded", () => {
 
     listaAdicionais.before(secaoValorPorcao);
 
+    // SEÇÃO 2: CARNES (seleção múltipla, limite depende do valor acima)
+    const secaoCarne = document.createElement("div");
+    secaoCarne.id = "secaoCarne";
+    secaoCarne.style.cssText = "padding: 10px 20px 10px;";
+
+    const tituloCarne = document.createElement("p");
+    tituloCarne.style.cssText = "font-weight:bold; font-size:16px; margin-bottom:10px; color:#222;";
+    secaoCarne.appendChild(tituloCarne);
+
+    listaAdicionais.before(secaoCarne);
+
+    function atualizarTituloCarnes() {
+      const faixa = obterFaixaCarnesPorValor(valorPorcao);
+      tituloCarne.textContent =
+        `Escolha entre ${faixa.min} e ${faixa.max} carnes (${carnesSelecionadas.length}/${faixa.max}):`;
+    }
+
+    carnesDisponiveis.forEach(carne => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn-borda";
+      btn.textContent = carne;
+
+      btn.addEventListener("click", () => {
+        const jaSelecionada = carnesSelecionadas.includes(carne);
+
+        if (jaSelecionada) {
+          carnesSelecionadas = carnesSelecionadas.filter(c => c !== carne);
+          btn.classList.remove("ativo");
+        } else {
+          const faixa = obterFaixaCarnesPorValor(valorPorcao);
+
+          if (carnesSelecionadas.length >= faixa.max) {
+            alert(`Pra essa porção (R$ ${valorPorcao.toFixed(2)}) você pode escolher no máximo ${faixa.max} carnes.`);
+            return;
+          }
+
+          carnesSelecionadas.push(carne);
+          btn.classList.add("ativo");
+        }
+
+        atualizarTituloCarnes();
+      });
+
+      secaoCarne.appendChild(btn);
+    });
+
+    atualizarTituloCarnes();
+
+    // Se o valor mudar e a quantidade selecionada passar do novo máximo,
+    // desmarca as carnes excedentes automaticamente.
+    function ajustarSelecaoAoNovoValor() {
+      const faixa = obterFaixaCarnesPorValor(valorPorcao);
+
+      while (carnesSelecionadas.length > faixa.max) {
+        const removida = carnesSelecionadas.pop();
+        const botao = [...secaoCarne.querySelectorAll(".btn-borda")]
+          .find(b => b.textContent === removida);
+        if (botao) botao.classList.remove("ativo");
+      }
+
+      atualizarTituloCarnes();
+    }
+
     const displayValor = secaoValorPorcao.querySelector(".valor-porcao-display");
     const btnValorMais = secaoValorPorcao.querySelector(".btn-valor-mais");
     const btnValorMenos = secaoValorPorcao.querySelector(".btn-valor-menos");
@@ -704,6 +836,7 @@ document.addEventListener("DOMContentLoaded", () => {
       valorPorcao += passoValor;
       displayValor.textContent = "R$ " + valorPorcao.toFixed(2);
       modalTotal.textContent = "R$ " + valorPorcao.toFixed(2);
+      ajustarSelecaoAoNovoValor();
     });
 
     btnValorMenos.addEventListener("click", () => {
@@ -711,18 +844,114 @@ document.addEventListener("DOMContentLoaded", () => {
       valorPorcao -= passoValor;
       displayValor.textContent = "R$ " + valorPorcao.toFixed(2);
       modalTotal.textContent = "R$ " + valorPorcao.toFixed(2);
+      ajustarSelecaoAoNovoValor();
     });
 
     // BOTÃO ADICIONAR
     btnAdicionarCarrinho.onclick = () => {
 
+      const faixa = obterFaixaCarnesPorValor(valorPorcao);
+
+      if (carnesSelecionadas.length < faixa.min) {
+        alert(`Escolha pelo menos ${faixa.min} tipos de carne para essa porção.`);
+        return;
+      }
+
       const id = Date.now();
 
       carrinho[id] = {
-        nome: produto.nome + " (" + carneSelecionada + ")",
+        nome: produto.nome,
         preco: valorPorcao,
         qtd: 1,
-        marca: "Carne: " + carneSelecionada
+        marca: "Carnes: " + carnesSelecionadas.join(" + ")
+      };
+
+      atualizarTotal();
+      modal.style.display = "none";
+    };
+  }
+
+  // ===============================
+  // 🔹 MODAL: MARMITA COMPLETA (escolher 2 tipos de carne, disponíveis no período atual)
+  // ===============================
+  function criarModalMarmita(produto) {
+
+    const limiteCarnes = 2;
+    const precoBase = produto.preco;
+    let carnesSelecionadas = [];
+
+    modalPrecoBase.textContent = "Escolha 2 tipos de carne";
+    modalTotal.textContent = "R$ " + precoBase.toFixed(2);
+
+    listaAdicionais.innerHTML = "";
+    const contadorSaboresEl = document.getElementById("contadorSabores");
+    if (contadorSaboresEl) contadorSaboresEl.textContent = "";
+
+    ["secaoBordas", "secaoAcompanhamento", "secaoCarne", "secaoValorPorcao", "secaoMarmitaCarnes"]
+      .forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+      });
+
+    const carnesDisponiveis = obterCarnesDisponiveis(produto.tiposCarne);
+
+    const secao = document.createElement("div");
+    secao.id = "secaoMarmitaCarnes";
+    secao.style.cssText = "padding: 0 20px 10px;";
+
+    const titulo = document.createElement("p");
+    titulo.style.cssText = "font-weight:bold; font-size:16px; margin-bottom:10px; color:#222;";
+    titulo.textContent = `Escolha ${limiteCarnes} carnes (0/${limiteCarnes}):`;
+    secao.appendChild(titulo);
+
+    function atualizarTitulo() {
+      titulo.textContent = `Escolha ${limiteCarnes} carnes (${carnesSelecionadas.length}/${limiteCarnes}):`;
+    }
+
+    carnesDisponiveis.forEach(carne => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn-borda";
+      btn.textContent = carne;
+
+      btn.addEventListener("click", () => {
+        const jaSelecionada = carnesSelecionadas.includes(carne);
+
+        if (jaSelecionada) {
+          carnesSelecionadas = carnesSelecionadas.filter(c => c !== carne);
+          btn.classList.remove("ativo");
+        } else {
+          if (carnesSelecionadas.length >= limiteCarnes) {
+            alert(`Escolha no máximo ${limiteCarnes} tipos de carne`);
+            return;
+          }
+          carnesSelecionadas.push(carne);
+          btn.classList.add("ativo");
+        }
+
+        atualizarTitulo();
+      });
+
+      secao.appendChild(btn);
+    });
+
+    listaAdicionais.before(secao);
+
+    // BOTÃO ADICIONAR
+    btnAdicionarCarrinho.onclick = () => {
+
+      if (carnesSelecionadas.length !== limiteCarnes) {
+        alert(`Escolha exatamente ${limiteCarnes} tipos de carne antes de adicionar`);
+        return;
+      }
+
+      const id = Date.now();
+
+      carrinho[id] = {
+        nome: produto.nome,
+        preco: precoBase,
+        qtd: 1,
+        marca: "Carnes: " + carnesSelecionadas.join(" + ")
       };
 
       atualizarTotal();
@@ -734,7 +963,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     lista.innerHTML = "";
 
-    loja.categorias[categoria].forEach(produto => {
+    const produtosDisponiveis = (loja.categorias[categoria] || []).filter(produtoDisponivelAgora);
+
+    if (produtosDisponiveis.length === 0) {
+      lista.innerHTML = `
+        <p style="text-align:center; padding:40px 20px; color:#888;">
+          Nada disponível aqui nesse horário.<br>
+          Confira os dias e horários de funcionamento da loja.
+        </p>
+      `;
+      return;
+    }
+
+    produtosDisponiveis.forEach(produto => {
 
       console.log(produto);
 
@@ -799,7 +1040,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
 
         <div class="controle-qtd">
-  ${produto.tipo === "monte-pizza" || produto.tipo === "porcao-carne" || produto.tamanhos || produto.adicionais
+  ${produto.tipo === "monte-pizza" || produto.tipo === "porcao-carne" || produto.tipo === "marmita" || produto.tamanhos || produto.adicionais
     ? `<button class="btn-qtd btn-qtd-pizza" id="mais-${baseId}">+</button>`
     : `
       <button class="btn-qtd" id="menos-${baseId}">−</button>
@@ -819,7 +1060,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (
         produto.adicionais ||
         produto.tipo === "monte-pizza" ||
-        produto.tipo === "porcao-carne"
+        produto.tipo === "porcao-carne" ||
+        produto.tipo === "marmita"
       ) {
 
         card.querySelector(".produto-img")
@@ -933,7 +1175,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.stopPropagation();
 
         // Se o produto possui adicionais OU é monte-pizza OU é porção de carne, abre o modal
-        if (produto.adicionais || produto.tipo === "monte-pizza" || produto.tipo === "porcao-carne") {
+        if (produto.adicionais || produto.tipo === "monte-pizza" || produto.tipo === "porcao-carne" || produto.tipo === "marmita") {
           abrirModal(produto);
           return;
         }
