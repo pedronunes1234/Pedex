@@ -176,9 +176,7 @@ const LOJAS = {
             "Portuguesa",
             "Quatro Queijos",
             "Chocolate",
-            "Chocolate Branco",
-            "M&M",
-            "Granulado"
+            "Chocolate Branco"
           ]
         }
 

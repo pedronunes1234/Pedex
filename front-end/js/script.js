@@ -229,6 +229,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  document.addEventListener("keydown", (evento) => {
+    if (evento.key === "Escape" && modal.style.display === "flex") {
+      modal.style.display = "none";
+    }
+  });
+
   let produtoAtual = null;
   let adicionaisSelecionados = [];
   let totalModal = 0;
@@ -462,7 +468,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // SEÇÃO DE BORDAS
-    const opcoesBordas = [
+    const todasAsBordas = [
       { nome: "Sem borda", preco: 0 },
       { nome: "Borda de Catupiry", preco: 10 },
       { nome: "Borda de Cheddar", preco: 10 },
@@ -470,6 +476,11 @@ document.addEventListener("DOMContentLoaded", () => {
       { nome: "Borda de Chocolate", preco: 12 },
       { nome: "Borda de Chocolate Branco", preco: 12 }
     ];
+
+    // Pizzas doces não recebem bordas salgadas; pizzas salgadas continuam com todas as opções
+    const opcoesBordas = produto.temAcompanhamento
+      ? todasAsBordas.filter(b => !["Borda de Catupiry", "Borda de Cheddar", "Borda de Requeijão"].includes(b.nome))
+      : todasAsBordas;
 
     const secaoBordas = document.createElement("div");
     secaoBordas.id = "secaoBordas";
@@ -598,7 +609,7 @@ document.addEventListener("DOMContentLoaded", () => {
     listaSabores.before(secaoBordas);
 
     modal.querySelectorAll(".btn-tamanho").forEach(b => b.classList.remove("ativo"));
-    modal.querySelector('.btn-tamanho[data-size="P"]').classList.add("ativo");
+    modal.querySelector('.btn-tamanho[data-size="M"]').classList.add("ativo");
 
     modalPrecoBase.textContent = "Preço Base: R$ " + basePrice.toFixed(2);
     modalTotal.textContent = "R$ " + basePrice.toFixed(2);
@@ -642,6 +653,7 @@ document.addEventListener("DOMContentLoaded", () => {
         modalTotal.textContent =
           "R$ " + total.toFixed(2);
 
+        atualizarDisponibilidadeAcompanhamento();
         contador.textContent =
           `Selecionados: 0/${limiteSabores[tamanho]}`;
       });
@@ -682,10 +694,62 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         contador.textContent = `${saboresSelecionados.length}/${limite}`;
+        atualizarDisponibilidadeAcompanhamento();
       });
 
       listaSabores.appendChild(item);
     });
+
+    // ===============================
+    //  ACOMPANHAMENTO (M&M / Granulado) — só libera com sabor doce
+    // ===============================
+    const saboresDoce = ["Chocolate", "Chocolate Branco"];
+    const opcoesAcompanhamentoDoce = ["M&M", "Granulado"];
+    const acompanhamentoPorSabor = {};
+
+    const acompanhamentoExistente = document.getElementById("secaoAcompanhamentoDoce");
+    if (acompanhamentoExistente) acompanhamentoExistente.remove();
+
+    const secaoAcompanhamentoDoce = document.createElement("div");
+    secaoAcompanhamentoDoce.id = "secaoAcompanhamentoDoce";
+    secaoAcompanhamentoDoce.style.cssText = "padding: 10px 20px;";
+
+    listaSabores.after(secaoAcompanhamentoDoce);
+
+    function atualizarDisponibilidadeAcompanhamento() {
+      secaoAcompanhamentoDoce.innerHTML = "";
+
+      const doceSelecionados = saboresSelecionados.filter(s => saboresDoce.includes(s));
+
+      // Limpa acompanhamento de sabores doces que foram desmarcados
+      Object.keys(acompanhamentoPorSabor).forEach(sabor => {
+        if (!doceSelecionados.includes(sabor)) delete acompanhamentoPorSabor[sabor];
+      });
+
+      if (doceSelecionados.length === 0) return;
+
+      doceSelecionados.forEach(saborDoce => {
+        const bloco = document.createElement("div");
+        bloco.style.cssText = "margin-bottom: 10px;";
+        bloco.innerHTML = `<p style="font-weight:bold; font-size:14px; margin-bottom:6px; color:#222;">Acompanhamento para ${saborDoce}:</p>`;
+
+        opcoesAcompanhamentoDoce.forEach(opcao => {
+          const btn = document.createElement("button");
+          btn.className = "btn-borda" + (acompanhamentoPorSabor[saborDoce] === opcao ? " ativo" : "");
+          btn.textContent = opcao;
+
+          btn.addEventListener("click", () => {
+            bloco.querySelectorAll(".btn-borda").forEach(b => b.classList.remove("ativo"));
+            btn.classList.add("ativo");
+            acompanhamentoPorSabor[saborDoce] = opcao;
+          });
+
+          bloco.appendChild(btn);
+        });
+
+        secaoAcompanhamentoDoce.appendChild(bloco);
+      });
+    }
 
     // ===============================
     //  BOTÃO FINAL (INTEGRADO AO SEU CARRINHO)
@@ -699,13 +763,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const id = gerarId(produto, tamanho, "pizza") + "-" + Date.now();
 
+      const textoAcompanhamentos = Object.entries(acompanhamentoPorSabor)
+        .filter(([sabor, opcao]) => saboresSelecionados.includes(sabor) && opcao)
+        .map(([sabor, opcao]) => `${sabor}: ${opcao}`)
+        .join(" | ");
+
       carrinho[id] = {
         nome: produto.nome,
         preco: basePrice,
         qtd: 1,
         tamanho: tamanho,
         sabores: [...saboresSelecionados],
-        borda: bordaSelecionada.nome
+        borda: bordaSelecionada.nome,
+        marca: textoAcompanhamentos || undefined
       };
 
       atualizarTotal();
