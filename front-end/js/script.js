@@ -545,6 +545,22 @@ document.addEventListener("DOMContentLoaded", () => {
     let precoExtraBorda = 0;
     let bordaSelecionada = { nome: "Sem borda", preco: 0 };
 
+    // 🔹 Calcula o preço base considerando sabores "especiais" (mais caros).
+    // Se algum sabor selecionado tiver preço próprio em produto.precosPorSabor,
+    // usa o MAIOR valor entre os sabores escolhidos. Sem sabores especiais,
+    // continua usando o preço normal (produto.tamanhos) — não afeta lojas
+    // que não tiverem "precosPorSabor" definido.
+    function precoBaseParaSabores(saboresArr, tam) {
+      let maior = produto.tamanhos[tam];
+      if (produto.precosPorSabor) {
+        saboresArr.forEach(s => {
+          const precoEspecial = produto.precosPorSabor[s] && produto.precosPorSabor[s][tam];
+          if (precoEspecial && precoEspecial > maior) maior = precoEspecial;
+        });
+      }
+      return maior;
+    }
+
     // 🔹 Bordas: usa a lista personalizada da loja (loja.bordas), se existir,
     // senão cai no padrão de sempre (não afeta lojas que já funcionavam)
     const opcoesBordas = loja.bordas || [
@@ -610,7 +626,7 @@ document.addEventListener("DOMContentLoaded", () => {
         listaSabores.querySelectorAll("input")
           .forEach(i => i.checked = false);
 
-        basePrice = produto.tamanhos[tamanho];
+        basePrice = precoBaseParaSabores(saboresSelecionados, tamanho);
         total = basePrice;
 
         modalPrecoBase.textContent =
@@ -657,6 +673,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         contador.textContent = `${saboresSelecionados.length}/${limite}`;
+
+        // 🔹 Recalcula o preço se algum sabor especial (mais caro) foi selecionado
+        const novoBaseSemBorda = precoBaseParaSabores(saboresSelecionados, tamanho);
+        basePrice = novoBaseSemBorda + precoExtraBorda;
+        modalPrecoBase.textContent = "Preço Base: R$ " + novoBaseSemBorda.toFixed(2);
+        modalTotal.textContent = "R$ " + basePrice.toFixed(2);
+
         atualizarDisponibilidadeAcompanhamento();
       });
 

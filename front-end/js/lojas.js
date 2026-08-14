@@ -1294,6 +1294,16 @@ const LOJAS = {
           tipo: "monte-pizza",
           img: "imagens/dellamama/monte-sua-pizza.png",
           tamanhos: { P: 25, M: 35, F: 43 },
+          // Se o cliente escolher algum sabor especial, o preço da pizza
+          // passa a usar o valor desse sabor (o maior entre os escolhidos)
+          precosPorSabor: {
+            "Camarão": { P: 35, M: 44, F: 54 },
+            "Atum": { P: 31, M: 40, F: 49 },
+            "Pepperoni": { P: 35, M: 44, F: 54 },
+            "Babelle": { P: 31, M: 40, F: 49 },
+            "Moda da Casa": { P: 31, M: 40, F: 49 },
+            "Nordestina Della Mama": { P: 31, M: 40, F: 49 }
+          },
           sabores: [
             "Alemã",
             "A Moda do Pizzaiolo",
@@ -1335,7 +1345,13 @@ const LOJAS = {
             "Portuguesa",
             "Quatro Queijos",
             "Toscana",
-            "Veneza"
+            "Veneza",
+            "Camarão",
+            "Atum",
+            "Pepperoni",
+            "Babelle",
+            "Moda da Casa",
+            "Nordestina Della Mama"
           ]
         }
 
