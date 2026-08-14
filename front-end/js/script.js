@@ -90,7 +90,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!loja) return;
 
   // 🔹 Limpa o carrinho automaticamente se o cliente trocou de loja
-  // (ex: adicionou hambúrguer na Burger House, depois entrou na Peixodá Pizzaria)
   const lojaCarrinhoSalva = localStorage.getItem("lojaCarrinhoAtual");
   if (lojaCarrinhoSalva && lojaCarrinhoSalva !== lojaId) {
     localStorage.removeItem("carrinho");
@@ -101,15 +100,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const statusEl = document.querySelector(".status-text");
 
-  // ===============================
-  // 🔹 SISTEMA DE PERÍODOS (lojas com horário por dia/turno, ex: Babaçu)
-  // Não afeta lojas que usam o formato simples loja.abre / loja.fecha
-  // ===============================
   function obterPeriodoAtual() {
     if (!loja.horarios) return null;
 
     const agora = new Date();
-    const diaSemana = agora.getDay(); // 0=domingo ... 6=sábado
+    const diaSemana = agora.getDay();
     const minutosAgora = agora.getHours() * 60 + agora.getMinutes();
 
     const janelasHoje = loja.horarios[diaSemana] || [];
@@ -119,28 +114,22 @@ document.addEventListener("DOMContentLoaded", () => {
       const [fh, fm] = janela.fim.split(":").map(Number);
 
       const minutosInicio = ih * 60 + im;
-      // "00:00" como horário de fechamento = meia-noite (vira o dia) → tratamos como 24:00
       const minutosFim = (fh === 0 && fm === 0) ? 24 * 60 : fh * 60 + fm;
 
       if (minutosAgora >= minutosInicio && minutosAgora < minutosFim) {
-        return janela; // já tem o campo "id" (ex: "sexta-noite")
+        return janela;
       }
     }
 
-    return null; // loja fechada agora
+    return null;
   }
 
-  // Um produto sem "tag" é sempre exibido. Um produto com "tag" só aparece
-  // se essa tag estiver liberada para o período atual em loja.produtosPorPeriodo.
   function produtoDisponivelAgora(produto) {
-    // Lojas sem sistema de período (Burger House, Pizzaria) sempre mostram tudo
     if (!loja.horarios) return true;
 
-    // Loja com sistema de período: se estiver fechada agora, nada aparece
     const periodo = obterPeriodoAtual();
     if (!periodo) return false;
 
-    // Produto sem tag = sem restrição própria, mas só aparece com a loja aberta (já garantido acima)
     if (!produto.tag) return true;
     if (!loja.produtosPorPeriodo) return true;
 
@@ -148,8 +137,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return tagsLiberadas.includes(produto.tag);
   }
 
-  // Usado pela Porção de Carne e pela Marmita: pega as carnes do período atual.
-  // Se a loja não tiver carnesPorPeriodo (outras lojas), cai no fallback do produto.
   function obterCarnesDisponiveis(fallback) {
     const periodo = obterPeriodoAtual();
 
@@ -161,8 +148,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function verificarHorario() {
-
-    // 🔹 Lojas com horário por período (ex: Babaçu)
     if (loja.horarios) {
       const periodo = obterPeriodoAtual();
 
@@ -178,7 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // 🔹 Lojas com horário simples (formato antigo, inalterado)
     const agora = new Date();
     const minutosAgora = agora.getHours() * 60 + agora.getMinutes();
 
@@ -203,8 +187,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalEl = document.getElementById("total-carrinho");
   atualizarTotal();
 
-  // 🔹 Corrige o carrinho "desatualizado" quando o navegador restaura a página
-  // pelo botão de voltar (bfcache), sem recarregar o script do zero.
   window.addEventListener("pageshow", (evento) => {
     if (evento.persisted) {
       window.carrinho = JSON.parse(localStorage.getItem("carrinho")) || {};
@@ -242,8 +224,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let saboresSelecionados = [];
 
   const limiteSabores = {
+    P: 2,
     M: 2,
-    F: 3
+    F: 3,
+    G: 3
   };
 
   let tamanhoPizzaPersonalizada = "M";
@@ -257,15 +241,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     totalEl.textContent = "R$ " + total.toFixed(2);
 
-    // 🔹 Salva o carrinho imediatamente, sempre que ele muda nesta página
-    // (evita que uma versão antiga guardada só na memória sobrescreva
-    // uma remoção feita na tela do carrinho)
     localStorage.setItem("carrinho", JSON.stringify(window.carrinho));
   }
 
-  // ===============================
-  // 🔹 GERAR ID ÚNICO (CORREÇÃO)
-  // ===============================
   function gerarId(produto, tamanho, marca) {
     return (
       produto.nome.replace(/\s/g, "") +
@@ -277,8 +255,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function abrirModal(produto) {
 
     console.log(produto);
-
-    console.log("ABRIU MODAL");
     produtoAtual = produto;
     adicionaisSelecionados = [];
 
@@ -289,7 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (produto.tipo === "monte-pizza") {
 
-      totalModal = produto.tamanhos.M;
+      totalModal = produto.tamanhos.M || produto.tamanhos.P;
 
       modalPrecoBase.textContent =
         "Preço Base: R$ " +
@@ -385,7 +361,6 @@ document.addEventListener("DOMContentLoaded", () => {
           "R$ " +
           totalModal.toFixed(2);
 
-        // Rastrear adicional
         const existente = adicionaisSelecionados.find(a => a.nome === adicional.nome);
         if (existente) existente.qtd = qtd;
         else adicionaisSelecionados.push({ nome: adicional.nome, qtd });
@@ -405,7 +380,6 @@ document.addEventListener("DOMContentLoaded", () => {
           "R$ " +
           totalModal.toFixed(2);
 
-        // Rastrear adicional
         const existente = adicionaisSelecionados.find(a => a.nome === adicional.nome);
         if (existente) existente.qtd = qtd;
       });
@@ -431,17 +405,16 @@ document.addEventListener("DOMContentLoaded", () => {
     modalPrecoBase.textContent = "Tamanho: " + tamanho;
     modalTotal.textContent = "R$ " + basePrice.toFixed(2);
 
-    // Limpa conteúdo anterior
     listaAdicionais.innerHTML = "";
     document.getElementById("contadorSabores").textContent = "";
 
-    const bordaExistente = document.getElementById("secaoBordas");
-    if (bordaExistente) bordaExistente.remove();
+    // Limpa seções anteriores
+    ["secaoBordas", "secaoAcompanhamento", "secaoAcompanhamentoDoce", "secaoCarne", "secaoValorPorcao", "secaoMarmitaCarnes"]
+      .forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+      });
 
-    const acompanhamentoExistente = document.getElementById("secaoAcompanhamento");
-    if (acompanhamentoExistente) acompanhamentoExistente.remove();
-
-    // SEÇÃO DE ACOMPANHAMENTO (só para pizzas doces)
     if (produto.temAcompanhamento) {
       const opcoesAcompanhamento = ["M&M", "Granulado"];
 
@@ -467,7 +440,6 @@ document.addEventListener("DOMContentLoaded", () => {
       listaAdicionais.before(secaoAcompanhamento);
     }
 
-    // SEÇÃO DE BORDAS
     const todasAsBordas = [
       { nome: "Sem borda", preco: 0 },
       { nome: "Borda de Catupiry", preco: 10 },
@@ -477,7 +449,6 @@ document.addEventListener("DOMContentLoaded", () => {
       { nome: "Borda de Chocolate Branco", preco: 12 }
     ];
 
-    // Pizzas doces não recebem bordas salgadas; pizzas salgadas continuam com todas as opções
     const opcoesBordas = produto.temAcompanhamento
       ? todasAsBordas.filter(b => !["Borda de Catupiry", "Borda de Cheddar", "Borda de Requeijão"].includes(b.nome))
       : todasAsBordas;
@@ -509,13 +480,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     listaAdicionais.before(secaoBordas);
 
-    // BOTÕES P / M / G DO MODAL
     modal.querySelectorAll(".btn-tamanho").forEach(b => b.classList.remove("ativo"));
     const btnAtivo = modal.querySelector(`.btn-tamanho[data-size="${tamanho}"]`);
     if (btnAtivo) btnAtivo.classList.add("ativo");
 
     modal.querySelectorAll(".btn-tamanho").forEach(btn => {
-      btn.replaceWith(btn.cloneNode(true)); // remove listeners antigos
+      btn.replaceWith(btn.cloneNode(true));
     });
 
     modal.querySelectorAll(".btn-tamanho").forEach(btn => {
@@ -531,7 +501,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // BOTÃO ADICIONAR
     btnAdicionarCarrinho.onclick = () => {
 
       const id = Date.now();
@@ -557,20 +526,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     listaSabores.innerHTML = "";
 
-    // BORDAS RECHEADAS
-    // VARIÁVEIS PRINCIPAIS (declaradas antes das bordas)
+    // 🔹 LIMPEZA DE SEÇÕES ANTIGAS DO MODAL
+    ["secaoBordas", "secaoAcompanhamento", "secaoAcompanhamentoDoce", "secaoCarne", "secaoValorPorcao", "secaoMarmitaCarnes"]
+      .forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+      });
+
     let tamanho = "M";
     let saboresSelecionados = [];
     let basePrice = produto.tamanhos[tamanho];
     let precoExtraBorda = 0;
     let bordaSelecionada = { nome: "Sem borda", preco: 0 };
 
-    const limiteSabores = {
-      M: 2,
-      F: 3
-    };
-
-    // BORDAS RECHEADAS
     const opcoesBordas = [
       { nome: "Sem borda", preco: 0 },
       { nome: "Borda de Catupiry", preco: 10 },
@@ -579,9 +547,6 @@ document.addEventListener("DOMContentLoaded", () => {
       { nome: "Borda de Chocolate", preco: 12 },
       { nome: "Borda de Chocolate Branco", preco: 12 }
     ];
-
-    const bordaExistente = document.getElementById("secaoBordas");
-    if (bordaExistente) bordaExistente.remove();
 
     const secaoBordas = document.createElement("div");
     secaoBordas.id = "secaoBordas";
@@ -615,16 +580,9 @@ document.addEventListener("DOMContentLoaded", () => {
     modalTotal.textContent = "R$ " + basePrice.toFixed(2);
     contador.textContent = `0/${limiteSabores[tamanho]}`;
 
-    contador.textContent = `0/${limiteSabores[tamanho]}`;
-
-    // ===============================
-    //  BOTÕES P / M / G (SEM DUPLICAR EVENTO)
-    // ===============================
     const botoesTamanho = modal.querySelectorAll(".btn-tamanho");
 
     botoesTamanho.forEach(btn => {
-
-      // remove listener antigo (IMPORTANTE para não duplicar)
       btn.replaceWith(btn.cloneNode(true));
     });
 
@@ -655,13 +613,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         atualizarDisponibilidadeAcompanhamento();
         contador.textContent =
-          `Selecionados: 0/${limiteSabores[tamanho]}`;
+          `Selecionados: 0/${limiteSabores[tamanho] || 2}`;
       });
     });
 
-    // ===============================
-    //  SABORES
-    // ===============================
     produto.sabores.forEach(sabor => {
 
       const item = document.createElement("div");
@@ -677,7 +632,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let marcado = false;
 
       item.addEventListener("click", () => {
-        const limite = limiteSabores[tamanho];
+        const limite = limiteSabores[tamanho] || 2;
 
         if (!marcado) {
           if (saboresSelecionados.length >= limite) {
@@ -700,15 +655,10 @@ document.addEventListener("DOMContentLoaded", () => {
       listaSabores.appendChild(item);
     });
 
-    // ===============================
-    //  ACOMPANHAMENTO (M&M / Granulado) — só libera com sabor doce
-    // ===============================
+    // 🔹 ACOMPANHAMENTO DINÂMICO (ABAIXO DA LISTA DE SABORES)
     const saboresDoce = ["Chocolate", "Chocolate Branco"];
     const opcoesAcompanhamentoDoce = ["M&M", "Granulado"];
     const acompanhamentoPorSabor = {};
-
-    const acompanhamentoExistente = document.getElementById("secaoAcompanhamentoDoce");
-    if (acompanhamentoExistente) acompanhamentoExistente.remove();
 
     const secaoAcompanhamentoDoce = document.createElement("div");
     secaoAcompanhamentoDoce.id = "secaoAcompanhamentoDoce";
@@ -721,7 +671,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const doceSelecionados = saboresSelecionados.filter(s => saboresDoce.includes(s));
 
-      // Limpa acompanhamento de sabores doces que foram desmarcados
       Object.keys(acompanhamentoPorSabor).forEach(sabor => {
         if (!doceSelecionados.includes(sabor)) delete acompanhamentoPorSabor[sabor];
       });
@@ -751,9 +700,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // ===============================
-    //  BOTÃO FINAL (INTEGRADO AO SEU CARRINHO)
-    // ===============================
     btnAdicionarCarrinho.onclick = () => {
 
       if (saboresSelecionados.length === 0) {
@@ -784,17 +730,11 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  // Regra: quantidade de carnes permitida muda conforme a faixa de valor da porção
   function obterFaixaCarnesPorValor(valor) {
     if (valor <= 20) return { min: 3, max: 4 };
     return { min: 5, max: 6 };
   }
 
-  // ===============================
-  // 🔹 MODAL: PORÇÃO DE CARNE
-  // (valor livre a partir do mínimo + seleção de várias carnes,
-  //  quantidade permitida depende do valor escolhido)
-  // ===============================
   function criarModalPorcao(produto) {
 
     modalPrecoBase.textContent = "Monte sua porção";
@@ -803,8 +743,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const contadorSaboresEl = document.getElementById("contadorSabores");
     if (contadorSaboresEl) contadorSaboresEl.textContent = "";
 
-    // Limpa seções de outros modais, se existirem
-    ["secaoBordas", "secaoAcompanhamento", "secaoCarne", "secaoValorPorcao", "secaoMarmitaCarnes"]
+    ["secaoBordas", "secaoAcompanhamento", "secaoAcompanhamentoDoce", "secaoCarne", "secaoValorPorcao", "secaoMarmitaCarnes"]
       .forEach(id => {
         const el = document.getElementById(id);
         if (el) el.remove();
@@ -818,7 +757,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     modalTotal.textContent = "R$ " + valorPorcao.toFixed(2);
 
-    // SEÇÃO 1: VALOR LIVRE (vem primeiro pois define quantas carnes dá pra escolher)
     const secaoValorPorcao = document.createElement("div");
     secaoValorPorcao.id = "secaoValorPorcao";
     secaoValorPorcao.style.cssText = "padding: 0 20px 10px;";
@@ -834,7 +772,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     listaAdicionais.before(secaoValorPorcao);
 
-    // SEÇÃO 2: CARNES (seleção múltipla, limite depende do valor acima)
     const secaoCarne = document.createElement("div");
     secaoCarne.id = "secaoCarne";
     secaoCarne.style.cssText = "padding: 10px 20px 10px;";
@@ -883,8 +820,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     atualizarTituloCarnes();
 
-    // Se o valor mudar e a quantidade selecionada passar do novo máximo,
-    // desmarca as carnes excedentes automaticamente.
     function ajustarSelecaoAoNovoValor() {
       const faixa = obterFaixaCarnesPorValor(valorPorcao);
 
@@ -917,7 +852,6 @@ document.addEventListener("DOMContentLoaded", () => {
       ajustarSelecaoAoNovoValor();
     });
 
-    // BOTÃO ADICIONAR
     btnAdicionarCarrinho.onclick = () => {
 
       const faixa = obterFaixaCarnesPorValor(valorPorcao);
@@ -941,9 +875,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
-  // ===============================
-  // 🔹 MODAL: MARMITA COMPLETA (escolher 2 tipos de carne, disponíveis no período atual)
-  // ===============================
   function criarModalMarmita(produto) {
 
     const limiteCarnes = 2;
@@ -957,7 +888,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const contadorSaboresEl = document.getElementById("contadorSabores");
     if (contadorSaboresEl) contadorSaboresEl.textContent = "";
 
-    ["secaoBordas", "secaoAcompanhamento", "secaoCarne", "secaoValorPorcao", "secaoMarmitaCarnes"]
+    ["secaoBordas", "secaoAcompanhamento", "secaoAcompanhamentoDoce", "secaoCarne", "secaoValorPorcao", "secaoMarmitaCarnes"]
       .forEach(id => {
         const el = document.getElementById(id);
         if (el) el.remove();
@@ -1007,7 +938,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     listaAdicionais.before(secao);
 
-    // BOTÃO ADICIONAR
     btnAdicionarCarrinho.onclick = () => {
 
       if (carnesSelecionadas.length !== limiteCarnes) {
@@ -1056,7 +986,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       let tamanhoSelecionado = produto.tamanhos ? "M" : null;
 
-      // Monte sua Pizza: trata como produto simples no card, tamanho M fixo
       if (produto.tipo === "monte-pizza") {
         tamanhoSelecionado = "M";
       }
@@ -1121,11 +1050,6 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       lista.appendChild(card);
-      console.log(
-        "TIPO:",
-        produto.nome,
-        produto.tipo
-      );
 
       if (
         produto.adicionais ||
@@ -1138,14 +1062,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .addEventListener(
             "click",
             () => {
-
-              console.log(
-                "CLICOU:",
-                produto.nome
-              );
-
               abrirModal(produto);
-
             }
           );
 
@@ -1154,13 +1071,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const precoEl = card.querySelector(`#preco-${baseId}`);
       const imgEl = card.querySelector(`#img-${baseId}`);
 
-      // 🔹 RESTAURAR QUANTIDADE AO TROCAR CATEGORIA
       const idInicial = gerarId(produto, tamanhoSelecionado, marcaSelecionada);
       if (carrinho[idInicial]) {
         qtdEl.textContent = carrinho[idInicial].qtd;
       }
 
-      // TAMANHO
       if (produto.tamanhos) {
         const botoesTamanho = card.querySelectorAll(".btn-tamanho");
 
@@ -1174,31 +1089,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (produto.tipo === "monte-pizza") {
 
-              tamanhoPizzaPersonalizada =
-                tamanhoSelecionado;
+              tamanhoPizzaPersonalizada = tamanhoSelecionado;
 
-              const contador =
-                document.getElementById(
-                  "contadorSabores"
-                );
+              const contador = document.getElementById("contadorSabores");
 
               if (contador) {
-
                 contador.textContent =
-                  `Selecionados:
-        ${saboresSelecionados.length}/${limiteSabores[
-                  tamanhoPizzaPersonalizada
-                  ]
-                  }`;
+                  `Selecionados: ${saboresSelecionados.length}/${limiteSabores[tamanhoPizzaPersonalizada] || 2}`;
               }
             }
 
-            if (produto.tipo === "monte-pizza") {
-
-              tamanhoPizzaPersonalizada =
-                tamanhoSelecionado;
-
-            }
             precoAtual = produto.tamanhos[tamanhoSelecionado];
 
             precoEl.textContent = "R$ " + precoAtual.toFixed(2);
@@ -1209,7 +1109,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      // MARCA
       if (produto.marcas) {
         const botoesMarca = card.querySelectorAll(".btn-marca");
 
@@ -1239,18 +1138,15 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      // BOTÃO +
       card.querySelector(`#mais-${baseId}`).addEventListener("click", (e) => {
 
         e.stopPropagation();
 
-        // Se o produto possui adicionais OU é monte-pizza OU é porção de carne, abre o modal
         if (produto.adicionais || produto.tipo === "monte-pizza" || produto.tipo === "porcao-carne" || produto.tipo === "marmita") {
           abrirModal(produto);
           return;
         }
 
-        // Pizzas com tamanhos mas sem adicionais (calabresa, mussarela, frango)
         if (produto.tamanhos && !produto.tipo) {
           abrirModalBorda(produto, tamanhoSelecionado, precoAtual);
           return;
@@ -1281,7 +1177,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       });
 
-      // BOTÃO -
       const btnMenosCard = card.querySelector(`#menos-${baseId}`);
       if (btnMenosCard) btnMenosCard.addEventListener("click", () => {
 

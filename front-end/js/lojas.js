@@ -11,142 +11,193 @@ const LOJAS = {
       comidas: [
 
         {
+          nome: "Pizza Quatro Queijos",
+          img: "imagens/pizzaria/4queijos.png",
+          descricao: "Mussarela, Catupiry, Provolone, Cheddar, Orégano e Azeitona.",
+          tamanhos: {
+            P: 30,
+            M: 40,
+            F: 45
+          }
+        },
+        {
           nome: "Pizza Atum",
           img: "imagens/pizzaria/pizza.atum.png",
-          descricao: "Atum, Mussarela, Cebola Branca, Azeitona e Orégano",
+          descricao: "Atum, Mussarela, Cebola Branca, Orégano e Azeitona.",
           tamanhos: {
+            P: 32,
             M: 45,
             F: 50
           }
         },
-        
         {
           nome: "Pizza Calabresa",
           img: "imagens/pizzaria/pizza.calabr.png",
-          descricao: "Calabresa, Cebola Branca, Azeitona e Orégano",
+          descricao: "Calabresa, Cebola Branca, Orégano e Azeitona.",
           tamanhos: {
+            P: 30,
             M: 40,
             F: 45
           }
         },
-
         {
-          nome: "Pizza Carijó",
-          img: "imagens/pizzaria/frangocomcatupiry.png",
-          descricao: "Frango, Milho Verde, Mussarela, Bacon, Azeitona e Orégano",
+          nome: "Pizza Nordestina",
+          img: "imagens/pizzaria/nordestina-marguerita.png",
+          descricao: "Carne na Nata, Mussarela, Cebola Roxa, Orégano e Azeitona.",
           tamanhos: {
-            M: 40,
-            F: 45
-          }
-        },
-
-        {
-          nome: "Pizza Carne de Sol",
-          img: "imagens/pizzaria/carne-seca.png",
-          descricao: "Carne de Sol, Mussarela, Cebola Roxa, Azeitona e Orégano",
-          tamanhos: {
-            M: 40,
-            F: 45
-          }
-        },
-
-        {
-          nome: "Pizza Daniel",
-          img: "imagens/pizzaria/daniel.png",
-          descricao: "Frango, Cream Cheese, Mussarela, Azeitona e Orégano",
-          tamanhos: {
-            M: 40,
+            P: 32,
+            M: 45,
             F: 50
           }
         },
-
-        {
-          nome: "Pizza Frango com Catupiry",
-          img: "imagens/pizzaria/pizza.fra.cap.png",
-          descricao: "Frango, Catupiry, Azeitona e Orégano",
-          tamanhos: {
-            M: 40,
-            F: 45
-          }
-        },
-
-        {
-          nome: "Pizza Marguerita",
-          img: "imagens/pizzaria/nordestina-marguerita.png",
-          descricao: "Mussarela, Tomate, Manjericão, Parmesão, Cebola, Azeitona e Orégano",
-          tamanhos: {
-            M: 40,
-            F: 45
-          }
-        },
-
         {
           nome: "Pizza Marina",
           img: "imagens/pizzaria/mariana.png",
-          descricao: "Carne de Sol, Mussarela, Cream Cheese, Cebola Roxa, Azeitona e Orégano",
+          descricao: "Carne de Sol, Mussarela, Cream Cheese, Cebola Roxa, Orégano e Azeitona.",
           tamanhos: {
+            P: 32,
             M: 45,
             F: 52
           }
         },
-
         {
-          nome: "Pizza Mista",
-          img: "imagens/pizzaria/daniel.png",
-          descricao: "Presunto, Frango, Calabresa, Mussarela, Bacon, Azeitona e Orégano",
+          nome: "Pizza Carijó",
+          img: "imagens/pizzaria/frangocomcatupiry.png",
+          descricao: "Frango, Milho Verde, Mussarela, Bacon, Orégano e Azeitona.",
           tamanhos: {
+            P: 30,
             M: 40,
             F: 45
           }
         },
-
         {
-          nome: "Pizza Nordestina",
-          img: "imagens/pizzaria/nordestina-marguerita.png",
-          descricao: "Carne na Nata, Mussarela, Cebola Roxa, Azeitona e Orégano",
+          nome: "Pizza Especial",
+          img: "imagens/pizzaria/daniel.png",
+          descricao: "Presunto, Ovo, Calabresa, Cebola, Mussarela, Bacon, Orégano e Azeitona.",
           tamanhos: {
-            M: 43,
-            F: 50
+            P: 30,
+            M: 40,
+            F: 45
           }
         },
-
+        {
+          nome: "Pizza Americana",
+          img: "imagens/pizzaria/portuguesa.png",
+          descricao: "Presunto, Ovo, Mussarela, Orégano e Azeitona.",
+          tamanhos: {
+            P: 30,
+            M: 40,
+            F: 45
+          }
+        },
+        {
+          nome: "Pizza Marguerita",
+          img: "imagens/pizzaria/nordestina-marguerita.png",
+          descricao: "Mussarela, Tomate, Manjericão, Parmesão, Cebola, Orégano e Azeitona.",
+          tamanhos: {
+            P: 30,
+            M: 40,
+            F: 45
+          }
+        },
         {
           nome: "Pizza Portuguesa",
           img: "imagens/pizzaria/portuguesa.png",
-          descricao: "Presunto, Ovo, Cebola, Ervilha, Mussarela, Azeitona e Orégano",
+          descricao: "Presunto, Ovo, Cebola, Ervilha, Mussarela, Orégano e Azeitona.",
           tamanhos: {
+            P: 30,
             M: 40,
             F: 45
           }
         },
-
         {
-          nome: "Pizza Quatro Queijos",
-          img: "imagens/pizzaria/4queijos.png",
-          descricao: "Mussarela, Catupiry, Provolone, Cheddar, Azeitona e Orégano",
+          nome: "Pizza Mista",
+          img: "imagens/pizzaria/daniel.png",
+          descricao: "Presunto, Frango, Calabresa, Mussarela, Bacon, Orégano e Azeitona.",
           tamanhos: {
+            P: 30,
             M: 40,
             F: 45
           }
         },
-
+        {
+          nome: "Pizza Frango c/ Catupiry",
+          img: "imagens/pizzaria/pizza.fra.cap.png",
+          descricao: "Frango, Catupiry, Orégano e Azeitona.",
+          tamanhos: {
+            P: 30,
+            M: 40,
+            F: 45
+          }
+        },
+        {
+          nome: "Pizza Carne de Sol",
+          img: "imagens/pizzaria/carne-seca.png",
+          descricao: "Carne de Sol, Mussarela, Cebola Roxa, Orégano e Azeitona.",
+          tamanhos: {
+            P: 30,
+            M: 40,
+            F: 45
+          }
+        },
+        {
+          nome: "Pizza Frango Cremoso",
+          img: "imagens/pizzaria/frangocomcatupiry.png",
+          descricao: "Frango, Cream Cheese, Requeijão Cremoso, Mussarela, Orégano e Azeitona.",
+          tamanhos: {
+            P: 32,
+            M: 45,
+            F: 52
+          }
+        },
+        {
+          nome: "Pizza Defumada",
+          img: "imagens/pizzaria/pizza.calabr.png",
+          descricao: "Mussarela, Bacon, Orégano e Azeitona.",
+          tamanhos: {
+            P: 30,
+            M: 40,
+            F: 45
+          }
+        },
+        {
+          nome: "Pizza Calabresa c/ Queijo",
+          img: "imagens/pizzaria/pizza.calabr.png",
+          descricao: "Calabresa, Mussarela, Orégano e Azeitona.",
+          tamanhos: {
+            P: 30,
+            M: 40,
+            F: 45
+          }
+        },
+        {
+          nome: "Pizza Daniel",
+          img: "imagens/pizzaria/daniel.png",
+          descricao: "Carne de Sol, Requeijão Cremoso, Cream Cheese, Mussarela, Cebola Roxa, Orégano e Azeitona.",
+          tamanhos: {
+            P: 32,
+            M: 45,
+            F: 52
+          }
+        },
         {
           nome: "Pizza Chocolate",
           img: "imagens/pizzaria/pizzadoce.png",
-          descricao: "Chocolate, Acompanhamento à sua escolha",
+          descricao: "Chocolate, Acompanhamento à sua escolha (M&M ou Granulado).",
           temAcompanhamento: true,
           tamanhos: {
+            P: 30,
             M: 40,
             F: 45
           }
         },
-
         {
           nome: "Pizza Chocolate Branco",
           img: "imagens/pizzaria/pizzadoceb.jpg",
-          descricao: "Chocolate Branco, Acompanhamento à sua escolha",
+          descricao: "Chocolate Branco, Acompanhamento à sua escolha (M&M ou Granulado).",
           temAcompanhamento: true,
           tamanhos: {
+            P: 30,
             M: 40,
             F: 45
           }
@@ -158,28 +209,92 @@ const LOJAS = {
           img: "imagens/pizzaria/msp.png",
 
           tamanhos: {
+            P: 30,
             M: 40,
             F: 45
           },
 
           sabores: [
+            "Quatro Queijos",
             "Atum",
             "Calabresa",
-            "Carijó",
-            "Carne de Sol",
-            "Daniel",
-            "Frango Catupiry",
-            "Marguerita",
-            "Marina",
-            "Mista",
             "Nordestina",
+            "Marina",
+            "Carijó",
+            "Especial",
+            "Americana",
+            "Marguerita",
             "Portuguesa",
-            "Quatro Queijos",
+            "Mista",
+            "Frango c/ Catupiry",
+            "Carne de Sol",
+            "Frango Cremoso",
+            "Defumada",
+            "Calabresa c/ Queijo",
+            "Daniel",
             "Chocolate",
             "Chocolate Branco"
           ]
         }
 
+      ],
+
+      /* NOVA CATEGORIA: LANCHES */
+      lanches: [
+        {
+          nome: "X Burguer",
+          preco: 12.00,
+          img: "imagens/hamburgueria/x-burger.png",
+          descricao: "Pão de hambúrguer, hambúrguer artesanal e queijo coalho."
+        },
+        {
+          nome: "X Salada",
+          preco: 14.00,
+          img: "imagens/hamburgueria/x-burger.png",
+          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, alface, tomate, cebola e maionese."
+        },
+        {
+          nome: "X Bacon",
+          preco: 15.00,
+          img: "imagens/hamburgueria/x-bancon.jpg",
+          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, bacon, salada e maionese."
+        },
+        {
+          nome: "X Egg",
+          preco: 15.00,
+          img: "imagens/hamburgueria/x-burger.png",
+          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, ovo, salada e maionese."
+        },
+        {
+          nome: "X Tudo",
+          preco: 17.00,
+          img: "imagens/hamburgueria/x-tudo.png",
+          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, ovo, salada e maionese."
+        },
+        {
+          nome: "X Calabresa",
+          preco: 16.00,
+          img: "imagens/hamburgueria/x-burger.png",
+          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, calabresa, salada, bacon e maionese."
+        },
+        {
+          nome: "X Misto",
+          preco: 16.00,
+          img: "imagens/hamburgueria/x-burger.png",
+          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, presunto e maionese."
+        },
+        {
+          nome: "X Duplo",
+          preco: 30.00,
+          img: "imagens/hamburgueria/x-tudo.png",
+          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, ovo, presunto, salada e maionese."
+        },
+        {
+          nome: "X Moda da Casa",
+          preco: 18.00,
+          img: "imagens/hamburgueria/x-tudo.png",
+          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, ovo, calabresa, tomate, alface, cebola e maionese."
+        }
       ],
 
       /* CATEGORIA EXCLUSIVA PARA ESFIHAS */
@@ -273,6 +388,198 @@ const LOJAS = {
     }
   },
 
+  pizzaria: {
+    nome: "Peixodá Pizzaria",
+
+    abre: "18:00",
+    fecha: "23:30",
+
+    categorias: {
+
+      comidas: [
+
+        {
+          nome: "Pizza Atum",
+          img: "imagens/pizzaria/pizza.fra.cap.png",
+          descricao: "Atum, Mussarela, Cebola Branca, azeitona e orégano",
+          tamanhos: {
+            M: 45,
+            F: 50
+          }
+        },
+        
+        {
+          nome: "Pizza Calabresa",
+          img: "imagens/pizzaria/pizza.calabr.png",
+          descricao: "Calabresa, Cebola Branca, Azeitona e Orégano",
+          tamanhos: {
+            M: 40,
+            F: 45
+          }
+        },
+
+        {
+          nome: "Pizza Carijó",
+          img: "imagens/pizzaria/pizza.calabr.png",
+          descricao: "Frango, Milho Verde, Mussarela, Bacon, Azeitona e Orégano",
+          tamanhos: {
+            M: 40,
+            F: 45
+          }
+        },
+
+        {
+          nome: "Pizza Carne de Sol",
+          img: "imagens/pizzaria/pizza.calabr.png",
+          descricao: "Carne de Sol, Mussarela, Cebola Roxa, Azeitona e Orégano",
+          tamanhos: {
+            M: 40,
+            F: 45
+          }
+        },
+
+        {
+          nome: "Pizza Daniel",
+          img: "imagens/pizzaria/pizza.calabr.png",
+          descricao: "Frango, Creme Cheese, Mussarela, Azeitona e Orégano",
+          tamanhos: {
+            M: 40,
+            F: 50
+          }
+        },
+
+        {
+          nome: "Pizza Frango com Catupiry",
+          img: "imagens/pizzaria/pizza.fra.cap.png",
+          descricao: "Frango, Catupiry, Azeitona e Orégano",
+          tamanhos: {
+            M: 40,
+            F: 45
+          }
+        },
+
+        {
+          nome: "Pizza Marguerita",
+          img: "imagens/pizzaria/pizza.fra.cap.png",
+          descricao: "Mussarela, Tomate, Manjericão, Parmesão, Cebola, Azeitona e Orégano",
+          tamanhos: {
+            M: 40,
+            F: 45
+          }
+        },
+
+        {
+          nome: "Pizza Marina",
+          img: "imagens/pizzaria/pizza.fra.cap.png",
+          descricao: "Carne de Sol, Mussarela, Creme Cheese, Cebola Roxa, Azeitona e Orégano",
+          tamanhos: {
+            M: 45,
+            F: 52
+          }
+        },
+
+        {
+          nome: "Pizza Mista",
+          img: "imagens/pizzaria/pizza.fra.cap.png",
+          descricao: "Presunto, Frango, Calabresa, Mussarela, Bacon, Azeitona, Orégano",
+          tamanhos: {
+            M: 40,
+            F: 45
+          }
+        },
+
+        {
+          nome: "Pizza Nordestina",
+          img: "imagens/pizzaria/pizza.fra.cap.png",
+          descricao: "Carne na Nata, Mussarela, Cebola Roxa, Azeitona e Orégano",
+          tamanhos: {
+            M: 43,
+            F: 50
+          }
+        },
+
+        {
+          nome: "Pizza Portuguesa",
+          img: "imagens/pizzaria/pizza.fra.cap.png",
+          descricao: "Presunto, Ovo, Cebola, Ervilha, Mussarela, Azeitona e Orégano",
+          tamanhos: {
+            M: 40,
+            F: 45
+          }
+        },
+
+        {
+          nome: "Pizza Quatro Queijos",
+          img: "imagens/pizzaria/pizza.mussa.png",
+          descricao: "Queijos: Mussarela, Provolone, Cheddar, Catupiry + Azeitona e Orégano",
+          tamanhos: {
+            M: 40,
+            F: 45
+          }
+        },
+
+        {
+          nome: "Monte sua Pizza!",
+          tipo: "monte-pizza",
+          img: "imagens/pizzaria/msp.png",
+
+          tamanhos: {
+            P: 35,
+            M: 45,
+            G: 55
+          },
+
+          sabores: [
+            "Atum",
+            "Calabresa",
+            "Carijó",
+            "Carne de Sol",
+            "Daniel",
+            "Frango Catupiry",
+            "Marquerita",
+            "Mista",
+            "Marina",
+            "Portuguesa",
+            "Quatro Queijos"
+          ]
+        }
+      ],
+
+      bebidas: [
+        {
+          nome: "Refrigerante 1L",
+          marcas: {
+            Coca: { preco: 9, img: "imagens/bebidas/coca.1L.png" },
+            Pepsi: { preco: 9, img: "imagens/bebidas/pespi.1L.png" },
+            Guarana: { preco: 9, img: "imagens/bebidas/guara.1L.png" }
+          }
+        },
+        {
+          nome: "Refrigerante 2 Litro",
+          marcas: {
+            Coca: { preco: 15, img: "imagens/bebidas/coca.2L.png" },
+            Pepsi: { preco: 15, img: "imagens/bebidas/pespi.2L.png" },
+            Guarana: { preco: 15, img: "imagens/bebidas/guara.2L.png" }
+          }
+        },
+        {
+          nome: "Refrigerante Lata",
+          marcas: {
+            Coca: { preco: 5, img: "imagens/bebidas/coca.lata.png" },
+            Pepsi: { preco: 5, img: "imagens/bebidas/pespi.lata.png" },
+            Guarana: { preco: 5, img: "imagens/bebidas/guara.lata.png" }
+          }
+        },
+        {
+          nome: "Água Mineral",
+          preco: 4.00,
+          img: "imagens/bebidas/agua.png"
+        }
+      ]
+    }
+  },
+
+
   hamburgueria: {
     nome: "Burger House",
 
@@ -356,10 +663,7 @@ const LOJAS = {
   babacu: {
     nome: "Babaçu Steakhouse",
 
-    // Só abre sexta, sábado e domingo, em janelas específicas.
-    // Cada período tem um "id" que é usado pra filtrar produtos e carnes disponíveis.
     horarios: {
-      // 0=domingo, 1=segunda...5=sexta, 6=sábado (padrão do JS: Date.getDay())
       5: [
         { id: "sexta-noite", periodo: "noite", inicio: "18:00", fim: "00:00" }
       ],
@@ -370,10 +674,8 @@ const LOJAS = {
       0: [
         { id: "domingo-manha", periodo: "manha", inicio: "10:00", fim: "13:00" }
       ]
-      // segunda a quinta: sem período = loja fechada
     },
 
-    // Quais "tags" de produto aparecem em cada período
     produtosPorPeriodo: {
       "sexta-noite": ["lanche", "porcao"],
       "sabado-manha": ["marmita", "porcao", "arroz-leite"],
@@ -381,7 +683,6 @@ const LOJAS = {
       "domingo-manha": ["marmita", "porcao", "arroz-leite"]
     },
 
-    // Quais carnes aparecem em cada período (usado pela Porção de Carne E pela Marmita Completa)
     carnesPorPeriodo: {
       "sexta-noite": ["Boi", "Porco", "Frango", "Linguiça", "Coração de Frango", "Coração de Boi", "Língua de Boi"],
       "sabado-manha": ["Boi", "Porco", "Frango", "Linguiça"],
