@@ -440,7 +440,9 @@ document.addEventListener("DOMContentLoaded", () => {
       listaAdicionais.before(secaoAcompanhamento);
     }
 
-    const todasAsBordas = [
+    // 🔹 Bordas: usa a lista personalizada da loja (loja.bordas), se existir,
+    // senão cai no padrão de sempre (não afeta lojas que já funcionavam)
+    const todasAsBordas = loja.bordas || [
       { nome: "Sem borda", preco: 0 },
       { nome: "Borda de Catupiry", preco: 10 },
       { nome: "Borda de Cheddar", preco: 10 },
@@ -449,8 +451,12 @@ document.addEventListener("DOMContentLoaded", () => {
       { nome: "Borda de Chocolate Branco", preco: 12 }
     ];
 
+    const nomesBordasComQueijo = todasAsBordas
+      .filter(b => b.preco > 0 && !b.nome.toLowerCase().includes("chocolate"))
+      .map(b => b.nome);
+
     const opcoesBordas = produto.temAcompanhamento
-      ? todasAsBordas.filter(b => !["Borda de Catupiry", "Borda de Cheddar", "Borda de Requeijão"].includes(b.nome))
+      ? todasAsBordas.filter(b => !nomesBordasComQueijo.includes(b.nome))
       : todasAsBordas;
 
     const secaoBordas = document.createElement("div");
@@ -539,7 +545,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let precoExtraBorda = 0;
     let bordaSelecionada = { nome: "Sem borda", preco: 0 };
 
-    const opcoesBordas = [
+    // 🔹 Bordas: usa a lista personalizada da loja (loja.bordas), se existir,
+    // senão cai no padrão de sempre (não afeta lojas que já funcionavam)
+    const opcoesBordas = loja.bordas || [
       { nome: "Sem borda", preco: 0 },
       { nome: "Borda de Catupiry", preco: 10 },
       { nome: "Borda de Cheddar", preco: 10 },
