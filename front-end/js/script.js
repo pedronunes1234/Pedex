@@ -49,24 +49,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputReferencia = document.getElementById("inputReferencia");
     const btnSalvarEndereco = document.getElementById("btnSalvarEndereco");
 
-    // 🔹 RESTRIÇÃO: NÚMERO DA CASA ACEITA APENAS NÚMEROS INTEIROS
-    if (inputNumero) {
-      inputNumero.setAttribute("type", "tel");
-      inputNumero.setAttribute("pattern", "[0-9]*");
-      inputNumero.addEventListener("input", (e) => {
-        e.target.value = e.target.value.replace(/\D/g, "");
-      });
-    }
-
-    // 🔹 TOGGLE: CLIQUE ÚNICO ABRE, SEGUNDO CLIQUE FECHA AS CAIXINHAS
     if (btnEndereco) {
       btnEndereco.addEventListener("click", () => {
-        if (camposEndereco.style.display === "block") {
-          camposEndereco.style.display = "none";
-        } else {
-          camposEndereco.style.display = "block";
-          if (inputRua) inputRua.focus();
-        }
+        camposEndereco.style.display = "block";
+        inputRua.focus();
       });
     }
 
@@ -78,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const referencia = inputReferencia.value.trim();
 
         if (!rua || !numero) {
-          alert("Informe pelo menos a rua e o número da casa.");
+          alert("Informe pelo menos a rua e o número.");
           return;
         }
 
@@ -422,6 +408,7 @@ document.addEventListener("DOMContentLoaded", () => {
     listaAdicionais.innerHTML = "";
     document.getElementById("contadorSabores").textContent = "";
 
+    // Limpa seções anteriores
     ["secaoBordas", "secaoAcompanhamento", "secaoAcompanhamentoDoce", "secaoCarne", "secaoValorPorcao", "secaoMarmitaCarnes"]
       .forEach(id => {
         const el = document.getElementById(id);
@@ -453,7 +440,9 @@ document.addEventListener("DOMContentLoaded", () => {
       listaAdicionais.before(secaoAcompanhamento);
     }
 
-    const todasAsBordas = [
+    // 🔹 Bordas: usa a lista personalizada da loja (loja.bordas), se existir,
+    // senão cai no padrão de sempre (não afeta lojas que já funcionavam)
+    const todasAsBordas = loja.bordas || [
       { nome: "Sem borda", preco: 0 },
       { nome: "Borda de Catupiry", preco: 10 },
       { nome: "Borda de Cheddar", preco: 10 },
@@ -462,8 +451,12 @@ document.addEventListener("DOMContentLoaded", () => {
       { nome: "Borda de Chocolate Branco", preco: 12 }
     ];
 
+    const nomesBordasComQueijo = todasAsBordas
+      .filter(b => b.preco > 0 && !b.nome.toLowerCase().includes("chocolate"))
+      .map(b => b.nome);
+
     const opcoesBordas = produto.temAcompanhamento
-      ? todasAsBordas.filter(b => !["Borda de Catupiry", "Borda de Cheddar", "Borda de Requeijão"].includes(b.nome))
+      ? todasAsBordas.filter(b => !nomesBordasComQueijo.includes(b.nome))
       : todasAsBordas;
 
     const secaoBordas = document.createElement("div");
@@ -539,6 +532,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     listaSabores.innerHTML = "";
 
+    // 🔹 LIMPEZA DE SEÇÕES ANTIGAS DO MODAL
     ["secaoBordas", "secaoAcompanhamento", "secaoAcompanhamentoDoce", "secaoCarne", "secaoValorPorcao", "secaoMarmitaCarnes"]
       .forEach(id => {
         const el = document.getElementById(id);
@@ -551,7 +545,25 @@ document.addEventListener("DOMContentLoaded", () => {
     let precoExtraBorda = 0;
     let bordaSelecionada = { nome: "Sem borda", preco: 0 };
 
-    const opcoesBordas = [
+    // 🔹 Calcula o preço base considerando sabores "especiais" (mais caros).
+    // Se algum sabor selecionado tiver preço próprio em produto.precosPorSabor,
+    // usa o MAIOR valor entre os sabores escolhidos. Sem sabores especiais,
+    // continua usando o preço normal (produto.tamanhos) — não afeta lojas
+    // que não tiverem "precosPorSabor" definido.
+    function precoBaseParaSabores(saboresArr, tam) {
+      let maior = produto.tamanhos[tam];
+      if (produto.precosPorSabor) {
+        saboresArr.forEach(s => {
+          const precoEspecial = produto.precosPorSabor[s] && produto.precosPorSabor[s][tam];
+          if (precoEspecial && precoEspecial > maior) maior = precoEspecial;
+        });
+      }
+      return maior;
+    }
+
+    // 🔹 Bordas: usa a lista personalizada da loja (loja.bordas), se existir,
+    // senão cai no padrão de sempre (não afeta lojas que já funcionavam)
+    const opcoesBordas = loja.bordas || [
       { nome: "Sem borda", preco: 0 },
       { nome: "Borda de Catupiry", preco: 10 },
       { nome: "Borda de Cheddar", preco: 10 },
@@ -614,7 +626,7 @@ document.addEventListener("DOMContentLoaded", () => {
         listaSabores.querySelectorAll("input")
           .forEach(i => i.checked = false);
 
-        basePrice = produto.tamanhos[tamanho];
+        basePrice = precoBaseParaSabores(saboresSelecionados, tamanho);
         total = basePrice;
 
         modalPrecoBase.textContent =
@@ -661,12 +673,20 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         contador.textContent = `${saboresSelecionados.length}/${limite}`;
+
+        // 🔹 Recalcula o preço se algum sabor especial (mais caro) foi selecionado
+        const novoBaseSemBorda = precoBaseParaSabores(saboresSelecionados, tamanho);
+        basePrice = novoBaseSemBorda + precoExtraBorda;
+        modalPrecoBase.textContent = "Preço Base: R$ " + novoBaseSemBorda.toFixed(2);
+        modalTotal.textContent = "R$ " + basePrice.toFixed(2);
+
         atualizarDisponibilidadeAcompanhamento();
       });
 
       listaSabores.appendChild(item);
     });
 
+    // 🔹 ACOMPANHAMENTO DINÂMICO (ABAIXO DA LISTA DE SABORES)
     const saboresDoce = ["Chocolate", "Chocolate Branco"];
     const opcoesAcompanhamentoDoce = ["M&M", "Granulado"];
     const acompanhamentoPorSabor = {};

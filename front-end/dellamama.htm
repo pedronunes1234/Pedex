@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Della Mama Pizzaria | Pedex</title>
+
+  <!-- CSS GLOBAL -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="shortcut icon" href="imagens/dellamama/logodellamama.jpeg" type="image/x-icon">
+</head>
+
+<!-- Identificador da loja Della Mama no JS -->
+<body data-loja="della_mama">
+
+  <!-- HEADER DA LOJA -->
+  <header class="header-loja">
+    <div class="topo-loja">
+      <button class="btn-voltar" onclick="history.back()"> ← </button>
+      <img src="imagens/dellamama/logodellamama.jpeg" alt="Logo Della Mama" class="logo-loja">
+      <div class="info-topo">
+        <h2 class="nome-loja">Della Mama Pizzaria</h2>
+        <span class="status-text"></span>
+      </div>
+    </div>
+
+    <!-- ENDEREÇO -->
+    <div class="endereco-loja">
+      📍 Entregar em: <span id="endereco-usuario">Informe seu endereço</span>
+    </div>
+  </header>
+
+  <!-- CATEGORIAS -->
+  <section class="categorias">
+    <button class="categoria ativa">Comidas</button>
+    <button class="categoria">Esfihas</button>
+    <button class="categoria">Porções</button>
+    <button class="categoria">Lanches</button>
+    <button class="categoria">Bebidas</button>
+  </section>
+
+  <!-- LISTA DE PRODUTOS -->
+  <main class="produtos">
+    <div id="lista-produtos">
+      <!-- Produtos renderizados via JS -->
+    </div>
+  </main>
+
+  <!-- CARRINHO FIXO -->
+  <div class="carrinho-bar">
+    <button class="btn-carrinho" onclick="abrirCarrinho()">
+       Ver Carrinho = <span id="total-carrinho">R$ 0.00</span>
+    </button>
+  </div>
+
+  <!-- MODAL DE PRODUTO / MONTE SUA PIZZA -->
+  <div class="modal" id="modalProduto">
+    <div class="modal-content">
+
+      <button class="btn-fechar" id="fecharModal">×</button>
+
+      <img id="modalImagem" src="" alt="">
+
+      <h2 id="modalNome"></h2>
+      <p id="modalPrecoBase"></p>
+
+      <div class="tamanhos" id="tamanhosModal">
+        <button class="btn-tamanho" data-size="P">P</button>
+        <button class="btn-tamanho ativo" data-size="M">M</button>
+        <button class="btn-tamanho" data-size="F">F</button>
+      </div>
+
+      <p id="contadorSabores"></p>
+
+      <div id="listaAdicionais"></div>
+
+      <div class="modal-total">
+        <span>Total</span>
+        <span id="modalTotal">R$ 0.00</span>
+      </div>
+
+      <button id="btnAdicionarCarrinho">Adicionar ao carrinho</button>
+
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script>
+    localStorage.setItem("lojaSelecionada", "Della Mama Pizzaria");
+  </script>
+
+  <script src="js/lojas.js"></script>
+  <script src="js/script.js"></script>
+
+</body>
+</html>
