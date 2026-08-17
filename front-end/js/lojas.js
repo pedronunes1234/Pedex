@@ -244,7 +244,7 @@ const LOJAS = {
         {
           nome: "X Burguer",
           preco: 12.00,
-          img: "imagens/hamburgueria/x-burger.png",
+          img: "imagens/hamburgueria/xburguer.jpg",
           descricao: "Pão de hambúrguer, hambúrguer artesanal e queijo coalho."
         },
         {
@@ -262,7 +262,7 @@ const LOJAS = {
         {
           nome: "X Egg",
           preco: 15.00,
-          img: "imagens/hamburgueria/x-burger.png",
+          img: "imagens/hamburgueria/xegg.jpg",
           descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, ovo, salada e maionese."
         },
         {
@@ -274,7 +274,7 @@ const LOJAS = {
         {
           nome: "X Calabresa",
           preco: 16.00,
-          img: "imagens/hamburgueria/x-burger.png",
+          img: "imagens/hamburgueria/xcalabresa.jpg",
           descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, calabresa, salada, bacon e maionese."
         },
         {
@@ -286,13 +286,13 @@ const LOJAS = {
         {
           nome: "X Duplo",
           preco: 30.00,
-          img: "imagens/hamburgueria/x-tudo.png",
+          img: "imagens/hamburgueria/xduplo.png",
           descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, ovo, presunto, salada e maionese."
         },
         {
           nome: "X Moda da Casa",
           preco: 18.00,
-          img: "imagens/hamburgueria/x-tudo.png",
+          img: "imagens/hamburgueria/xcalabresa.jpg",
           descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, ovo, calabresa, tomate, alface, cebola e maionese."
         }
       ],

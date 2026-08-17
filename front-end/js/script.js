@@ -49,10 +49,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputReferencia = document.getElementById("inputReferencia");
     const btnSalvarEndereco = document.getElementById("btnSalvarEndereco");
 
+    // 🔹 RESTRIÇÃO: NÚMERO DA CASA ACEITA APENAS NÚMEROS INTEIROS
+    if (inputNumero) {
+      inputNumero.setAttribute("type", "tel");
+      inputNumero.setAttribute("pattern", "[0-9]*");
+      inputNumero.addEventListener("input", (e) => {
+        e.target.value = e.target.value.replace(/\D/g, "");
+      });
+    }
+
+    // 🔹 TOGGLE: CLIQUE ÚNICO ABRE, SEGUNDO CLIQUE FECHA AS CAIXINHAS
     if (btnEndereco) {
       btnEndereco.addEventListener("click", () => {
-        camposEndereco.style.display = "block";
-        inputRua.focus();
+        if (camposEndereco.style.display === "block") {
+          camposEndereco.style.display = "none";
+        } else {
+          camposEndereco.style.display = "block";
+          if (inputRua) inputRua.focus();
+        }
       });
     }
 
@@ -64,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const referencia = inputReferencia.value.trim();
 
         if (!rua || !numero) {
-          alert("Informe pelo menos a rua e o número.");
+          alert("Informe pelo menos a rua e o número da casa.");
           return;
         }
 
@@ -408,7 +422,6 @@ document.addEventListener("DOMContentLoaded", () => {
     listaAdicionais.innerHTML = "";
     document.getElementById("contadorSabores").textContent = "";
 
-    // Limpa seções anteriores
     ["secaoBordas", "secaoAcompanhamento", "secaoAcompanhamentoDoce", "secaoCarne", "secaoValorPorcao", "secaoMarmitaCarnes"]
       .forEach(id => {
         const el = document.getElementById(id);
@@ -526,7 +539,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     listaSabores.innerHTML = "";
 
-    // 🔹 LIMPEZA DE SEÇÕES ANTIGAS DO MODAL
     ["secaoBordas", "secaoAcompanhamento", "secaoAcompanhamentoDoce", "secaoCarne", "secaoValorPorcao", "secaoMarmitaCarnes"]
       .forEach(id => {
         const el = document.getElementById(id);
@@ -655,7 +667,6 @@ document.addEventListener("DOMContentLoaded", () => {
       listaSabores.appendChild(item);
     });
 
-    // 🔹 ACOMPANHAMENTO DINÂMICO (ABAIXO DA LISTA DE SABORES)
     const saboresDoce = ["Chocolate", "Chocolate Branco"];
     const opcoesAcompanhamentoDoce = ["M&M", "Granulado"];
     const acompanhamentoPorSabor = {};
