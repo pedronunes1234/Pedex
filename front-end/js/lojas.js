@@ -927,14 +927,14 @@ const LOJAS = {
           nome: "Marmita Completa",
           tipo: "marmita",
           preco: 18.00,
-          img: "imagens/babacu/marmita-completa.png",
+          img: "imagens/babacu/marmitacompleta.png",
           descricao: "Arroz branco, farofa de feijão, macarrão, salada e batata-doce. Escolha 2 tipos de carne.",
           tag: "marmita"
         },
         {
           nome: "Porção de Carne",
           tipo: "porcao-carne",
-          img: "imagens/babacu/porcao-carne.png",
+          img: "imagens/babacu/porcaodecarne.png",
           descricao: "Escolha o tipo de carne e o valor da sua porção. Acompanha farofa e vinagrete.",
           valorMinimo: 10.00,
           tag: "porcao"
@@ -945,43 +945,43 @@ const LOJAS = {
         {
           nome: "Refrigerante Lata",
           marcas: {
-            Coca: { preco: 6, img: "imagens/babacu/bebidas/coca.lata.png" },
-            Guarana: { preco: 6, img: "imagens/babacu/bebidas/guara.lata.png" },
-            Soda: { preco: 6, img: "imagens/babacu/bebidas/soda.lata.png" },
-            Fanta: { preco: 6, img: "imagens/babacu/bebidas/fanta.lata.png" },
-            "Coca Zero": { preco: 6, img: "imagens/babacu/bebidas/coca.lataz.png" },
+            Coca: { preco: 6, img: "imagens/babacu/cajuina1L.png" },
+            Guarana: { preco: 6, img: "imagens/babacu/guara.lata.png" },
+            Soda: { preco: 6, img: "imagens/babacu/spritelata.png" },
+            Fanta: { preco: 6, img: "imagens/babacu/fantalata.png" },
+            "Coca Zero": { preco: 6, img: "imagens/babacu/coca.lataz.png" },
             "Guarana Zero": { preco: 6, img: "imagens/babacu/bebidas/guara.lataz.png" },
-            Schweppes: { preco: 6, img: "imagens/babacu/bebidas/schweppes.lata.png" }
+            Schweppes: { preco: 6, img: "imagens/babacu/schweppeslata.png" }
           }
         },
         {
           nome: "Refrigerante Litro",
           marcas: {
-            Coca: { preco: 10, img: "imagens/babacu/bebidas/coca.1L.png" },
-            Guarana: { preco: 10, img: "imagens/babacu/bebidas/guara.1L.png" },
-            Soda: { preco: 10, img: "imagens/babacu/bebidas/soda.1L.png" },
-            Fanta: { preco: 10, img: "imagens/babacu/bebidas/fanta.1L.png" },
-            "Coca Zero": { preco: 10, img: "imagens/babacu/bebidas/coca.1Lz.png" },
-            "Guarana Zero": { preco: 10, img: "imagens/babacu/bebidas/guara.1Lz.png" },
-            Cajuina: { preco: 10, img: "imagens/babacu/bebidas/cajuina.1L.png" }
+            Coca: { preco: 10, img: "imagens/babacu/coca.1L.png" },
+            Guarana: { preco: 10, img: "imagens/babacu/guara.1L.png" },
+            Soda: { preco: 10, img: "imagens/babacu/sprite1L.png" },
+            Fanta: { preco: 10, img: "imagens/babacu/fanta1L.png" },
+            "Coca Zero": { preco: 10, img: "imagens/babacu/coca.1LZ.png" },
+            "Guarana Zero": { preco: 10, img: "imagens/babacu/guara.1LZ.png" },
+            Cajuina: { preco: 10, img: "imagens/babacu/cajuina1L.png" }
           }
         },
         {
           nome: "Cerveja 300ml",
           marcas: {
-            Brahma: { preco: 5, img: "imagens/babacu/bebidas/brahma.300.png" },
-            Skol: { preco: 5, img: "imagens/babacu/bebidas/skol.300.png" }
+            Brahma: { preco: 5, img: "imagens/babacu/brama300.png" },
+            Skol: { preco: 5, img: "imagens/babacu/skol300.png" }
           }
         },
         {
           nome: "Long Neck",
           marcas: {
-            Heineken: { preco: 10, img: "imagens/babacu/bebidas/heineken.png" },
-            Stella: { preco: 10, img: "imagens/babacu/bebidas/stella.png" },
-            Budweiser: { preco: 10, img: "imagens/babacu/bebidas/budweiser.png" },
-            "Cabaré Ice": { preco: 10, img: "imagens/babacu/bebidas/cabare-ice.png" },
-            Corona: { preco: 10, img: "imagens/babacu/bebidas/corona.png" },
-            "Michelob Ultra": { preco: 10, img: "imagens/babacu/bebidas/michelob-ultra.png" }
+            Heineken: { preco: 10, img: "imagens/babacu/heinekenlong.png" },
+            Stella: { preco: 10, img: "imagens/babacu/stellalong.png" },
+            Budweiser: { preco: 10, img: "imagens/babacu/budweiserlong.png" },
+            "Cabaré Ice": { preco: 10, img: "imagens/babacu/cabarelong.png" },
+            Corona: { preco: 10, img: "imagens/babacu/coronalong.png" },
+            "Michelob Ultra": { preco: 10, img: "imagens/babacu/micheloblong.png" }
           }
         }
       ]
