@@ -859,43 +859,43 @@ const LOJAS = {
         {
           nome: "Crepe Carne de Sol",
           preco: 17.00,
-          img: "imagens/babacu/crepe-carne-de-sol.png",
+          img: "imagens/babacu/crepecarnedesol.png",
           descricao: "Carne de sol, queijo, catupiry, milho, ervilha e orégano."
         },
         {
           nome: "Crepe Click",
           preco: 15.00,
-          img: "imagens/babacu/crepe-click.png",
+          img: "imagens/babacu/crepeclick.png",
           descricao: "Frango, catupiry, orégano e tomate."
         },
         {
           nome: "Crepe Calabresa",
           preco: 15.00,
-          img: "imagens/babacu/crepe-calabresa.png",
+          img: "imagens/babacu/crepecalabresa.png",
           descricao: "Calabresa, queijo, cebola, milho, ervilha, tomate e orégano."
         },
         {
           nome: "Crepe Suíço",
           preco: 15.00,
-          img: "imagens/babacu/crepe-suico.png",
+          img: "imagens/babacu/crepesuico.png",
           descricao: "Queijo, presunto, tomate, milho, ervilha e orégano."
         },
         {
           nome: "Crepe da Casa",
           preco: 20.00,
-          img: "imagens/babacu/crepe-da-casa.png",
+          img: "imagens/babacu/crepedacasa.png",
           descricao: "Carne de sol, presunto, frango, tomate, milho e ervilha."
         },
         {
           nome: "Cuscuz Carne de Sol",
           preco: 16.00,
-          img: "imagens/babacu/cuscuz-carne-de-sol.png",
+          img: "imagens/babacu/cuscuzdecarne.png",
           descricao: "Cuscuz acompanhado de carne de sol."
         },
         {
           nome: "Cuscuz Frango",
           preco: 15.00,
-          img: "imagens/babacu/cuscuz-frango.png",
+          img: "imagens/babacu/cuscuzdefrango.png",
           descricao: "Cuscuz acompanhado de frango desfiado."
         },
         {
