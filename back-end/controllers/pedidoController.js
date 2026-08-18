@@ -14,6 +14,7 @@ exports.listarPedidos = (req, res) => {
 exports.listarPedidosPorLoja = (req, res) => {
     const { loja } = req.params;
 
+    // 🔒 Retém pedidos com PIX (Integral ou Dividido) pendentes de confirmação do webhook
     const sql = `
         SELECT p.*, GROUP_CONCAT(
             CONCAT(
@@ -29,7 +30,7 @@ exports.listarPedidosPorLoja = (req, res) => {
         FROM pedidos p
         JOIN itens_pedido i ON i.pedido_id = p.id
         WHERE p.loja = ? AND p.oculto = 0
-            AND NOT (p.pagamento = 'Pix' AND p.status = 'Aguardando Pagamento')
+            AND NOT ((p.pagamento = 'Pix' OR p.pagamento LIKE 'Dividido%') AND p.status = 'Aguardando Pagamento')
         GROUP BY p.id
         ORDER BY p.id DESC
     `;
@@ -74,15 +75,25 @@ exports.criarPedido = (req, res) => {
 
     console.log(req.body);
 
-    const { loja, nome_cliente, endereco, telefone, pagamento, total, troco_para, itens } = req.body;
+    const { loja, nome_cliente, endereco, telefone, pagamento, total, valor_pix, valor_dinheiro, troco_para, itens } = req.body;
 
     const sqlPedido = `
         INSERT INTO pedidos
-        (loja, nome_cliente, endereco, telefone, pagamento, total, troco_para)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        (loja, nome_cliente, endereco, telefone, pagamento, total, valor_pix, valor_dinheiro, troco_para)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    db.query(sqlPedido, [loja, nome_cliente, endereco, telefone, pagamento, total, troco_para || null], (err, result) => {
+    db.query(sqlPedido, [
+        loja,
+        nome_cliente,
+        endereco,
+        telefone,
+        pagamento,
+        total,
+        valor_pix || 0,
+        valor_dinheiro || total,
+        troco_para || null
+    ], (err, result) => {
         if (err) {
             return res.status(500).json({ sucesso: false, erro: err.message });
         }
@@ -137,7 +148,7 @@ exports.dadosLoja = (req, res) => {
     );
 };
 
-// BUSCAR UM PEDIDO ESPECÍFICO PELO ID (usado pelo carrinho para verificar status do pagamento)
+// BUSCAR UM PEDIDO ESPECÍFICO PELO ID
 exports.buscarPedidoPorId = (req, res) => {
     const { id } = req.params;
 
