@@ -41,9 +41,6 @@ document.getElementById("btnLogin").addEventListener("click", async () => {
         telaPainel.style.display = "block";
         nomeLoja.textContent = usuarioLogado.loja;
 
-
-        // Mostra botão de conectar MP se não conectado
-        // Remove qualquer botão antigo primeiro (evita duplicar ao trocar de loja sem recarregar a página)
         const btnAntigo = document.getElementById("btnConectarMP");
         if (btnAntigo) btnAntigo.remove();
 
@@ -57,7 +54,7 @@ document.getElementById("btnLogin").addEventListener("click", async () => {
                 font-size: 14px; font-weight: bold; cursor: pointer; margin-left: 10px;
             `;
             btnConectar.addEventListener("click", async () => {
-                const res = await fetch(`https://pedido-certo-production.up.railway.app/api/usuarios/oauth/url?lojaId=${usuarioLogado.id}`);
+                const res = await fetch(`${API}/api/usuarios/oauth/url?lojaId=${usuarioLogado.id}`);
                 const dados = await res.json();
                 if (dados.sucesso) window.open(dados.url, "_blank");
             });
@@ -108,8 +105,8 @@ async function carregarPedidos() {
             som.play().catch(() => {});
         }
 
-        const aguardando = dados.pedidos.filter(p => p.status === "Aguardando Pagamento").length;
-        contadorNovos.textContent = aguardando > 0 ? `${aguardando} aguardando` : "";
+        const aguardando = dados.pedidos.filter(p => p.status === "Aguardando Pagamento" || p.status === "Em preparo").length;
+        contadorNovos.textContent = aguardando > 0 ? `${aguardando} novos` : "";
 
         pedidosAnteriores = dados.pedidos;
         renderizarPedidos(dados.pedidos);
@@ -144,17 +141,43 @@ function renderizarPedidos(pedidos) {
             ? pedido.itens_resumo.split("\n").map(i => `<div>• ${i}</div>`).join("")
             : "";
 
+        const isDividido = (pedido.pagamento && pedido.pagamento.includes("Dividido")) || 
+                          (parseFloat(pedido.valor_pix) > 0 && parseFloat(pedido.valor_dinheiro) > 0);
+
+        const vPix = parseFloat(pedido.valor_pix || 0);
+        const vDinheiro = parseFloat(pedido.valor_dinheiro || 0);
+
+        let blocoPagamentoHTML = "";
+        if (isDividido) {
+            blocoPagamentoHTML = `
+                <div class="bloco-split-painel">
+                    <div class="badge-split-header">⚡ PAGAMENTO DIVIDIDO</div>
+                    <p style="margin:2px 0; color:#2e9e4f; font-weight:bold;">✅ PIX Pago: R$ ${vPix.toFixed(2)}</p>
+                    <div class="alerta-cobrar-entrega">
+                        🛵 COBRAR NA ENTREGA (Dinheiro): R$ ${vDinheiro.toFixed(2)}
+                    </div>
+                    ${pedido.troco_para ? `<p style="margin:4px 0 0 0; font-size:12px; color:#555;">💵 Troco para: R$ ${parseFloat(pedido.troco_para).toFixed(2)}</p>` : ""}
+                </div>
+            `;
+        } else {
+            blocoPagamentoHTML = `
+                <p>💳 ${pedido.pagamento}</p>
+                ${pedido.troco_para ? `<p>💵 Troco para: R$ ${parseFloat(pedido.troco_para).toFixed(2)}</p>` : ""}
+            `;
+        }
+
         let botao = "";
-        if (pedido.status === "Aguardando Pagamento") {
+        if (pedido.status === "Aguardando Pagamento" || pedido.status === "Em preparo") {
             botao = `<button class="btn-status preparo" onclick="atualizarStatus(${pedido.id}, 'Em preparo')">✅ Confirmar e preparar</button>`;
-        } else if (pedido.status === "Em preparo") {
-            botao = `<button class="btn-status saiu" onclick="atualizarStatus(${pedido.id}, 'Saiu para entrega')">🛵 Saiu para entrega</button>`;
+            if (pedido.status === "Em preparo") {
+                botao = `<button class="btn-status saiu" onclick="atualizarStatus(${pedido.id}, 'Saiu para entrega')">🛵 Saiu para entrega</button>`;
+            }
         } else if (pedido.status === "Saiu para entrega") {
             botao = `<button class="btn-status entregue" onclick="atualizarStatus(${pedido.id}, 'Entregue')">✅ Confirmar entrega</button>`;
         }
 
         return `
-        <div class="pedido-card status-${statusClass}" id="card-${pedido.id}">
+        <div class="pedido-card status-${statusClass} ${isDividido ? 'card-split-destaque' : ''}" id="card-${pedido.id}">
             <div class="pedido-topo">
                 <span class="pedido-id">#${pedido.id}</span>
                 <span class="pedido-status">${pedido.status}</span>
@@ -164,8 +187,7 @@ function renderizarPedidos(pedidos) {
             <div class="pedido-info">
                 <p><strong>${pedido.nome_cliente}</strong></p>
                 <p>📍 ${pedido.endereco}</p>
-                <p>💳 ${pedido.pagamento}</p>
-                ${pedido.troco_para ? `<p>💵 Troco para: R$ ${parseFloat(pedido.troco_para).toFixed(2)}</p>` : ""}
+                ${blocoPagamentoHTML}
             </div>
             <div class="pedido-itens">${itens}</div>
             <div class="pedido-total">Total: R$ ${parseFloat(pedido.total).toFixed(2)}</div>

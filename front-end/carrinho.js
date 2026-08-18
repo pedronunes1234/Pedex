@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let carrinho = JSON.parse(localStorage.getItem("carrinho")) || {};
 
-  // 📍 ENDEREÇO (respeita a escolha de Entrega/Retirada feita na tela inicial)
   const labelEnderecoEl = document.getElementById("labelEnderecoCarrinho");
   const tipoEntrega = localStorage.getItem("tipoEntrega") || "entrega";
 
@@ -22,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   enderecoEl.textContent = endereco;
 
-  // 👤 NOME
   const nomeSalvo = localStorage.getItem("nomeCliente");
   if (nomeSalvo) nomeInput.value = nomeSalvo;
 
@@ -34,12 +32,26 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("carrinho", JSON.stringify(carrinho));
   }
 
-  // ✅ LÓGICA DE SELEÇÃO VISUAL DE PAGAMENTO
+  function obterTotalCarrinho() {
+    let total = 0;
+    Object.values(carrinho).forEach(item => {
+      total += item.preco * item.qtd;
+    });
+    return total;
+  }
+
+  // ⚡ ELEMENTOS DO PAGAMENTO DIVIDIDO
+  const splitBox = document.getElementById("splitBox");
+  const valorPixSplitInput = document.getElementById("valorPixSplitInput");
+  const valorDinheiroSplitInput = document.getElementById("valorDinheiroSplitInput");
+  const splitMensagemErro = document.getElementById("splitMensagemErro");
+
+  // SELEÇÃO VISUAL DE PAGAMENTO
   const trocoBox = document.getElementById("trocoBox");
   const valorTrocoBox = document.getElementById("valorTrocoBox");
 
   const opcoesPagamento = Array.from(document.querySelectorAll('.pagamento .opcao')).filter(
-    opcao => !opcao.closest('.troco-box')
+    opcao => !opcao.closest('.troco-box') && !opcao.closest('#splitBox')
   );
 
   opcoesPagamento.forEach(opcao => {
@@ -50,26 +62,91 @@ document.addEventListener("DOMContentLoaded", () => {
       const radio = opcao.querySelector('input[type="radio"]');
       if (radio) radio.checked = true;
 
-      if (radio && radio.value === "Dinheiro") {
-        trocoBox.style.display = "block";
+      const valorPagamento = radio ? radio.value : "";
+
+      if (valorPagamento === "Dinheiro") {
+        if (trocoBox) trocoBox.style.display = "block";
+        if (splitBox) splitBox.style.display = "none";
 
         const trocoNao = document.querySelector('input[name="troco"][value="Não"]');
-        trocoNao.checked = true;
-        document.querySelectorAll('input[name="troco"]').forEach(r => {
-          r.closest(".opcao").classList.remove("selecionado");
-        });
-        trocoNao.closest(".opcao").classList.add("selecionado");
-        valorTrocoBox.style.display = "none";
+        if (trocoNao) {
+          trocoNao.checked = true;
+          document.querySelectorAll('input[name="troco"]').forEach(r => {
+            if (r.closest(".opcao")) r.closest(".opcao").classList.remove("selecionado");
+          });
+          if (trocoNao.closest(".opcao")) trocoNao.closest(".opcao").classList.add("selecionado");
+        }
+        if (valorTrocoBox) valorTrocoBox.style.display = "none";
+      }
+      else if (valorPagamento === "Dividido") {
+        if (splitBox) splitBox.style.display = "block";
+        if (trocoBox) trocoBox.style.display = "block";
 
-      } else {
-        trocoBox.style.display = "none";
-        valorTrocoBox.style.display = "none";
+        const totalAtual = obterTotalCarrinho();
+        if (totalAtual > 0) {
+          const metade = (totalAtual / 2).toFixed(2);
+          if (valorPixSplitInput) valorPixSplitInput.value = metade;
+          if (valorDinheiroSplitInput) valorDinheiroSplitInput.value = (totalAtual - parseFloat(metade)).toFixed(2);
+        }
+        validarValoresSplit();
+      }
+      else {
+        if (trocoBox) trocoBox.style.display = "none";
+        if (valorTrocoBox) valorTrocoBox.style.display = "none";
+        if (splitBox) splitBox.style.display = "none";
         opcoesTroco.forEach(o => o.classList.remove("selecionado"));
       }
     });
   });
 
-  // ✅ LÓGICA DE TROCO (Sim/Não)
+  function validarValoresSplit() {
+    if (!valorPixSplitInput || !valorDinheiroSplitInput) return true;
+
+    const total = obterTotalCarrinho();
+    const vPix = parseFloat(valorPixSplitInput.value) || 0;
+    const vDinheiro = parseFloat(valorDinheiroSplitInput.value) || 0;
+    const soma = parseFloat((vPix + vDinheiro).toFixed(2));
+
+    if (vPix <= 0 || vDinheiro <= 0) {
+      if (splitMensagemErro) {
+        splitMensagemErro.textContent = "⚠️ Ambos os valores (PIX e Dinheiro) devem ser maiores que R$ 0,00.";
+        splitMensagemErro.style.display = "block";
+      }
+      return false;
+    }
+
+    if (Math.abs(soma - total) > 0.01) {
+      if (splitMensagemErro) {
+        splitMensagemErro.textContent = `⚠️ A soma (R$ ${soma.toFixed(2)}) deve ser igual ao total (R$ ${total.toFixed(2)}).`;
+        splitMensagemErro.style.display = "block";
+      }
+      return false;
+    }
+
+    if (splitMensagemErro) splitMensagemErro.style.display = "none";
+    return true;
+  }
+
+  if (valorPixSplitInput) {
+    valorPixSplitInput.addEventListener("input", () => {
+      const total = obterTotalCarrinho();
+      const vPix = parseFloat(valorPixSplitInput.value) || 0;
+      const vDinheiro = Math.max(0, total - vPix);
+      if (valorDinheiroSplitInput) valorDinheiroSplitInput.value = vDinheiro.toFixed(2);
+      validarValoresSplit();
+    });
+  }
+
+  if (valorDinheiroSplitInput) {
+    valorDinheiroSplitInput.addEventListener("input", () => {
+      const total = obterTotalCarrinho();
+      const vDinheiro = parseFloat(valorDinheiroSplitInput.value) || 0;
+      const vPix = Math.max(0, total - vDinheiro);
+      if (valorPixSplitInput) valorPixSplitInput.value = vPix.toFixed(2);
+      validarValoresSplit();
+    });
+  }
+
   const opcoesTroco = Array.from(document.querySelectorAll('.troco-box .opcao'));
 
   opcoesTroco.forEach(opcao => {
@@ -88,9 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 🧾 RENDERIZAR
   function renderizarCarrinho() {
-
     lista.innerHTML = "";
     let total = 0;
 
@@ -106,21 +181,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="info-item">
           <h4>${item.nome}</h4>
           <p class="desc-item">
-            ${item.sabores && item.sabores.length > 0
-              ? `Sabores: ${item.sabores.join(", ")}`
-              : ""}
-            ${item.tamanho
-              ? `<br>Tamanho: ${item.tamanho}`
-              : ""}
-            ${item.borda && item.borda !== "Sem borda"
-              ? `<br>Borda: ${item.borda}`
-              : ""}
-            ${item.adicionais && item.adicionais.length > 0
-              ? `<br>Adicionais: ${item.adicionais.join(", ")}`
-              : ""}
-            ${item.marca
-              ? `<br>${item.marca}`
-              : ""}
+            ${item.sabores && item.sabores.length > 0 ? `Sabores: ${item.sabores.join(", ")}` : ""}
+            ${item.tamanho ? `<br>Tamanho: ${item.tamanho}` : ""}
+            ${item.borda && item.borda !== "Sem borda" ? `<br>Borda: ${item.borda}` : ""}
+            ${item.adicionais && item.adicionais.length > 0 ? `<br>Adicionais: ${item.adicionais.join(", ")}` : ""}
+            ${item.marca ? `<br>${item.marca}` : ""}
           </p>
 
           <div class="controle">
@@ -164,7 +229,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderizarCarrinho();
 
-  // 🚀 FINALIZAR PEDIDO
   document.getElementById("btnFinalizar").addEventListener("click", async () => {
 
     const nome = nomeInput.value.trim();
@@ -181,7 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (!pagamentoSelecionado) {
-      alert("Escolha o pagamento.");
+      alert("Escolha a forma de pagamento.");
       return;
     }
 
@@ -200,21 +264,34 @@ document.addEventListener("DOMContentLoaded", () => {
       };
     });
 
-    // TROCO
+    const formaPagamento = pagamentoSelecionado.value;
+    let valorPixEnviar = totalPedido;
+    let valorDinheiroEnviar = 0;
+
+    if (formaPagamento === "Dividido") {
+      if (!validarValoresSplit()) {
+        alert("Corrija os valores do pagamento dividido.");
+        return;
+      }
+      valorPixEnviar = parseFloat(valorPixSplitInput.value);
+      valorDinheiroEnviar = parseFloat(valorDinheiroSplitInput.value);
+    }
+
     let trocoParaEnviar = null;
-    if (pagamentoSelecionado.value === "Dinheiro") {
+    if (formaPagamento === "Dinheiro" || (formaPagamento === "Dividido" && valorDinheiroEnviar > 0)) {
       const trocoSim = document.querySelector('input[name="troco"]:checked');
       if (trocoSim && trocoSim.value === "Sim") {
         const valorTrocoRaw = document.getElementById("valorTrocoInput").value;
         const valorTroco = parseFloat(valorTrocoRaw);
+        const valorComparacao = formaPagamento === "Dividido" ? valorDinheiroEnviar : totalPedido;
 
         if (!valorTrocoRaw || isNaN(valorTroco) || valorTroco <= 0) {
           alert("Informe um valor de troco válido.");
           return;
         }
 
-        if (valorTroco < totalPedido) {
-          alert(`O valor do troco (R$ ${valorTroco.toFixed(2)}) é menor que o total (R$ ${totalPedido.toFixed(2)}).`);
+        if (valorTroco < valorComparacao) {
+          alert(`O valor para troco (R$ ${valorTroco.toFixed(2)}) é menor que o valor a pagar em dinheiro (R$ ${valorComparacao.toFixed(2)}).`);
           return;
         }
 
@@ -230,21 +307,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
 
-      // SE PIX — gera QR Code via Mercado Pago e salva pedido no controller
-      if (pagamentoSelecionado.value === "Pix") {
+      if (formaPagamento === "Pix" || formaPagamento === "Dividido") {
         const resPix = await fetch("https://pedido-certo-production.up.railway.app/api/pagamento/pix", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             total: totalPedido,
+            valorPix: valorPixEnviar,
+            valorDinheiro: valorDinheiroEnviar,
             nomeCliente: nome,
-            email:"",
+            email: "",
             dadosPedido: {
               loja,
               nome_cliente: nome,
               endereco,
-              pagamento: "Pix",
+              pagamento: formaPagamento === "Dividido" ? "Dividido (PIX + Dinheiro)" : "Pix",
               total: totalPedido,
+              valor_pix: valorPixEnviar,
+              valor_dinheiro: valorDinheiroEnviar,
+              troco_para: trocoParaEnviar,
               itens
             }
           })
@@ -253,7 +334,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const dadosPix = await resPix.json();
 
         if (dadosPix.sucesso) {
-          mostrarQRCodeMP(dadosPix.pedidoId, totalPedido, dadosPix.qrCode, dadosPix.qrCodeBase64, loja);
+          mostrarQRCodeMP({
+            pedidoId: dadosPix.pedidoId,
+            totalPedido: totalPedido,
+            valorPix: valorPixEnviar,
+            valorDinheiro: valorDinheiroEnviar,
+            qrCode: dadosPix.qrCode,
+            qrCodeBase64: dadosPix.qrCodeBase64,
+            loja: loja,
+            isDividido: formaPagamento === "Dividido"
+          });
         } else {
           alert("Erro ao gerar QR Code Pix.");
         }
@@ -263,7 +353,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // CARTÃO OU DINHEIRO — salva pedido normalmente
       const res = await fetch("https://pedido-certo-production.up.railway.app/api/pedidos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -272,8 +361,10 @@ document.addEventListener("DOMContentLoaded", () => {
           nome_cliente: nome,
           endereco,
           telefone: "",
-          pagamento: pagamentoSelecionado.value,
+          pagamento: formaPagamento,
           total: totalPedido,
+          valor_pix: 0,
+          valor_dinheiro: totalPedido,
           troco_para: trocoParaEnviar,
           itens
         })
@@ -289,12 +380,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const pedidoId = dados.pedidoId;
-
-      // TROCO NA MENSAGEM
-      let msgTroco = "";
-      if (trocoParaEnviar) {
-        msgTroco = ` | Troco para: R$ ${trocoParaEnviar.toFixed(2)}`;
-      }
+      let msgTroco = trocoParaEnviar ? ` | Troco para: R$ ${trocoParaEnviar.toFixed(2)}` : "";
 
       alert(`Pedido #${pedidoId} confirmado! Acompanhe pelo painel.${msgTroco}`);
       localStorage.removeItem("carrinho");
@@ -312,7 +398,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  function mostrarQRCodeMP(pedidoId, total, qrCode, qrCodeBase64, loja) {
+  function mostrarQRCodeMP(config) {
+    let pedidoId, totalPedido, valorPix, valorDinheiro, qrCode, qrCodeBase64, isDividido;
+
+    if (typeof config === "object") {
+      pedidoId = config.pedidoId;
+      totalPedido = config.totalPedido || config.total;
+      valorPix = config.valorPix || config.total;
+      valorDinheiro = config.valorDinheiro || 0;
+      qrCode = config.qrCode;
+      qrCodeBase64 = config.qrCodeBase64;
+      isDividido = config.isDividido;
+    } else {
+      pedidoId = arguments[0];
+      totalPedido = arguments[1];
+      valorPix = arguments[1];
+      valorDinheiro = 0;
+      qrCode = arguments[2];
+      qrCodeBase64 = arguments[3];
+      isDividido = false;
+    }
+
     const modal = document.createElement("div");
     modal.style.cssText = `
         position: fixed; inset: 0; background: rgba(0,0,0,0.8);
@@ -325,9 +431,18 @@ document.addEventListener("DOMContentLoaded", () => {
             <h2 style="color:#c40000; margin-bottom:4px;">Pagar via Pix</h2>
             <p style="color:#888; font-size:14px; margin-bottom:16px;">Pedido #${pedidoId}</p>
 
-            <div style="font-size:28px; font-weight:bold; color:#222; margin-bottom:16px;">
-                R$ ${total.toFixed(2)}
-            </div>
+            ${isDividido ? `
+              <div style="background:#fff5f5; border:1.5px solid #ffccc7; border-radius:10px; padding:10px; margin-bottom:14px; text-align:left; font-size:13px;">
+                <div style="font-weight:bold; color:#c40000; margin-bottom:4px;">⚡ Pagamento Dividido</div>
+                <div style="color:#555;">Total do Pedido: <strong>R$ ${totalPedido.toFixed(2)}</strong></div>
+                <div style="color:#2e9e4f; font-weight:bold;">1. Pagar no PIX agora: R$ ${valorPix.toFixed(2)}</div>
+                <div style="color:#c40000; font-weight:bold;">2. Pagar na Entrega (Dinheiro): R$ ${valorDinheiro.toFixed(2)}</div>
+              </div>
+            ` : `
+              <div style="font-size:28px; font-weight:bold; color:#222; margin-bottom:16px;">
+                  R$ ${valorPix.toFixed(2)}
+              </div>
+            `}
 
             <img src="data:image/png;base64,${qrCodeBase64}" 
                  style="width:200px; height:200px; margin-bottom:16px;">
@@ -362,30 +477,38 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("btnCopiarPix").textContent = "✅ Código copiado!";
     });
 
-    // Verifica o status do pedido a cada 3 segundos
     const intervaloVerificacao = setInterval(async () => {
       try {
         const res = await fetch(`https://pedido-certo-production.up.railway.app/api/pedidos/${pedidoId}`);
         const dados = await res.json();
 
-        if (dados.sucesso && dados.pedido.status !== "Aguardando Pagamento") {
+        if (dados.sucesso && dados.pedido && dados.pedido.status !== "Aguardando Pagamento") {
           clearInterval(intervaloVerificacao);
-          mostrarPagamentoConfirmado(modal, pedidoId);
+          mostrarPagamentoConfirmado(modal, pedidoId, isDividido, valorDinheiro);
         }
       } catch (err) {
         console.error("Erro ao verificar status do pagamento:", err);
       }
     }, 3000);
 
-    function mostrarPagamentoConfirmado(modal, pedidoId) {
+    function mostrarPagamentoConfirmado(modal, pedidoId, isDividido, valorDinheiro) {
       const conteudo = document.getElementById("conteudoModalPix");
       conteudo.innerHTML = `
           <div style="font-size:56px; margin-bottom:12px;">✅</div>
-          <h2 style="color:#2e9e4f; margin-bottom:4px;">Pagamento confirmado!</h2>
-          <p style="color:#888; font-size:14px; margin-bottom:20px;">Pedido #${pedidoId}</p>
-          <p style="font-size:14px; color:#444; margin-bottom:20px;">
-              Seu pedido já foi enviado para a loja e está sendo preparado.
-          </p>
+          <h2 style="color:#2e9e4f; margin-bottom:4px;">Pagamento PIX confirmado!</h2>
+          <p style="color:#888; font-size:14px; margin-bottom:16px;">Pedido #${pedidoId}</p>
+          
+          ${isDividido ? `
+            <div style="background:#fff5f5; border:1.5px solid #ffccc7; border-radius:10px; padding:10px; margin-bottom:16px; font-size:13px; text-align:left; color:#c40000;">
+              📌 Seu PIX foi aprovado com sucesso e o pedido enviado para a cozinha!<br><br>
+              🚨 <strong>A COBRAR NA ENTREGA: R$ ${valorDinheiro.toFixed(2)}</strong> (Pague em dinheiro ao entregador).
+            </div>
+          ` : `
+            <p style="font-size:14px; color:#444; margin-bottom:20px;">
+                Seu pedido já foi enviado para a loja e está sendo preparado.
+            </p>
+          `}
+
           <button id="btnFecharConfirmado" style="
               width:100%; padding:14px; background:#2e9e4f;
               color:#fff; border:none; border-radius:12px;
@@ -404,4 +527,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-}); // fecha DOMContentLoaded
+});

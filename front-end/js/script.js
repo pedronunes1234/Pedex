@@ -1258,6 +1258,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  
+
 });
 
 function abrirCarrinho() {
