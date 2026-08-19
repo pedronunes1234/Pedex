@@ -77,7 +77,7 @@ exports.callbackOAuth = async (req, res) => {
             [dados.access_token, dados.user_id, lojaId],
             (err) => {
                 if (err) return res.status(500).send("Erro ao salvar token");
-                res.redirect(`https://pedronunes1234.github.io/Pedido-Certo/front-end/painel.html?conectado=true`);
+               res.redirect(`https://pedronunes1234.github.io/Pedex/front-end/painel.html?conectado=true`);
             }
         );
 
