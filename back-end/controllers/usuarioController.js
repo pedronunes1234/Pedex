@@ -24,13 +24,18 @@ exports.login = (req, res) => {
                     return res.json({ sucesso: false, mensagem: "Email ou senha incorretos." });
                 }
 
+                // 🔒 Validação reforçada: só considera conectado se mp_access_token for válido e não for 'undefined'
+                const temTokenValido = !!(usuario.mp_access_token && 
+                                          usuario.mp_access_token !== "undefined" && 
+                                          usuario.mp_access_token.trim() !== "");
+
                 res.json({
                     sucesso: true,
                     usuario: {
                         id: usuario.id,
                         nome: usuario.nome,
                         loja: usuario.loja,
-                        mp_conectado: !!usuario.mp_access_token
+                        mp_conectado: temTokenValido
                     }
                 });
             } catch (errBcrypt) {
@@ -72,17 +77,23 @@ exports.callbackOAuth = async (req, res) => {
 
         const dados = await response.json();
 
+        // 🔒 Validação de Segurança: Se o Mercado Pago retornou erro, NUNCA salva no banco!
+        if (!dados.access_token) {
+            console.error("Erro no retorno do Mercado Pago:", dados);
+            return res.status(400).send(`⚠️ Falha na autenticação do Mercado Pago: ${dados.message || dados.error || 'Token não gerado'}. Verifique as chaves MP_CLIENT_ID e MP_CLIENT_SECRET no Railway.`);
+        }
+
         db.query(
             "UPDATE usuarios SET mp_access_token = ?, mp_user_id = ? WHERE id = ?",
-            [dados.access_token, dados.user_id, lojaId],
+            [dados.access_token, String(dados.user_id), lojaId],
             (err) => {
-                if (err) return res.status(500).send("Erro ao salvar token");
-               res.redirect(`https://pedronunes1234.github.io/Pedex/front-end/painel.html?conectado=true`);
+                if (err) return res.status(500).send("Erro ao salvar token no banco de dados");
+                res.redirect(`https://pedronunes1234.github.io/Pedex/front-end/painel.html?conectado=true`);
             }
         );
 
     } catch (err) {
         console.error("Erro OAuth:", err);
-        res.status(500).send("Erro na autenticação");
+        res.status(500).send("Erro interno na autenticação OAuth");
     }
 };

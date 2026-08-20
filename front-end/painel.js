@@ -1,6 +1,6 @@
 const API = "https://pedido-certo-production.up.railway.app";
 
-let usuarioLogado = null;
+let usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado")) || null;
 let pedidosAnteriores = [];
 let filtroAtual = "todos";
 let intervaloPainel = null;
@@ -13,6 +13,76 @@ const erroLogin = document.getElementById("erroLogin");
 const contadorNovos = document.getElementById("contadorNovos");
 const som = document.getElementById("somNovoPedido");
 
+// 🟢 VERIFICA SE O USUÁRIO JÁ ESTÁ LOGADO AO CARREGAR A PÁGINA (F5 OU ACESSO DIRETO)
+document.addEventListener("DOMContentLoaded", () => {
+    // Checa se veio o parâmetro ?conectado=true do redirect do Mercado Pago
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("conectado") === "true") {
+        alert(" Mercado Pago conectado com sucesso!");
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    if (usuarioLogado) {
+        iniciarPainel();
+    }
+});
+
+function iniciarPainel() {
+    if (!usuarioLogado) return;
+
+    if (telaLogin) telaLogin.style.display = "none";
+    if (telaPainel) telaPainel.style.display = "block";
+    if (nomeLoja) nomeLoja.textContent = usuarioLogado.loja;
+
+    atualizarStatusBotaoMP(usuarioLogado);
+
+    carregarPedidos();
+    if (intervaloPainel) clearInterval(intervaloPainel);
+    intervaloPainel = setInterval(carregarPedidos, 15000);
+}
+
+// 💳 RENDERIZA O BOTÃO "CONECTAR MERCADO PAGO" OU O SELO "CONECTADO ✅"
+function atualizarStatusBotaoMP(usuario) {
+    const containerHeader = document.querySelector(".header-linha-topo") || document.querySelector(".header-painel");
+    if (!containerHeader) return;
+
+    const btnAntigo = document.getElementById("btnConectarMP");
+    if (btnAntigo) btnAntigo.remove();
+
+    const btnMP = document.createElement("button");
+    btnMP.id = "btnConectarMP";
+
+    if (usuario.mp_conectado) {
+        btnMP.textContent = " Mercado Pago Conectado";
+        btnMP.style.cssText = `
+            background: #2e9e4f; color: #ffffff; border: none;
+            padding: 6px 14px; border-radius: 8px;
+            font-size: 13px; font-weight: bold; cursor: default; margin-left: 10px;
+        `;
+    } else {
+        btnMP.textContent = "💳 Conectar Mercado Pago";
+        btnMP.style.cssText = `
+            background: #ffffff; color: #c40000; border: 2px solid #c40000;
+            padding: 6px 14px; border-radius: 8px;
+            font-size: 13px; font-weight: bold; cursor: pointer; margin-left: 10px;
+            transition: 0.2s;
+        `;
+        btnMP.addEventListener("click", async () => {
+            try {
+                const res = await fetch(`${API}/api/usuarios/oauth/url?lojaId=${usuario.id}`);
+                const dados = await res.json();
+                if (dados.sucesso) window.open(dados.url, "_blank");
+                else alert("Erro ao obter URL do Mercado Pago.");
+            } catch (err) {
+                alert("Erro ao conectar ao servidor.");
+            }
+        });
+    }
+
+    containerHeader.appendChild(btnMP);
+}
+
+// 🔐 LOGIN DO LOJISTA
 document.getElementById("btnLogin").addEventListener("click", async () => {
     const email = document.getElementById("emailLogin").value.trim();
     const senha = document.getElementById("senhaLogin").value.trim();
@@ -37,49 +107,29 @@ document.getElementById("btnLogin").addEventListener("click", async () => {
         }
 
         usuarioLogado = dados.usuario;
-        telaLogin.style.display = "none";
-        telaPainel.style.display = "block";
-        nomeLoja.textContent = usuarioLogado.loja;
+        localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado));
 
-        const btnAntigo = document.getElementById("btnConectarMP");
-        if (btnAntigo) btnAntigo.remove();
-
-        if (!dados.usuario.mp_conectado) {
-            const btnConectar = document.createElement("button");
-            btnConectar.id = "btnConectarMP";
-            btnConectar.textContent = "💳 Conectar Mercado Pago";
-            btnConectar.style.cssText = `
-                background: #ffffff; color: #c40000; border: 2px solid #c40000;
-                padding: 10px 16px; border-radius: 8px;
-                font-size: 14px; font-weight: bold; cursor: pointer; margin-left: 10px;
-            `;
-            btnConectar.addEventListener("click", async () => {
-                const res = await fetch(`${API}/api/usuarios/oauth/url?lojaId=${usuarioLogado.id}`);
-                const dados = await res.json();
-                if (dados.sucesso) window.open(dados.url, "_blank");
-            });
-            document.querySelector(".header-painel").appendChild(btnConectar);
-        }
-
-        carregarPedidos();
-        intervaloPainel = setInterval(carregarPedidos, 15000);
+        iniciarPainel();
 
     } catch (err) {
         erroLogin.textContent = "Erro ao conectar ao servidor.";
     }
 });
 
+// 🚪 SAIR (LOGOUT)
 document.getElementById("btnSair").addEventListener("click", () => {
     clearInterval(intervaloPainel);
     usuarioLogado = null;
+    localStorage.removeItem("usuarioLogado");
     pedidosAnteriores = [];
-    telaLogin.style.display = "flex";
-    telaPainel.style.display = "none";
+    if (telaLogin) telaLogin.style.display = "flex";
+    if (telaPainel) telaPainel.style.display = "none";
 
     const btnAntigo = document.getElementById("btnConectarMP");
     if (btnAntigo) btnAntigo.remove();
 });
 
+// 🔍 FILTROS DE STATUS
 document.querySelectorAll(".filtro").forEach(btn => {
     btn.addEventListener("click", () => {
         document.querySelectorAll(".filtro").forEach(b => b.classList.remove("ativo"));
@@ -89,6 +139,7 @@ document.querySelectorAll(".filtro").forEach(btn => {
     });
 });
 
+// 📦 BUSCAR PEDIDOS NA API
 async function carregarPedidos() {
     try {
         const loja = encodeURIComponent(usuarioLogado.loja);
@@ -116,6 +167,7 @@ async function carregarPedidos() {
     }
 }
 
+// 🎨 RENDERIZAR LISTA DE PEDIDOS NO PAINEL
 function renderizarPedidos(pedidos) {
     const filtrados = filtroAtual === "todos"
         ? pedidos
@@ -151,29 +203,29 @@ function renderizarPedidos(pedidos) {
         if (isDividido) {
             blocoPagamentoHTML = `
                 <div class="bloco-split-painel">
-                    <div class="badge-split-header">⚡ PAGAMENTO DIVIDIDO</div>
-                    <p style="margin:2px 0; color:#2e9e4f; font-weight:bold;">✅ PIX Pago: R$ ${vPix.toFixed(2)}</p>
+                    <div class="badge-split-header"> PAGAMENTO DIVIDIDO</div>
+                    <p style="margin:2px 0; color:#2e9e4f; font-weight:bold;"> PIX Pago: R$ ${vPix.toFixed(2)}</p>
                     <div class="alerta-cobrar-entrega">
-                        🛵 COBRAR NA ENTREGA (Dinheiro): R$ ${vDinheiro.toFixed(2)}
+                         COBRAR NA ENTREGA (Dinheiro): R$ ${vDinheiro.toFixed(2)}
                     </div>
-                    ${pedido.troco_para ? `<p style="margin:4px 0 0 0; font-size:12px; color:#555;">💵 Troco para: R$ ${parseFloat(pedido.troco_para).toFixed(2)}</p>` : ""}
+                    ${pedido.troco_para ? `<p style="margin:4px 0 0 0; font-size:12px; color:#555;"> Troco para: R$ ${parseFloat(pedido.troco_para).toFixed(2)}</p>` : ""}
                 </div>
             `;
         } else {
             blocoPagamentoHTML = `
-                <p>💳 ${pedido.pagamento}</p>
-                ${pedido.troco_para ? `<p>💵 Troco para: R$ ${parseFloat(pedido.troco_para).toFixed(2)}</p>` : ""}
+                <p> ${pedido.pagamento}</p>
+                ${pedido.troco_para ? `<p> Troco para: R$ ${parseFloat(pedido.troco_para).toFixed(2)}</p>` : ""}
             `;
         }
 
         let botao = "";
         if (pedido.status === "Aguardando Pagamento" || pedido.status === "Em preparo") {
-            botao = `<button class="btn-status preparo" onclick="atualizarStatus(${pedido.id}, 'Em preparo')">✅ Confirmar e preparar</button>`;
+            botao = `<button class="btn-status preparo" onclick="atualizarStatus(${pedido.id}, 'Em preparo')"> Confirmar e preparar</button>`;
             if (pedido.status === "Em preparo") {
-                botao = `<button class="btn-status saiu" onclick="atualizarStatus(${pedido.id}, 'Saiu para entrega')">🛵 Saiu para entrega</button>`;
+                botao = `<button class="btn-status saiu" onclick="atualizarStatus(${pedido.id}, 'Saiu para entrega')"> Saiu para entrega</button>`;
             }
         } else if (pedido.status === "Saiu para entrega") {
-            botao = `<button class="btn-status entregue" onclick="atualizarStatus(${pedido.id}, 'Entregue')">✅ Confirmar entrega</button>`;
+            botao = `<button class="btn-status entregue" onclick="atualizarStatus(${pedido.id}, 'Entregue')"> Confirmar entrega</button>`;
         }
 
         return `
@@ -186,7 +238,7 @@ function renderizarPedidos(pedidos) {
             </div>
             <div class="pedido-info">
                 <p><strong>${pedido.nome_cliente}</strong></p>
-                <p>📍 ${pedido.endereco}</p>
+                <p> ${pedido.endereco}</p>
                 ${blocoPagamentoHTML}
             </div>
             <div class="pedido-itens">${itens}</div>
@@ -196,6 +248,7 @@ function renderizarPedidos(pedidos) {
     }).join("");
 }
 
+// 🔄 ATUALIZAR STATUS DO PEDIDO
 async function atualizarStatus(id, status) {
     try {
         await fetch(`${API}/api/pedidos/${id}/status`, {
@@ -209,6 +262,7 @@ async function atualizarStatus(id, status) {
     }
 }
 
+// ✕ OCULTAR PEDIDO DO PAINEL
 async function ocultarPedido(id) {
     const card = document.getElementById(`card-${id}`);
     if (card) card.style.display = "none";
