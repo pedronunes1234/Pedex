@@ -49,10 +49,24 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputReferencia = document.getElementById("inputReferencia");
     const btnSalvarEndereco = document.getElementById("btnSalvarEndereco");
 
+    // 🔹 RESTRIÇÃO: NÚMERO DA CASA ACEITA APENAS NÚMEROS INTEIROS
+    if (inputNumero) {
+      inputNumero.setAttribute("type", "tel");
+      inputNumero.setAttribute("pattern", "[0-9]*");
+      inputNumero.addEventListener("input", (e) => {
+        e.target.value = e.target.value.replace(/\D/g, "");
+      });
+    }
+
+    // 🔹 TOGGLE: CLIQUE ÚNICO ABRE, SEGUNDO CLIQUE FECHA AS CAIXINHAS
     if (btnEndereco) {
       btnEndereco.addEventListener("click", () => {
-        camposEndereco.style.display = "block";
-        inputRua.focus();
+        if (camposEndereco.style.display === "block") {
+          camposEndereco.style.display = "none";
+        } else {
+          camposEndereco.style.display = "block";
+          if (inputRua) inputRua.focus();
+        }
       });
     }
 
@@ -90,6 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!loja) return;
 
   // 🔹 Limpa o carrinho automaticamente se o cliente trocou de loja
+  // (ex: adicionou hambúrguer na Burger House, depois entrou na Peixodá Pizzaria)
   const lojaCarrinhoSalva = localStorage.getItem("lojaCarrinhoAtual");
   if (lojaCarrinhoSalva && lojaCarrinhoSalva !== lojaId) {
     localStorage.removeItem("carrinho");
@@ -100,11 +115,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const statusEl = document.querySelector(".status-text");
 
+  // ===============================
+  // 🔹 SISTEMA DE PERÍODOS (lojas com horário por dia/turno, ex: Babaçu)
+  // Não afeta lojas que usam o formato simples loja.abre / loja.fecha
+  // ===============================
   function obterPeriodoAtual() {
     if (!loja.horarios) return null;
 
     const agora = new Date();
-    const diaSemana = agora.getDay();
+    const diaSemana = agora.getDay(); // 0=domingo ... 6=sábado
     const minutosAgora = agora.getHours() * 60 + agora.getMinutes();
 
     const janelasHoje = loja.horarios[diaSemana] || [];
@@ -114,22 +133,28 @@ document.addEventListener("DOMContentLoaded", () => {
       const [fh, fm] = janela.fim.split(":").map(Number);
 
       const minutosInicio = ih * 60 + im;
+      // "00:00" como horário de fechamento = meia-noite (vira o dia) → tratamos como 24:00
       const minutosFim = (fh === 0 && fm === 0) ? 24 * 60 : fh * 60 + fm;
 
       if (minutosAgora >= minutosInicio && minutosAgora < minutosFim) {
-        return janela;
+        return janela; // já tem o campo "id" (ex: "sexta-noite")
       }
     }
 
-    return null;
+    return null; // loja fechada agora
   }
 
+  // Um produto sem "tag" é sempre exibido. Um produto com "tag" só aparece
+  // se essa tag estiver liberada para o período atual em loja.produtosPorPeriodo.
   function produtoDisponivelAgora(produto) {
+    // Lojas sem sistema de período (Burger House, Pizzaria) sempre mostram tudo
     if (!loja.horarios) return true;
 
+    // Loja com sistema de período: se estiver fechada agora, nada aparece
     const periodo = obterPeriodoAtual();
     if (!periodo) return false;
 
+    // Produto sem tag = sem restrição própria, mas só aparece com a loja aberta (já garantido acima)
     if (!produto.tag) return true;
     if (!loja.produtosPorPeriodo) return true;
 
@@ -137,6 +162,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return tagsLiberadas.includes(produto.tag);
   }
 
+  // Usado pela Porção de Carne e pela Marmita: pega as carnes do período atual.
+  // Se a loja não tiver carnesPorPeriodo (outras lojas), cai no fallback do produto.
   function obterCarnesDisponiveis(fallback) {
     const periodo = obterPeriodoAtual();
 
@@ -148,6 +175,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function verificarHorario() {
+
+    // 🔹 Lojas com horário por período (ex: Babaçu)
     if (loja.horarios) {
       const periodo = obterPeriodoAtual();
 
@@ -163,6 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    // 🔹 Lojas com horário simples (formato antigo, inalterado)
     const agora = new Date();
     const minutosAgora = agora.getHours() * 60 + agora.getMinutes();
 
@@ -187,6 +217,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const totalEl = document.getElementById("total-carrinho");
   atualizarTotal();
 
+  // 🔹 Corrige o carrinho "desatualizado" quando o navegador restaura a página
+  // pelo botão de voltar (bfcache), sem recarregar o script do zero.
   window.addEventListener("pageshow", (evento) => {
     if (evento.persisted) {
       window.carrinho = JSON.parse(localStorage.getItem("carrinho")) || {};
@@ -241,9 +273,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     totalEl.textContent = "R$ " + total.toFixed(2);
 
+    // 🔹 Salva o carrinho imediatamente, sempre que ele muda nesta página
+    // (evita que uma versão antiga guardada só na memória sobrescreva
+    // uma remoção feita na tela do carrinho)
     localStorage.setItem("carrinho", JSON.stringify(window.carrinho));
   }
 
+  // ===============================
+  // 🔹 GERAR ID ÚNICO (CORREÇÃO)
+  // ===============================
   function gerarId(produto, tamanho, marca) {
     return (
       produto.nome.replace(/\s/g, "") +
@@ -255,6 +293,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function abrirModal(produto) {
 
     console.log(produto);
+
+    console.log("ABRIU MODAL");
     produtoAtual = produto;
     adicionaisSelecionados = [];
 
@@ -361,6 +401,7 @@ document.addEventListener("DOMContentLoaded", () => {
           "R$ " +
           totalModal.toFixed(2);
 
+        // Rastrear adicional
         const existente = adicionaisSelecionados.find(a => a.nome === adicional.nome);
         if (existente) existente.qtd = qtd;
         else adicionaisSelecionados.push({ nome: adicional.nome, qtd });
@@ -380,6 +421,7 @@ document.addEventListener("DOMContentLoaded", () => {
           "R$ " +
           totalModal.toFixed(2);
 
+        // Rastrear adicional
         const existente = adicionaisSelecionados.find(a => a.nome === adicional.nome);
         if (existente) existente.qtd = qtd;
       });
@@ -408,7 +450,6 @@ document.addEventListener("DOMContentLoaded", () => {
     listaAdicionais.innerHTML = "";
     document.getElementById("contadorSabores").textContent = "";
 
-    // Limpa seções anteriores
     ["secaoBordas", "secaoAcompanhamento", "secaoAcompanhamentoDoce", "secaoCarne", "secaoValorPorcao", "secaoMarmitaCarnes"]
       .forEach(id => {
         const el = document.getElementById(id);
@@ -440,8 +481,6 @@ document.addEventListener("DOMContentLoaded", () => {
       listaAdicionais.before(secaoAcompanhamento);
     }
 
-    // 🔹 Bordas: usa a lista personalizada da loja (loja.bordas), se existir,
-    // senão cai no padrão de sempre (não afeta lojas que já funcionavam)
     const todasAsBordas = loja.bordas || [
       { nome: "Sem borda", preco: 0 },
       { nome: "Borda de Catupiry", preco: 10 },
@@ -451,12 +490,8 @@ document.addEventListener("DOMContentLoaded", () => {
       { nome: "Borda de Chocolate Branco", preco: 12 }
     ];
 
-    const nomesBordasComQueijo = todasAsBordas
-      .filter(b => b.preco > 0 && !b.nome.toLowerCase().includes("chocolate"))
-      .map(b => b.nome);
-
     const opcoesBordas = produto.temAcompanhamento
-      ? todasAsBordas.filter(b => !nomesBordasComQueijo.includes(b.nome))
+      ? todasAsBordas.filter(b => !["Borda de Catupiry", "Borda de Cheddar", "Borda de Requeijão", "Borda de Creme Cheese"].includes(b.nome))
       : todasAsBordas;
 
     const secaoBordas = document.createElement("div");
@@ -532,7 +567,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     listaSabores.innerHTML = "";
 
-    // 🔹 LIMPEZA DE SEÇÕES ANTIGAS DO MODAL
     ["secaoBordas", "secaoAcompanhamento", "secaoAcompanhamentoDoce", "secaoCarne", "secaoValorPorcao", "secaoMarmitaCarnes"]
       .forEach(id => {
         const el = document.getElementById(id);
@@ -545,24 +579,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let precoExtraBorda = 0;
     let bordaSelecionada = { nome: "Sem borda", preco: 0 };
 
-    // 🔹 Calcula o preço base considerando sabores "especiais" (mais caros).
-    // Se algum sabor selecionado tiver preço próprio em produto.precosPorSabor,
-    // usa o MAIOR valor entre os sabores escolhidos. Sem sabores especiais,
-    // continua usando o preço normal (produto.tamanhos) — não afeta lojas
-    // que não tiverem "precosPorSabor" definido.
-    function precoBaseParaSabores(saboresArr, tam) {
-      let maior = produto.tamanhos[tam];
-      if (produto.precosPorSabor) {
-        saboresArr.forEach(s => {
-          const precoEspecial = produto.precosPorSabor[s] && produto.precosPorSabor[s][tam];
-          if (precoEspecial && precoEspecial > maior) maior = precoEspecial;
-        });
-      }
-      return maior;
-    }
-
-    // 🔹 Bordas: usa a lista personalizada da loja (loja.bordas), se existir,
-    // senão cai no padrão de sempre (não afeta lojas que já funcionavam)
     const opcoesBordas = loja.bordas || [
       { nome: "Sem borda", preco: 0 },
       { nome: "Borda de Catupiry", preco: 10 },
@@ -610,6 +626,23 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.replaceWith(btn.cloneNode(true));
     });
 
+    function recalcularPrecoMonteSuaPizza() {
+      let maiorPreco = produto.tamanhos[tamanho];
+
+      if (produto.precosPorSabor) {
+        saboresSelecionados.forEach(sabor => {
+          if (produto.precosPorSabor[sabor] && produto.precosPorSabor[sabor][tamanho]) {
+            const p = produto.precosPorSabor[sabor][tamanho];
+            if (p > maiorPreco) maiorPreco = p;
+          }
+        });
+      }
+
+      basePrice = maiorPreco + precoExtraBorda;
+      modalPrecoBase.textContent = "Preço Base: R$ " + maiorPreco.toFixed(2);
+      modalTotal.textContent = "R$ " + basePrice.toFixed(2);
+    }
+
     modal.querySelectorAll(".btn-tamanho").forEach(btn => {
 
       btn.addEventListener("click", () => {
@@ -621,23 +654,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         tamanho = btn.dataset.size;
 
-        saboresSelecionados = [];
-
-        listaSabores.querySelectorAll("input")
-          .forEach(i => i.checked = false);
-
-        basePrice = precoBaseParaSabores(saboresSelecionados, tamanho);
-        total = basePrice;
-
-        modalPrecoBase.textContent =
-          "Preço Base: R$ " + basePrice.toFixed(2);
-
-        modalTotal.textContent =
-          "R$ " + total.toFixed(2);
+        recalcularPrecoMonteSuaPizza();
 
         atualizarDisponibilidadeAcompanhamento();
         contador.textContent =
-          `Selecionados: 0/${limiteSabores[tamanho] || 2}`;
+          `Selecionados: ${saboresSelecionados.length}/${limiteSabores[tamanho] || 2}`;
       });
     });
 
@@ -673,20 +694,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         contador.textContent = `${saboresSelecionados.length}/${limite}`;
-
-        // 🔹 Recalcula o preço se algum sabor especial (mais caro) foi selecionado
-        const novoBaseSemBorda = precoBaseParaSabores(saboresSelecionados, tamanho);
-        basePrice = novoBaseSemBorda + precoExtraBorda;
-        modalPrecoBase.textContent = "Preço Base: R$ " + novoBaseSemBorda.toFixed(2);
-        modalTotal.textContent = "R$ " + basePrice.toFixed(2);
-
+        recalcularPrecoMonteSuaPizza();
         atualizarDisponibilidadeAcompanhamento();
       });
 
       listaSabores.appendChild(item);
     });
 
-    // 🔹 ACOMPANHAMENTO DINÂMICO (ABAIXO DA LISTA DE SABORES)
     const saboresDoce = ["Chocolate", "Chocolate Branco"];
     const opcoesAcompanhamentoDoce = ["M&M", "Granulado"];
     const acompanhamentoPorSabor = {};

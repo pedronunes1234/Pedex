@@ -244,7 +244,7 @@ const LOJAS = {
         {
           nome: "X Burguer",
           preco: 12.00,
-          img: "imagens/hamburgueria/x-burger.png",
+          img: "imagens/hamburgueria/xburguer.jpg",
           descricao: "Pão de hambúrguer, hambúrguer artesanal e queijo coalho."
         },
         {
@@ -262,7 +262,7 @@ const LOJAS = {
         {
           nome: "X Egg",
           preco: 15.00,
-          img: "imagens/hamburgueria/x-burger.png",
+          img: "imagens/hamburgueria/xegg.jpg",
           descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, ovo, salada e maionese."
         },
         {
@@ -274,7 +274,7 @@ const LOJAS = {
         {
           nome: "X Calabresa",
           preco: 16.00,
-          img: "imagens/hamburgueria/x-burger.png",
+          img: "imagens/hamburgueria/xcalabresa.jpg",
           descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, calabresa, salada, bacon e maionese."
         },
         {
@@ -286,7 +286,7 @@ const LOJAS = {
         {
           nome: "X Duplo",
           preco: 30.00,
-          img: "imagens/hamburgueria/x-tudo.png",
+          img: "imagens/hamburgueria/xduplo.png",
           descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, ovo, presunto, salada e maionese."
         },
         {
@@ -802,7 +802,6 @@ const LOJAS = {
     abre: "18:00",
     fecha: "23:59",
 
-    // Bordas próprias da Della Mama (preços diferentes do padrão das outras lojas)
     bordas: [
       { nome: "Sem borda", preco: 0 },
       { nome: "Borda de Catupiry", preco: 7 },
@@ -1102,8 +1101,6 @@ const LOJAS = {
           tipo: "monte-pizza",
           img: "imagens/dellamama/monte-sua-pizza.png",
           tamanhos: { P: 25, M: 35, F: 43 },
-          // Se o cliente escolher algum sabor especial, o preço da pizza
-          // passa a usar o valor desse sabor (o maior entre os escolhidos)
           precosPorSabor: {
             "Camarão": { P: 35, M: 44, F: 54 },
             "Atum": { P: 31, M: 40, F: 49 },
