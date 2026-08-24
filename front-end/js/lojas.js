@@ -1383,57 +1383,7 @@ const LOJAS = {
           img: "imagens/dellamama/porcao-macaxeira-frita.png"
         }
       ],
-
-      lanches: [
-        {
-          nome: "Hambúrguer",
-          preco: 9.50,
-          img: "imagens/dellamama/hamburguer.png",
-          descricao: "Pão e hambúrguer."
-        },
-        {
-          nome: "X-Burguer",
-          preco: 11.00,
-          img: "imagens/dellamama/x-burguer.png",
-          descricao: "Pão, hambúrguer, queijo e maionese."
-        },
-        {
-          nome: "X-Bacon",
-          preco: 12.50,
-          img: "imagens/dellamama/x-bacon.png",
-          descricao: "Pão, hambúrguer, bacon, queijo, alface, tomate e maionese."
-        },
-        {
-          nome: "X-Egg",
-          preco: 12.00,
-          img: "imagens/dellamama/x-egg.png",
-          descricao: "Pão, hambúrguer, queijo, ovo e maionese."
-        },
-        {
-          nome: "X-Calabresa",
-          preco: 12.00,
-          img: "imagens/dellamama/x-calabresa.png",
-          descricao: "Pão, hambúrguer, calabresa, queijo e maionese."
-        },
-        {
-          nome: "Americano Della Mama",
-          preco: 12.00,
-          img: "imagens/dellamama/americano-della-mama.png",
-          descricao: "Pão, presunto, queijo, ovo, alface, tomate e maionese."
-        },
-        {
-          nome: "X-Salada",
-          preco: 11.00,
-          img: "imagens/dellamama/x-salada.png",
-          descricao: "Pão, presunto, queijo, ovo, alface, tomate e orégano."
-        },
-        {
-          nome: "X-Tudo Della Mama",
-          preco: 16.00,
-          img: "imagens/dellamama/x-tudo-della-mama.png",
-          descricao: "Pão, hambúrguer, bacon, ovo, presunto, calabresa, carne churrasco, queijo, tomate, alface e maionese."
-        }
-      ],
+      
 
       bebidas: [
         {
