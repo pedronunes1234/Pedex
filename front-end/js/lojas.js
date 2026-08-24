@@ -581,10 +581,10 @@ const LOJAS = {
           adicionais: [
             { nome: "Bacon", preco: 3 },
             { nome: "Queijo Extra", preco: 3 },
-            { nome: "Presunto", preco: 2 },
+            { nome: "Presunto", preco: 1.50 },
             { nome: "Ovo", preco: 2 },
-            { nome: "Calabresa", preco: 4 },
-            { nome: "Hambúrguer Extra", preco: 5 }
+            { nome: "Calabresa", preco: 3 },
+            { nome: "Hambúrguer Extra", preco: 3 }
           ]
         },
         {
@@ -596,10 +596,10 @@ const LOJAS = {
           adicionais: [
             { nome: "Bacon", preco: 3 },
             { nome: "Queijo Extra", preco: 3 },
-            { nome: "Presunto", preco: 2 },
+            { nome: "Presunto", preco: 1.50 },
             { nome: "Ovo", preco: 2 },
-            { nome: "Calabresa", preco: 4 },
-            { nome: "Hambúrguer Extra", preco: 5 }
+            { nome: "Calabresa", preco: 3 },
+            { nome: "Hambúrguer Extra", preco: 3 }
           ]
         },
         {
@@ -611,9 +611,9 @@ const LOJAS = {
           adicionais: [
             { nome: "Bacon", preco: 3 },
             { nome: "Queijo Extra", preco: 3 },
-            { nome: "Presunto Extra", preco: 2 },
-            { nome: "Calabresa", preco: 4 },
-            { nome: "Hambúrguer", preco: 5 }
+            { nome: "Presunto Extra", preco: 1.50 },
+            { nome: "Calabresa", preco: 3 },
+            { nome: "Hambúrguer", preco: 3 }
           ]
         },
         {
@@ -625,9 +625,10 @@ const LOJAS = {
           adicionais: [
             { nome: "Bacon", preco: 3 },
             { nome: "Queijo Extra", preco: 3 },
-            { nome: "Presunto Extra", preco: 2 },
+            { nome: "Presunto Extra", preco: 1.50 },
             { nome: "Ovo", preco: 2 },
-            { nome: "Calabresa", preco: 4 }
+            { nome: "Calabresa", preco: 3 } ,
+            { nome: "Hambúrguer", preco: 3 }
           ]
         },
         {
@@ -639,10 +640,10 @@ const LOJAS = {
           adicionais: [
             { nome: "Bacon", preco: 3 },
             { nome: "Queijo Extra", preco: 3 },
-            { nome: "Presunto", preco: 2 },
+            { nome: "Presunto", preco: 1.50 },
             { nome: "Ovo Extra", preco: 2 },
-            { nome: "Calabresa", preco: 4 },
-            { nome: "Hambúrguer Extra", preco: 5 }
+            { nome: "Calabresa", preco: 3 },
+            { nome: "Hambúrguer Extra", preco: 3 }
           ]
         },
         {
@@ -654,9 +655,10 @@ const LOJAS = {
           adicionais: [
             { nome: "Bacon", preco: 3 },
             { nome: "Queijo Extra", preco: 3 },
-            { nome: "Presunto", preco: 2 },
+            { nome: "Presunto", preco: 1.50 },
             { nome: "Ovo", preco: 2 },
-            { nome: "Frango Extra", preco: 5 }
+            { nome: "Frango Extra", preco: 3 },
+            { nome: "Hambúrguer", preco: 3 }
           ]
         },
         {
@@ -668,9 +670,9 @@ const LOJAS = {
           adicionais: [
             { nome: "Bacon Extra", preco: 3 },
             { nome: "Queijo Extra", preco: 3 },
-            { nome: "Presunto", preco: 2 },
+            { nome: "Presunto", preco: 1.50 },
             { nome: "Ovo", preco: 2 },
-            { nome: "Hambúrguer Extra", preco: 5 }
+            { nome: "Hambúrguer Extra", preco: 3 }
           ]
         },
         {
@@ -682,10 +684,10 @@ const LOJAS = {
           adicionais: [
             { nome: "Bacon", preco: 3 },
             { nome: "Queijo Extra", preco: 3 },
-            { nome: "Presunto", preco: 2 },
+            { nome: "Presunto", preco: 1.50 },
             { nome: "Ovo", preco: 2 },
-            { nome: "Calabresa Extra", preco: 4 },
-            { nome: "Hambúrguer Extra", preco: 5 }
+            { nome: "Calabresa Extra", preco: 3 },
+            { nome: "Hambúrguer Extra", preco: 3 }
           ]
         },
         {
@@ -697,9 +699,10 @@ const LOJAS = {
           adicionais: [
             { nome: "Bacon", preco: 3 },
             { nome: "Queijo Extra", preco: 3 },
-            { nome: "Presunto", preco: 2 },
+            { nome: "Presunto", preco: 1.50 },
             { nome: "Ovo", preco: 2 },
-            { nome: "Carne Extra", preco: 6 }
+            { nome: "Carne Extra", preco: 3 },
+            { nome: "Hambúrguer", preco: 3 }
           ]
         },
         {
@@ -710,11 +713,11 @@ const LOJAS = {
           tag: "lanche",
           adicionais: [
             { nome: "Bacon Extra", preco: 3 },
-            { nome: "Presunto Extra", preco: 2 },
+            { nome: "Presunto Extra", preco: 1.50 },
             { nome: "Ovo Extra", preco: 2 },
             { nome: "Queijo Extra", preco: 3 },
-            { nome: "Calabresa Extra", preco: 4 },
-            { nome: "Hambúrguer Extra", preco: 5 }
+            { nome: "Calabresa Extra", preco: 3 },
+            { nome: "Hambúrguer Extra", preco: 3 }
           ]
         },
         {
@@ -725,11 +728,11 @@ const LOJAS = {
           tag: "lanche",
           adicionais: [
             { nome: "Bacon Extra", preco: 3 },
-            { nome: "Presunto Extra", preco: 2 },
+            { nome: "Presunto Extra", preco: 1.50 },
             { nome: "Ovo Extra", preco: 2 },
             { nome: "Queijo Extra", preco: 3 },
-            { nome: "Calabresa Extra", preco: 4 },
-            { nome: "Hambúrguer Extra", preco: 5 }
+            { nome: "Calabresa Extra", preco: 3 },
+            { nome: "Hambúrguer Extra", preco: 3 }
           ]
         }
       ],
