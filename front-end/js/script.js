@@ -361,6 +361,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     listaAdicionais.innerHTML = "";
 
+    // Garante que os botões de tamanho (P/M/G) das pizzas não fiquem
+    // visíveis em produtos sem tamanho (hambúrguer, lanche com adicionais simples etc.)
+    modal.querySelectorAll(".btn-tamanho").forEach(btn => {
+      btn.style.display = "none";
+    });
+
     if (!produto.adicionais) return;
 
     produto.adicionais.forEach(adicional => {
@@ -428,6 +434,143 @@ document.addEventListener("DOMContentLoaded", () => {
 
       listaAdicionais.appendChild(linha);
     });
+  }
+
+  // ===============================
+  // 🔹 MODAL DE COMPOSIÇÃO DE LANCHE (Alô Pizza)
+  // Cada item do lanche já começa marcado (qtd 1). O "-" remove o item
+  // sem alterar o preço (ele já está incluso no valor base do lanche).
+  // O "+" adiciona unidades extra, cobrando o preço de cada uma.
+  // ===============================
+  function abrirModalLanche(produto) {
+
+    produtoAtual = produto;
+
+    const itensSelecionados = [];
+
+    modal.style.display = "flex";
+
+    modalImagem.src = produto.img;
+    modalNome.textContent = produto.nome;
+
+    totalModal = produto.preco;
+
+    modalPrecoBase.textContent =
+      "Preço Base: R$ " +
+      produto.preco.toFixed(2);
+
+    modalTotal.textContent =
+      "R$ " +
+      totalModal.toFixed(2);
+
+    listaAdicionais.innerHTML = "";
+
+    // Remove seções que outros modais (pizza doce, monte-sua-pizza, bordas,
+    // porção, marmita) possam ter deixado grudadas na estrutura do modal
+    ["secaoBordas", "secaoAcompanhamento", "secaoAcompanhamentoDoce", "secaoCarne", "secaoValorPorcao", "secaoMarmitaCarnes"]
+      .forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+      });
+
+    // Esconde os botões de tamanho (P/M/G) das pizzas, que ficam fixos
+    // no modal e não devem aparecer na composição de um lanche
+    modal.querySelectorAll(".btn-tamanho").forEach(btn => {
+      btn.style.display = "none";
+    });
+
+    if (!produto.itens) return;
+
+    produto.itens.forEach(item => {
+
+      const linha = document.createElement("div");
+
+      linha.className = "adicional-item";
+
+      linha.innerHTML = `
+            <div>
+                <strong>${item.nome}</strong>
+                <br>
+                <small>+ R$ ${item.preco.toFixed(2)} cada extra</small>
+            </div>
+
+            <div class="controle-adicional">
+                <button class="btn-menor">-</button>
+                <span>1</span>
+                <button class="btn-maior">+</button>
+            </div>
+        `;
+
+      const qtdEl = linha.querySelector("span");
+      const btnMais = linha.querySelector(".btn-maior");
+      const btnMenos = linha.querySelector(".btn-menor");
+
+      let qtd = 1;
+
+      itensSelecionados.push({ nome: item.nome, qtd });
+
+      btnMais.addEventListener("click", () => {
+
+        qtd++;
+
+        // A partir da 2ª unidade é "extra" e cobra; a 1ª já está no preço base
+        if (qtd > 1) {
+          totalModal += item.preco;
+
+          modalTotal.textContent =
+            "R$ " +
+            totalModal.toFixed(2);
+        }
+
+        qtdEl.textContent = qtd;
+
+        const existente = itensSelecionados.find(i => i.nome === item.nome);
+        if (existente) existente.qtd = qtd;
+      });
+
+      btnMenos.addEventListener("click", () => {
+
+        if (qtd === 0) return;
+
+        // Só desconta se estiver tirando uma unidade extra (acima da 1ª).
+        // Remover a unidade base (1 -> 0) não altera o preço.
+        if (qtd > 1) {
+          totalModal -= item.preco;
+
+          modalTotal.textContent =
+            "R$ " +
+            totalModal.toFixed(2);
+        }
+
+        qtd--;
+
+        qtdEl.textContent = qtd;
+
+        const existente = itensSelecionados.find(i => i.nome === item.nome);
+        if (existente) existente.qtd = qtd;
+      });
+
+      listaAdicionais.appendChild(linha);
+    });
+
+    btnAdicionarCarrinho.onclick = () => {
+
+      const composicaoNomes = itensSelecionados
+        .filter(i => i.qtd !== 1)
+        .map(i => i.qtd === 0 ? `Sem ${i.nome}` : `${i.nome} x${i.qtd}`);
+
+      const id = Date.now();
+
+      carrinho[id] = {
+        nome: produtoAtual.nome,
+        preco: totalModal,
+        qtd: 1,
+        adicionais: composicaoNomes
+      };
+
+      atualizarTotal();
+      modal.style.display = "none";
+    };
   }
 
   function abrirModalBorda(produto, tamanhoInicial, precoInicial) {
@@ -525,6 +668,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnAtivo = modal.querySelector(`.btn-tamanho[data-size="${tamanho}"]`);
     if (btnAtivo) btnAtivo.classList.add("ativo");
 
+    // Garante que os botões de tamanho voltem a aparecer (podem ter
+    // ficado escondidos por um lanche aberto anteriormente)
+    modal.querySelectorAll(".btn-tamanho").forEach(btn => {
+      btn.style.display = "";
+    });
+
     modal.querySelectorAll(".btn-tamanho").forEach(btn => {
       btn.replaceWith(btn.cloneNode(true));
     });
@@ -615,6 +764,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     modal.querySelectorAll(".btn-tamanho").forEach(b => b.classList.remove("ativo"));
     modal.querySelector('.btn-tamanho[data-size="M"]').classList.add("ativo");
+
+    // Garante que os botões de tamanho voltem a aparecer (podem ter
+    // ficado escondidos por um lanche aberto anteriormente)
+    modal.querySelectorAll(".btn-tamanho").forEach(btn => {
+      btn.style.display = "";
+    });
 
     modalPrecoBase.textContent = "Preço Base: R$ " + basePrice.toFixed(2);
     modalTotal.textContent = "R$ " + basePrice.toFixed(2);
@@ -1084,7 +1239,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
 
         <div class="controle-qtd">
-  ${produto.tipo === "monte-pizza" || produto.tipo === "porcao-carne" || produto.tipo === "marmita" || produto.tamanhos || produto.adicionais
+  ${produto.tipo === "monte-pizza" || produto.tipo === "porcao-carne" || produto.tipo === "marmita" || produto.tipo === "lanche-editavel" || produto.tamanhos || produto.adicionais
     ? `<button class="btn-qtd btn-qtd-pizza" id="mais-${baseId}">+</button>`
     : `
       <button class="btn-qtd" id="menos-${baseId}">−</button>
@@ -1100,14 +1255,19 @@ document.addEventListener("DOMContentLoaded", () => {
         produto.adicionais ||
         produto.tipo === "monte-pizza" ||
         produto.tipo === "porcao-carne" ||
-        produto.tipo === "marmita"
+        produto.tipo === "marmita" ||
+        produto.tipo === "lanche-editavel"
       ) {
 
         card.querySelector(".produto-img")
           .addEventListener(
             "click",
             () => {
-              abrirModal(produto);
+              if (produto.tipo === "lanche-editavel") {
+                abrirModalLanche(produto);
+              } else {
+                abrirModal(produto);
+              }
             }
           );
 
@@ -1186,6 +1346,11 @@ document.addEventListener("DOMContentLoaded", () => {
       card.querySelector(`#mais-${baseId}`).addEventListener("click", (e) => {
 
         e.stopPropagation();
+
+        if (produto.tipo === "lanche-editavel") {
+          abrirModalLanche(produto);
+          return;
+        }
 
         if (produto.adicionais || produto.tipo === "monte-pizza" || produto.tipo === "porcao-carne" || produto.tipo === "marmita") {
           abrirModal(produto);

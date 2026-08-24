@@ -240,60 +240,131 @@ const LOJAS = {
       ],
 
       /* NOVA CATEGORIA: LANCHES */
+      /* Cada lanche agora abre um modal de composição: todo item começa
+         marcado (qtd 1), o "-" remove o item sem alterar o preço, e o "+"
+         adiciona unidades extra, cobrando o preço indicado em cada uma.
+         Preços dos ingredientes reaproveitados do modal da hamburgueria
+         (Burger House) até termos os valores reais da Alô Pizza. */
       lanches: [
         {
           nome: "X Burguer",
           preco: 12.00,
           img: "imagens/hamburgueria/xburguer.jpg",
-          descricao: "Pão de hambúrguer, hambúrguer artesanal e queijo coalho."
+          descricao: "Pão de hambúrguer, hambúrguer artesanal e queijo coalho.",
+          tipo: "lanche-editavel",
+          itens: [
+            { nome: "Hambúrguer artesanal", preco: 3 },
+            { nome: "Queijo coalho", preco: 3 }
+          ]
         },
         {
           nome: "X Salada",
           preco: 14.00,
           img: "imagens/hamburgueria/x-burger.png",
-          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, alface, tomate, cebola e maionese."
+          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, alface, tomate, cebola e maionese.",
+          tipo: "lanche-editavel",
+          itens: [
+            { nome: "Hambúrguer artesanal", preco: 3 },
+            { nome: "Queijo coalho", preco: 3 },
+            { nome: "Alface", preco: 2 },
+            { nome: "Tomate", preco: 2 },
+            { nome: "Cebola", preco: 2 }
+          ]
         },
         {
           nome: "X Bacon",
           preco: 15.00,
           img: "imagens/hamburgueria/x-bancon.jpg",
-          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, bacon, salada e maionese."
+          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, bacon, salada e maionese.",
+          tipo: "lanche-editavel",
+          itens: [
+            { nome: "Hambúrguer artesanal", preco: 3 },
+            { nome: "Queijo coalho", preco: 3 },
+            { nome: "Bacon", preco: 3 },
+            { nome: "Salada", preco: 2 }
+          ]
         },
         {
           nome: "X Egg",
           preco: 15.00,
           img: "imagens/hamburgueria/xegg.jpg",
-          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, ovo, salada e maionese."
+          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, ovo, salada e maionese.",
+          tipo: "lanche-editavel",
+          itens: [
+            { nome: "Hambúrguer artesanal", preco: 3 },
+            { nome: "Queijo coalho", preco: 3 },
+            { nome: "Ovo", preco: 2 },
+            { nome: "Salada", preco: 2 }
+          ]
         },
         {
           nome: "X Tudo",
           preco: 17.00,
           img: "imagens/hamburgueria/x-tudo.png",
-          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, ovo, salada e maionese."
+          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, ovo, salada e maionese.",
+          tipo: "lanche-editavel",
+          itens: [
+            { nome: "Hambúrguer artesanal", preco: 3 },
+            { nome: "Queijo coalho", preco: 3 },
+            { nome: "Ovo", preco: 2 },
+            { nome: "Salada", preco: 2 }
+          ]
         },
         {
           nome: "X Calabresa",
           preco: 16.00,
           img: "imagens/hamburgueria/xcalabresa.jpg",
-          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, calabresa, salada, bacon e maionese."
+          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, calabresa, salada, bacon e maionese.",
+          tipo: "lanche-editavel",
+          itens: [
+            { nome: "Hambúrguer artesanal", preco: 3 },
+            { nome: "Queijo coalho", preco: 3 },
+            { nome: "Calabresa", preco: 4 },
+            { nome: "Salada", preco: 2 },
+            { nome: "Bacon", preco: 3 }
+          ]
         },
         {
           nome: "X Misto",
           preco: 16.00,
           img: "imagens/hamburgueria/x-burger.png",
-          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, presunto e maionese."
+          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, presunto e maionese.",
+          tipo: "lanche-editavel",
+          itens: [
+            { nome: "Hambúrguer artesanal", preco: 3 },
+            { nome: "Queijo coalho", preco: 3 },
+            { nome: "Presunto", preco: 2 }
+          ]
         },
         {
           nome: "X Duplo",
           preco: 30.00,
           img: "imagens/hamburgueria/xduplo.png",
-          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, ovo, presunto, salada e maionese."
+          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, ovo, presunto, salada e maionese.",
+          tipo: "lanche-editavel",
+          itens: [
+            { nome: "Hambúrguer artesanal", preco: 3 },
+            { nome: "Queijo coalho", preco: 3 },
+            { nome: "Ovo", preco: 2 },
+            { nome: "Presunto", preco: 2 },
+            { nome: "Salada", preco: 2 }
+          ]
         },
         {
           nome: "X Moda da Casa",
           preco: 18.00,
           img: "imagens/hamburgueria/x-tudo.png",
-          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, ovo, calabresa, tomate, alface, cebola e maionese."
+          descricao: "Pão de hambúrguer, hambúrguer artesanal, queijo coalho, ovo, calabresa, tomate, alface, cebola e maionese.",
+          tipo: "lanche-editavel",
+          itens: [
+            { nome: "Hambúrguer artesanal", preco: 3 },
+            { nome: "Queijo coalho", preco: 3 },
+            { nome: "Ovo", preco: 2 },
+            { nome: "Calabresa", preco: 4 },
+            { nome: "Tomate", preco: 2 },
+            { nome: "Alface", preco: 2 },
+            { nome: "Cebola", preco: 2 }
+          ]
         }
       ],
 
