@@ -1428,5 +1428,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function abrirCarrinho() {
-  window.location.href = "carrinho.html";
+  if (typeof abrirModalCarrinho === "function") {
+    abrirModalCarrinho();
+  } else {
+    window.location.href = "carrinho.html";
+  }
 }

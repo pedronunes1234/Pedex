@@ -166,10 +166,19 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function renderizarCarrinho() {
+    if (!lista) return;
     lista.innerHTML = "";
     let total = 0;
 
-    Object.entries(carrinho).forEach(([id, item]) => {
+    const entradas = Object.entries(carrinho);
+    if (entradas.length === 0) {
+      lista.innerHTML = `<div style="text-align: center; color: #888; padding: 30px 15px; font-size: 14px;">Seu carrinho está vazio</div>`;
+      if (subtotalEl) subtotalEl.textContent = "R$ 0,00";
+      if (totalEl) totalEl.textContent = "R$ 0,00";
+      return;
+    }
+
+    entradas.forEach(([id, item]) => {
 
       const totalItem = item.preco * item.qtd;
       total += totalItem;
@@ -523,8 +532,171 @@ document.addEventListener("DOMContentLoaded", () => {
         carrinho = {};
         renderizarCarrinho();
         document.body.removeChild(modal);
+        if (typeof fecharModalCarrinho === "function") {
+          fecharModalCarrinho();
+        }
       });
     }
   }
 
 });
+
+// 🎭 FUNÇÕES GLOBAIS DE CONTROLE DO MODAL DE CARRINHO
+function garantirEstruturaCarrinhoModal() {
+  if (document.getElementById("modalCarrinhoOverlay")) return;
+
+  const htmlModal = `
+    <div id="modalCarrinhoOverlay" class="modal-carrinho-overlay">
+      <div class="carrinho-container">
+
+        <!-- TOPO -->
+        <div class="topo-carrinho">
+          <button onclick="fecharModalCarrinho()" class="btn-voltar">←</button>
+          <h2>Carrinho</h2>
+        </div>
+
+        <!-- ENDEREÇO -->
+        <div class="endereco-box">
+          <span id="labelEnderecoCarrinho">📍 Entregar em:</span>
+          <span id="enderecoCarrinho">Carregando...</span>
+        </div>
+
+        <!-- LISTA DE ITENS -->
+        <div id="listaCarrinho" class="lista-carrinho"></div>
+
+        <!-- RESUMO -->
+        <div class="resumo">
+          <div class="linha">
+            <span>Subtotal</span>
+            <span id="subtotal">R$ 0,00</span>
+          </div>
+
+          <div class="linha total">
+            <span>Total</span>
+            <span id="total">R$ 0,00</span>
+          </div>
+        </div>
+
+        <!-- NOME -->
+        <div class="campo-cliente">
+          <label>Nome:</label>
+          <input type="text" id="nomeCliente" placeholder="Digite seu nome">
+        </div>
+
+        <!-- PAGAMENTO -->
+        <div class="pagamento">
+          <h3>Forma de pagamento</h3>
+
+          <label class="opcao">
+            <input type="radio" name="pagamento" value="Cartão">
+            <span class="check-radio"></span>
+            Cartão na entrega
+          </label>
+
+          <label class="opcao">
+            <input type="radio" name="pagamento" value="Pix">
+            <span class="check-radio"></span>
+            Pix
+          </label>
+
+          <label class="opcao">
+            <input type="radio" name="pagamento" value="Dinheiro" id="radioDinheiro">
+            <span class="check-radio"></span>
+            Dinheiro
+          </label>
+
+          <!-- PAGAMENTO DIVIDIDO (PIX + DINHEIRO) -->
+          <label class="opcao">
+            <input type="radio" name="pagamento" value="Dividido" id="radioDividido">
+            <span class="check-radio"></span>
+            Pagamento Dividido (PIX + Dinheiro)
+          </label>
+
+          <!-- CAIXA DE VALORES DA DIVISÃO -->
+          <div id="splitBox" class="split-box" style="display: none; background: #fff5f5; border: 1.5px solid #ffccc7; border-radius: 12px; padding: 14px; margin-top: 12px;">
+            <p style="font-size:14px; font-weight:bold; color:#c40000; margin-bottom:4px;">Divisão do Pagamento</p>
+            <p style="font-size:12px; color:#555; margin-bottom:10px;">Informe quanto pagará no PIX agora e quanto no Dinheiro na entrega:</p>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 8px;">
+              <div style="flex: 1;">
+                <label style="font-size: 11px; font-weight: bold; color: #2e9e4f; display: block; margin-bottom: 4px;">📱 PIX Agora (R$):</label>
+                <input type="number" id="valorPixSplitInput" step="0.01" min="0" placeholder="0.00" inputmode="decimal" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 8px; font-weight: bold; font-size: 14px; box-sizing: border-box;">
+              </div>
+
+              <div style="flex: 1;">
+                <label style="font-size: 11px; font-weight: bold; color: #c40000; display: block; margin-bottom: 4px;">💵 Dinheiro Entrega (R$):</label>
+                <input type="number" id="valorDinheiroSplitInput" step="0.01" min="0" placeholder="0.00" inputmode="decimal" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 8px; font-weight: bold; font-size: 14px; box-sizing: border-box;">
+              </div>
+            </div>
+
+            <div id="splitMensagemErro" style="display: none; color: #c40000; font-size: 12px; font-weight: bold; margin-top: 6px;"></div>
+          </div>
+
+          <!-- TROCO -->
+          <div id="trocoBox" class="troco-box" style="display: none; margin-top: 12px;">
+            <p style="font-size:15px; font-weight:bold; color:#222; margin-bottom:10px;">Precisa de troco para a parte em dinheiro?</p>
+
+            <label class="opcao">
+              <input type="radio" name="troco" value="Não" checked>
+              <span class="check-radio"></span>
+              Não
+            </label>
+
+            <label class="opcao">
+              <input type="radio" name="troco" value="Sim" id="trocoSim">
+              <span class="check-radio"></span>
+              Sim
+            </label>
+
+            <div id="valorTrocoBox" class="valor-troco" style="display: none; margin-top: 8px;">
+              Troco para: R$
+              <input type="number" id="valorTrocoInput" placeholder="Ex: 50" min="0" step="0.01" inputmode="decimal">
+            </div>
+          </div>
+
+        </div>
+
+        <!-- BOTÃO FINALIZAR -->
+        <button id="btnFinalizar" class="btn-finalizar">
+          Finalizar Pedido
+        </button>
+
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML("beforeend", htmlModal);
+
+  const overlay = document.getElementById("modalCarrinhoOverlay");
+  if (overlay) {
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) fecharModalCarrinho();
+    });
+  }
+
+  const eventoInit = new Event("DOMContentLoaded");
+  document.dispatchEvent(eventoInit);
+}
+
+function abrirModalCarrinho() {
+  garantirEstruturaCarrinhoModal();
+
+  const overlay = document.getElementById("modalCarrinhoOverlay");
+  if (!overlay) return;
+
+  const eventoInit = new Event("DOMContentLoaded");
+  document.dispatchEvent(eventoInit);
+
+  overlay.classList.add("ativo");
+  document.body.style.overflow = "hidden";
+  document.documentElement.style.overflow = "hidden";
+}
+
+function fecharModalCarrinho() {
+  const overlay = document.getElementById("modalCarrinhoOverlay");
+  if (!overlay) return;
+
+  overlay.classList.remove("ativo");
+  document.body.style.overflow = "";
+  document.documentElement.style.overflow = "";
+}
