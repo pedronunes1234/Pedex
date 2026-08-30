@@ -182,10 +182,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (periodo) {
         const nomePeriodo = periodo.periodo === "manha" ? "Manhã" : "Noite";
-        statusEl.innerHTML = `🟢 Aberto agora • ${nomePeriodo}`;
+        statusEl.innerHTML = ` Aberto agora • ${nomePeriodo}`;
         statusEl.style.color = "#28a745";
       } else {
-        statusEl.innerHTML = "🔴 Fechado no momento • confira nossos dias e horários";
+        statusEl.innerHTML = " Fechado no momento • confira nossos dias e horários";
         statusEl.style.color = "#fff";
       }
 
@@ -203,10 +203,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const minutosFecha = fechaH * 60 + fechaM;
 
     if (minutosAgora >= minutosAbre && minutosAgora <= minutosFecha) {
-      statusEl.innerHTML = "🟢 Aberto agora";
+      statusEl.innerHTML = " Aberto agora";
       statusEl.style.color = "#28a745";
     } else {
-      statusEl.innerHTML = `🔴 Fechado • Abre às ${loja.abre}`;
+      statusEl.innerHTML = ` Fechado • Abre às ${loja.abre}`;
       statusEl.style.color = "#fff";
     }
   }

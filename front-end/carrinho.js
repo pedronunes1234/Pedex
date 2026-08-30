@@ -442,7 +442,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             ${isDividido ? `
               <div style="background:#fff5f5; border:1.5px solid #ffccc7; border-radius:10px; padding:10px; margin-bottom:14px; text-align:left; font-size:13px;">
-                <div style="font-weight:bold; color:#c40000; margin-bottom:4px;">⚡ Pagamento Dividido</div>
+                <div style="font-weight:bold; color:#c40000; margin-bottom:4px;">Pagamento Dividido</div>
                 <div style="color:#555;">Total do Pedido: <strong>R$ ${totalPedido.toFixed(2)}</strong></div>
                 <div style="color:#2e9e4f; font-weight:bold;">1. Pagar no PIX agora: R$ ${valorPix.toFixed(2)}</div>
                 <div style="color:#c40000; font-weight:bold;">2. Pagar na Entrega (Dinheiro): R$ ${valorDinheiro.toFixed(2)}</div>
@@ -467,11 +467,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 color:#333; border:none; border-radius:12px;
                 font-size:14px; font-weight:bold; cursor:pointer; margin-bottom:10px;
             ">
-                📋 Copiar código Pix
+                Copiar código Pix
             </button>
 
             <p id="statusAguardando" style="font-size:13px; color:#c40000; font-weight:bold; margin-bottom:6px;">
-                ⏳ Aguardando pagamento...
+               Aguardando pagamento...
             </p>
             <p style="font-size:12px; color:#888; margin-bottom:0;">
                 Essa tela atualiza sozinha assim que o pagamento for confirmado.
@@ -509,8 +509,8 @@ document.addEventListener("DOMContentLoaded", () => {
           
           ${isDividido ? `
             <div style="background:#fff5f5; border:1.5px solid #ffccc7; border-radius:10px; padding:10px; margin-bottom:16px; font-size:13px; text-align:left; color:#c40000;">
-              📌 Seu PIX foi aprovado com sucesso e o pedido enviado para a cozinha!<br><br>
-              🚨 <strong>A COBRAR NA ENTREGA: R$ ${valorDinheiro.toFixed(2)}</strong> (Pague em dinheiro ao entregador).
+               Seu PIX foi aprovado com sucesso e o pedido enviado para a cozinha!<br><br>
+               <strong>A COBRAR NA ENTREGA: R$ ${valorDinheiro.toFixed(2)}</strong> (Pague em dinheiro ao entregador).
             </div>
           ` : `
             <p style="font-size:14px; color:#444; margin-bottom:20px;">
@@ -619,12 +619,12 @@ function garantirEstruturaCarrinhoModal() {
 
             <div style="display: flex; gap: 10px; margin-bottom: 8px;">
               <div style="flex: 1;">
-                <label style="font-size: 11px; font-weight: bold; color: #2e9e4f; display: block; margin-bottom: 4px;">📱 PIX Agora (R$):</label>
+                <label style="font-size: 11px; font-weight: bold; color: #2e9e4f; display: block; margin-bottom: 4px;"> PIX Agora (R$):</label>
                 <input type="number" id="valorPixSplitInput" step="0.01" min="0" placeholder="0.00" inputmode="decimal" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 8px; font-weight: bold; font-size: 14px; box-sizing: border-box;">
               </div>
 
               <div style="flex: 1;">
-                <label style="font-size: 11px; font-weight: bold; color: #c40000; display: block; margin-bottom: 4px;">💵 Dinheiro Entrega (R$):</label>
+                <label style="font-size: 11px; font-weight: bold; color: #c40000; display: block; margin-bottom: 4px;">Dinheiro Entrega (R$):</label>
                 <input type="number" id="valorDinheiroSplitInput" step="0.01" min="0" placeholder="0.00" inputmode="decimal" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 8px; font-weight: bold; font-size: 14px; box-sizing: border-box;">
               </div>
             </div>
