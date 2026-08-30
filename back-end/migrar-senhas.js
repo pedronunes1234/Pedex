@@ -40,7 +40,7 @@ async function migrar() {
                 );
             });
 
-            console.log(`✅ Senha migrada: ${usuario.email}`);
+            console.log(`Senha migrada: ${usuario.email}`);
         }
 
         console.log("Migração concluída!");

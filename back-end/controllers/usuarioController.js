@@ -80,7 +80,7 @@ exports.callbackOAuth = async (req, res) => {
         // 🔒 Validação de Segurança: Se o Mercado Pago retornou erro, NUNCA salva no banco!
         if (!dados.access_token) {
             console.error("Erro no retorno do Mercado Pago:", dados);
-            return res.status(400).send(`⚠️ Falha na autenticação do Mercado Pago: ${dados.message || dados.error || 'Token não gerado'}. Verifique as chaves MP_CLIENT_ID e MP_CLIENT_SECRET no Railway.`);
+            return res.status(400).send(`Falha na autenticação do Mercado Pago: ${dados.message || dados.error || 'Token não gerado'}. Verifique as chaves MP_CLIENT_ID e MP_CLIENT_SECRET no Railway.`);
         }
 
         db.query(

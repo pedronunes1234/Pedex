@@ -157,7 +157,7 @@ exports.webhook = async (req, res) => {
                         "UPDATE pedidos SET status = 'Em preparo' WHERE id = ?",
                         [pedidoId]
                     );
-                    console.log(`✅ Webhook: Pedido #${pedidoId} PIX Confirmado! Liberado para o painel.`);
+                    console.log(`Webhook: Pedido #${pedidoId} PIX Confirmado! Liberado para o painel.`);
                 }
             }
         } catch (err) {
