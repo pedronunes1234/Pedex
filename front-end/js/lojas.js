@@ -1264,97 +1264,97 @@ const LOJAS = {
         {
           nome: "Esfiha Carne",
           preco: 5.50,
-          img: "imagens/dellamama/esfiha-carne.png",
-          descricao: "Carne."
+          img: "imagens/dellamama/esfihacarne.jpg",
+          descricao: "Carne desfiada."
         },
         {
           nome: "Esfiha Queijo",
           preco: 5.50,
-          img: "imagens/dellamama/esfiha-queijo.png",
-          descricao: "Queijo."
+          img: "imagens/dellamama/esfihamussarela.jpg",
+          descricao: "Queijo mussarela derretido."
         },
         {
           nome: "Esfiha Calabresa",
           preco: 5.50,
-          img: "imagens/dellamama/esfiha-calabresa.png",
-          descricao: "Calabresa."
+          img: "imagens/dellamama/esfihacalabresa.jpg",
+          descricao: "Calabresa fatiada."
         },
         {
           nome: "Esfiha Frango com Catupiry",
           preco: 5.50,
-          img: "imagens/dellamama/esfiha-frango-com-catupiry.png",
-          descricao: "Frango com Catupiry."
+          img: "imagens/dellamama/esfihafrango.jpg",
+          descricao: "Frango desfiado com catupiry."
         },
         {
           nome: "Esfiha Carne com Queijo",
           preco: 5.50,
-          img: "imagens/dellamama/esfiha-carne-com-queijo.png",
-          descricao: "Carne com Queijo."
+          img: "imagens/dellamama/esfihacarnecomqueijo.jpg",
+          descricao: "Carne desfiada com queijo mussarela derretido."
         },
         {
           nome: "Esfiha Calabresa com Queijo",
           preco: 5.50,
-          img: "imagens/dellamama/esfiha-calabresa-com-queijo.png",
-          descricao: "Calabresa com Queijo."
+          img: "imagens/dellamama/esfihacalabresacomqueijo.jpg",
+          descricao: "Calabresa fatiada com queijo mussarela derretido."
         },
         {
           nome: "Esfiha Chocolate",
           preco: 6.50,
-          img: "imagens/dellamama/esfiha-chocolate.png",
-          descricao: "Chocolate."
+          img: "imagens/dellamama/esfihachocolate.jpg",
+          descricao: "Chocolate derretido."
         },
         {
           nome: "Esfiha Chocolate com M&M",
           preco: 6.50,
-          img: "imagens/dellamama/esfiha-chocolate-com-m-m.png",
+          img: "imagens/dellamama/esfihachocolatecomm.jpg",
           descricao: "Chocolate com M&M."
         },
         {
           nome: "Esfiha Chocolate com Brigadeiro",
           preco: 6.50,
-          img: "imagens/dellamama/esfiha-chocolate-com-brigadeiro.png",
+          img: "imagens/dellamama/esfihabrigadeiro.jpg",
           descricao: "Chocolate com Brigadeiro."
         },
         {
           nome: "Esfiha Chocolate com Leite Condensado e Coco Ralado",
           preco: 8.50,
-          img: "imagens/dellamama/esfiha-chocolate-com-leite-condensado-e-coco-ralado.png",
-          descricao: "Chocolate com Leite Condensado e Coco Ralado."
+          img: "imagens/dellamama/esfihalccr.jpg",
+          descricao: "Chocolate derretido com leite condensado e coco ralado."
         },
         {
           nome: "Esfiha Chocolate com Morango e Granulado",
           preco: 8.50,
-          img: "imagens/dellamama/esfiha-chocolate-com-morango-e-granulado.png",
-          descricao: "Chocolate com Morango e Granulado."
+          img: "imagens/dellamama/esfihachocolatemorango.jpg",
+          descricao: "Chocolate derretido com rodelas de morango e granulado."
         },
         {
           nome: "Esfiha Sonho de Valsa com Chocolate",
           preco: 9.50,
-          img: "imagens/dellamama/esfiha-sonho-de-valsa-com-chocolate.png",
-          descricao: "Sonho de Valsa com Chocolate."
+          img: "imagens/dellamama/esfihasonhodevalsa.jpg",
+          descricao: "Chocolate derretido com alguns pedaços de sonho de valsa."
         },
         {
           nome: "Esfiha Chocolate Branco com M&M",
           preco: 7.00,
-          img: "imagens/dellamama/esfiha-chocolate-branco-com-m-m.png",
-          descricao: "Chocolate Branco com M&M."
+          img: "imagens/dellamama/esfihachocbrmm.jpg",
+          descricao: "Chocolate branco derretido com M&M."
         },
         {
           nome: "Esfiha Nutella",
           preco: 10.00,
-          img: "imagens/dellamama/esfiha-nutella.png",
+          img: "imagens/dellamama/esfihanutella.jpg",
           descricao: "Nutella."
         },
         {
           nome: "Esfiha Nutella com M&M",
           preco: 11.00,
-          img: "imagens/dellamama/esfiha-nutella-com-m-m.png",
+          img: "imagens/dellamama/esfihanutellamm.jpg",
           descricao: "Nutella com M&M."
         },
         {
           nome: "Esfiha Nutella com Brigadeiro",
           preco: 11.00,
-          img: "imagens/dellamama/esfiha-nutella-com-brigadeiro.png",
+          img: "imagens/dellamama/esfihanutellabrig.jpg",
           descricao: "Nutella com Brigadeiro."
         }
       ],
@@ -1363,7 +1363,7 @@ const LOJAS = {
         {
           nome: "Porção Boi",
           preco: 23.00,
-          img: "imagens/dellamama/porcao-boi.png"
+          img: "imagens/dellamama/porcaoboi.jpg"
         },
         {
           nome: "Porção Frango",
