@@ -897,8 +897,27 @@ const LOJAS = {
   della_mama: {
     nome: "Della Mama Pizzaria",
 
-    abre: "18:00",
-    fecha: "23:59",
+    horarios: {
+      1: [
+        { id: "segunda-noite", periodo: "noite", inicio: "18:00", fim: "23:00" }
+      ],
+      // 2 = terça-feira: dia de folga do dono, loja fechada (sem horário cadastrado)
+      3: [
+        { id: "quarta-noite", periodo: "noite", inicio: "18:00", fim: "23:00" }
+      ],
+      4: [
+        { id: "quinta-noite", periodo: "noite", inicio: "18:00", fim: "23:00" }
+      ],
+      5: [
+        { id: "sexta-noite", periodo: "noite", inicio: "18:00", fim: "23:00" }
+      ],
+      6: [
+        { id: "sabado-noite", periodo: "noite", inicio: "18:00", fim: "00:00" }
+      ],
+      0: [
+        { id: "domingo-noite", periodo: "noite", inicio: "18:00", fim: "00:00" }
+      ]
+    },
 
     bordas: [
       { nome: "Sem borda", preco: 0 },
@@ -1343,19 +1362,19 @@ const LOJAS = {
           nome: "Esfiha Nutella",
           preco: 10.00,
           img: "imagens/dellamama/esfihanutella.jpg",
-          descricao: "Nutella."
+          descricao: "Nutella derretida."
         },
         {
           nome: "Esfiha Nutella com M&M",
           preco: 11.00,
           img: "imagens/dellamama/esfihanutellamm.jpg",
-          descricao: "Nutella com M&M."
+          descricao: "Nutella derretida com gotas de M&M."
         },
         {
           nome: "Esfiha Nutella com Brigadeiro",
           preco: 11.00,
           img: "imagens/dellamama/esfihanutellabrig.jpg",
-          descricao: "Nutella com Brigadeiro."
+          descricao: "Nutella derretida com brigadeiro."
         }
       ],
 
@@ -1368,43 +1387,43 @@ const LOJAS = {
         {
           nome: "Porção Frango",
           preco: 20.00,
-          img: "imagens/dellamama/porcao-frango.png"
+          img: "imagens/dellamama/porcaofrango.jpg"
         },
         {
           nome: "Porção Calabresa",
           preco: 22.00,
-          img: "imagens/dellamama/porcao-calabresa.png"
+          img: "imagens/dellamama/porcaocalabresa.jpg"
         },
         {
           nome: "Porção Mista",
           preco: 40.00,
-          img: "imagens/dellamama/porcao-mista.png",
+          img: "imagens/dellamama/porcaomista.jpg",
           descricao: "Calabresa, boi e frango."
         },
         {
           nome: "Porção Batata",
           preco: 14.00,
-          img: "imagens/dellamama/porcao-batata.png"
+          img: "imagens/dellamama/porcaobatatas.jpg"
         },
         {
           nome: "Porção Filé com Fritas",
           preco: 35.00,
-          img: "imagens/dellamama/porcao-file-com-fritas.png"
+          img: "imagens/dellamama/porcaofilecomfritas.jpg"
         },
         {
           nome: "Porção Batata Especial",
           preco: 23.00,
-          img: "imagens/dellamama/porcao-batata-especial.png"
+          img: "imagens/dellamama/porcaoespecial.jpg"
         },
         {
           nome: "Porção Batata com Cheddar",
           preco: 18.00,
-          img: "imagens/dellamama/porcao-batata-com-cheddar.png"
+          img: "imagens/dellamama/porcaobatatac.jpg"
         },
         {
           nome: "Porção Macaxeira Frita",
           preco: 12.00,
-          img: "imagens/dellamama/porcao-macaxeira-frita.png"
+          img: "imagens/dellamama/porcaomacaxeira.jpg"
         }
       ],
 
@@ -1413,7 +1432,7 @@ const LOJAS = {
         {
           nome: "Caipirinha",
           marcas: {
-            "Limão": { preco: 6.00, img: "imagens/dellamama/caipirinha-limao.png" },
+            "Limão": { preco: 6.00, img: "imagens/dellamama/caipirinhalimao.jpg" },
             "Morango": { preco: 9.00, img: "imagens/dellamama/caipirinha-morango.png" },
             "Maracujá": { preco: 8.50, img: "imagens/dellamama/caipirinha-maracuja.png" },
             "Abacaxi": { preco: 8.00, img: "imagens/dellamama/caipirinha-abacaxi.png" },
