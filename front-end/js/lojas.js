@@ -817,8 +817,27 @@ const LOJAS = {
   della_mama: {
     nome: "Della Mama Pizzaria",
 
-    abre: "18:00",
-    fecha: "23:59",
+    horarios: {
+      1: [
+        { id: "segunda-noite", periodo: "noite", inicio: "18:00", fim: "23:00" }
+      ],
+      // 2 = terça-feira: dia de folga do dono, loja fechada (sem horário cadastrado)
+      3: [
+        { id: "quarta-noite", periodo: "noite", inicio: "18:00", fim: "23:00" }
+      ],
+      4: [
+        { id: "quinta-noite", periodo: "noite", inicio: "18:00", fim: "23:00" }
+      ],
+      5: [
+        { id: "sexta-noite", periodo: "noite", inicio: "18:00", fim: "23:00" }
+      ],
+      6: [
+        { id: "sabado-noite", periodo: "noite", inicio: "18:00", fim: "00:00" }
+      ],
+      0: [
+        { id: "domingo-noite", periodo: "noite", inicio: "18:00", fim: "00:00" }
+      ]
+    },
 
     bordas: [
       { nome: "Sem borda", preco: 0 },
@@ -834,290 +853,290 @@ const LOJAS = {
 
         {
           nome: "Alemã",
-          img: "imagens/dellamama/alema.png",
+          img: "imagens/dellamama/alema.jpg",
           descricao: "Mussarela, bacon, parmesão, azeitona.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "A Moda do Pizzaiolo",
-          img: "imagens/dellamama/a-moda-do-pizzaiolo.png",
+          img: "imagens/dellamama/modadopizzaiolo.jpg",
           descricao: "Calabresa moída, ovo, ervilha, cebola coberta com catupiry.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "A Moda do Chefe",
-          img: "imagens/dellamama/a-moda-do-chefe.png",
+          img: "imagens/dellamama/modadochefe.jpg",
           descricao: "Frango, brócolis, bacon, cebola, mussarela.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Alteza",
-          img: "imagens/dellamama/alteza.png",
+          img: "imagens/dellamama/alteza.jpg",
           descricao: "Frango, palmito, ervilha e coberta com mussarela.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Americana",
-          img: "imagens/dellamama/americana.png",
+          img: "imagens/dellamama/americana.jpg",
           descricao: "Presunto picado, palmito, ervilha, cebola coberta com mussarela.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Bacon",
-          img: "imagens/dellamama/bacon.png",
+          img: "imagens/dellamama/bacon.jpg",
           descricao: "Mussarela, bacon, azeitona e orégano.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Baiacatu",
-          img: "imagens/dellamama/baiacatu.png",
+          img: "imagens/dellamama/baiacatu.jpg",
           descricao: "Calabresa moída, molho de pimenta e catupiry.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Baiana I",
-          img: "imagens/dellamama/baiana-i.png",
+          img: "imagens/dellamama/baianaI.jpg",
           descricao: "Calabresa moída, ovo, molho de pimenta, cebola e mussarela.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Baiana II",
-          img: "imagens/dellamama/baiana-ii.png",
+          img: "imagens/dellamama/baianaII.jpg",
           descricao: "Calabresa moída, ovo, molho de pimenta, cebola, parmesão e tomate.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Bauru",
-          img: "imagens/dellamama/bauru.png",
+          img: "imagens/dellamama/bauru.jpg",
           descricao: "Presunto, tomate e mussarela.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Bariloche",
-          img: "imagens/dellamama/bariloche.png",
+          img: "imagens/dellamama/bariloche.jpg",
           descricao: "Calabresa, ovo, cebola e catupiry.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Branca",
-          img: "imagens/dellamama/branca.png",
+          img: "imagens/dellamama/branca.jpg",
           descricao: "Mussarela, palmito, catupiry, azeitona e orégano.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Caipira",
-          img: "imagens/dellamama/caipira.png",
+          img: "imagens/dellamama/caipira.jpg",
           descricao: "Peito de frango desfiado, milho, azeitona, orégano e catupiry.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Calabacon",
-          img: "imagens/dellamama/calabacon.png",
+          img: "imagens/dellamama/calabacon.jpg",
           descricao: "Calabresa e bacon com cobertura de mussarela.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Calabresa",
-          img: "imagens/dellamama/calabresa.png",
+          img: "imagens/dellamama/calabresa.jpg",
           descricao: "Calabresa fatiada, cebola, azeitona e orégano.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Calafrango",
-          img: "imagens/dellamama/calafrango.png",
+          img: "imagens/dellamama/calafrango.jpg",
           descricao: "Frango, calabresa e mussarela.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Carijó",
-          img: "imagens/dellamama/carijo.png",
+          img: "imagens/dellamama/carijo.jpg",
           descricao: "Frango, bacon, mussarela, catupiry, azeitona e orégano.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Carne Seca",
-          img: "imagens/dellamama/carne-seca.png",
+          img: "imagens/dellamama/carneseca.jpg",
           descricao: "Carne seca temperada, cebola, mussarela ou catupiry.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Catufrango",
-          img: "imagens/dellamama/catufrango.png",
+          img: "imagens/dellamama/catufrango.jpg",
           descricao: "Peito de frango desfiado, catupiry, azeitona e orégano.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Chilena",
-          img: "imagens/dellamama/chilena.png",
+          img: "imagens/dellamama/chilena.jpg",
           descricao: "Mussarela com calabresa, azeitona e orégano.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Dois Queijos",
-          img: "imagens/dellamama/dois-queijos.png",
+          img: "imagens/dellamama/doisqueijos.jpg",
           descricao: "Mussarela e catupiry.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Especial",
-          img: "imagens/dellamama/especial.png",
+          img: "imagens/dellamama/especial.jpg",
           descricao: "Presunto, bacon, ovo, cebola, calabresa e mussarela.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Eloá e Elouise",
-          img: "imagens/dellamama/eloa-e-elouise.png",
+          img: "imagens/dellamama/eloaeeloise.jpg",
           descricao: "Presunto, calabresa, palmito, cebola e mussarela.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Francesa",
-          img: "imagens/dellamama/francesa.png",
+          img: "imagens/dellamama/francesa.jpg",
           descricao: "Presunto, ovo, catupiry, azeitona e orégano coberto com mussarela.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Frango",
-          img: "imagens/dellamama/frango.png",
+          img: "imagens/dellamama/frango.jpg",
           descricao: "Frango desfiado e cebola.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Jardineira",
-          img: "imagens/dellamama/jardineira.png",
+          img: "imagens/dellamama/jardineira.jpg",
           descricao: "Presunto picado, ervilha, milho verde e mussarela.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "La Grazia",
-          img: "imagens/dellamama/la-grazia.png",
+          img: "imagens/dellamama/lagrazia.jpg",
           descricao: "Frango desfiado, mussarela e bacon.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Lisboa",
-          img: "imagens/dellamama/lisboa.png",
+          img: "imagens/dellamama/lisboa.jpg",
           descricao: "Calabresa fatiada e cebola coberta com catupiry.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Maria Bonita",
-          img: "imagens/dellamama/maria-bonita.png",
+          img: "imagens/dellamama/mariabonita.jpg",
           descricao: "Calabresa moída, milho verde, ovo, bacon e cebola.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Milho Verde",
-          img: "imagens/dellamama/milho-verde.png",
+          img: "imagens/dellamama/milhoverde.jpg",
           descricao: "Milho verde, orégano e azeitona coberto com mussarela.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Modinha",
-          img: "imagens/dellamama/modinha.png",
+          img: "imagens/dellamama/modinha.jpg",
           descricao: "Presunto picado, azeitona verde picada, catupiry, ovo e mussarela.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Mussarela",
-          img: "imagens/dellamama/mussarela.png",
+          img: "imagens/dellamama/mussarela.jpg",
           descricao: "Mussarela, azeitona e orégano.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Mussarela Crocante",
-          img: "imagens/dellamama/mussarela-crocante.png",
+          img: "imagens/dellamama/mussarelacrocante.jpg",
           descricao: "Mussarela, tomate e batata palha.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Napolitana",
-          img: "imagens/dellamama/napolitana.png",
+          img: "imagens/dellamama/napolitana.jpg",
           descricao: "Mussarela, rodela de tomate, queijo parmesão ralado e orégano.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Paulista",
-          img: "imagens/dellamama/paulista.png",
+          img: "imagens/dellamama/paulista.jpg",
           descricao: "Molho de tomate, calabresa moída, ervilha, cebola, azeitona e mussarela.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Pichinina",
-          img: "imagens/dellamama/pichinina.png",
+          img: "imagens/dellamama/pichinina.jpg",
           descricao: "Calabresa fatiada, cebola e mussarela.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Popozuda",
-          img: "imagens/dellamama/popozuda.png",
+          img: "imagens/dellamama/popozuda.jpg",
           descricao: "Presunto, bacon, palmito, ovo, ervilha, cebola e catupiry.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Portuguesa",
-          img: "imagens/dellamama/portuguesa.png",
+          img: "imagens/dellamama/portuguesa.jpg",
           descricao: "Presunto, ovo, ervilha, cebola e orégano coberto com mussarela.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Quatro Queijos",
-          img: "imagens/dellamama/quatro-queijos.png",
+          img: "imagens/dellamama/quatroqueijos.jpg",
           descricao: "Mussarela, provolone, catupiry, parmesão, azeitona e orégano.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Toscana",
-          img: "imagens/dellamama/toscana.png",
+          img: "imagens/dellamama/toscana.jpg",
           descricao: "Calabresa moída com cobertura de mussarela.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Veneza",
-          img: "imagens/dellamama/veneza.png",
+          img: "imagens/dellamama/veneza.jpg",
           descricao: "Molho de tomate, presunto, mussarela e orégano.",
           tamanhos: { P: 25, M: 35, F: 43 }
         },
         {
           nome: "Camarão",
-          img: "imagens/dellamama/camarao.png",
+          img: "imagens/dellamama/camarao.jpg",
           descricao: "Camarão temperado e cebola coberta com mussarela. (Pizza especial)",
           tamanhos: { P: 35, M: 44, F: 54 }
         },
         {
           nome: "Atum",
-          img: "imagens/dellamama/atum.png",
+          img: "imagens/dellamama/atum.jpg",
           descricao: "Atum e cebola coberta com mussarela. (Pizza especial)",
           tamanhos: { P: 31, M: 40, F: 49 }
         },
         {
           nome: "Pepperoni",
-          img: "imagens/dellamama/pepperoni.png",
+          img: "imagens/dellamama/pepperoni.jpg",
           descricao: "Pepperoni, mussarela e cebola. (Pizza especial)",
           tamanhos: { P: 35, M: 44, F: 54 }
         },
         {
           nome: "Babelle",
-          img: "imagens/dellamama/babelle.png",
+          img: "imagens/dellamama/babelle.jpg",
           descricao: "Lombo, cebola, coberto com mussarela. (Pizza especial)",
           tamanhos: { P: 31, M: 40, F: 49 }
         },
         {
           nome: "Moda da Casa",
-          img: "imagens/dellamama/moda-da-casa.png",
+          img: "imagens/dellamama/modadacasa.jpg",
           descricao: "Frango, bacon, cebola, creme cheese, mussarela. (Pizza especial)",
           tamanhos: { P: 31, M: 40, F: 49 }
         },
         {
           nome: "Nordestina Della Mama",
-          img: "imagens/dellamama/nordestina-della-mama.png",
+          img: "imagens/dellamama/nordestinadellamama.jpg",
           descricao: "Carne seca, cebola, mussarela, creme cheese. (Pizza especial)",
           tamanhos: { P: 31, M: 40, F: 49 }
         },
         {
           nome: "Monte sua Pizza!",
           tipo: "monte-pizza",
-          img: "imagens/dellamama/monte-sua-pizza.png",
+          img: "imagens/dellamama/montesuapizza.jpg",
           tamanhos: { P: 25, M: 35, F: 43 },
           precosPorSabor: {
             "Camarão": { P: 35, M: 44, F: 54 },
@@ -1184,98 +1203,98 @@ const LOJAS = {
         {
           nome: "Esfiha Carne",
           preco: 5.50,
-          img: "imagens/dellamama/esfiha-carne.png",
-          descricao: "Carne."
+          img: "imagens/dellamama/esfihacarne.jpg",
+          descricao: "Carne desfiada."
         },
         {
           nome: "Esfiha Queijo",
           preco: 5.50,
-          img: "imagens/dellamama/esfiha-queijo.png",
-          descricao: "Queijo."
+          img: "imagens/dellamama/esfihamussarela.jpg",
+          descricao: "Queijo mussarela derretido."
         },
         {
           nome: "Esfiha Calabresa",
           preco: 5.50,
-          img: "imagens/dellamama/esfiha-calabresa.png",
-          descricao: "Calabresa."
+          img: "imagens/dellamama/esfihacalabresa.jpg",
+          descricao: "Calabresa fatiada."
         },
         {
           nome: "Esfiha Frango com Catupiry",
           preco: 5.50,
-          img: "imagens/dellamama/esfiha-frango-com-catupiry.png",
-          descricao: "Frango com Catupiry."
+          img: "imagens/dellamama/esfihafrango.jpg",
+          descricao: "Frango desfiado com catupiry."
         },
         {
           nome: "Esfiha Carne com Queijo",
           preco: 5.50,
-          img: "imagens/dellamama/esfiha-carne-com-queijo.png",
-          descricao: "Carne com Queijo."
+          img: "imagens/dellamama/esfihacarnecomqueijo.jpg",
+          descricao: "Carne desfiada com queijo mussarela derretido."
         },
         {
           nome: "Esfiha Calabresa com Queijo",
           preco: 5.50,
-          img: "imagens/dellamama/esfiha-calabresa-com-queijo.png",
-          descricao: "Calabresa com Queijo."
+          img: "imagens/dellamama/esfihacalabresacomqueijo.jpg",
+          descricao: "Calabresa fatiada com queijo mussarela derretido."
         },
         {
           nome: "Esfiha Chocolate",
           preco: 6.50,
-          img: "imagens/dellamama/esfiha-chocolate.png",
-          descricao: "Chocolate."
+          img: "imagens/dellamama/esfihachocolate.jpg",
+          descricao: "Chocolate derretido."
         },
         {
           nome: "Esfiha Chocolate com M&M",
           preco: 6.50,
-          img: "imagens/dellamama/esfiha-chocolate-com-m-m.png",
+          img: "imagens/dellamama/esfihachocolatecomm.jpg",
           descricao: "Chocolate com M&M."
         },
         {
           nome: "Esfiha Chocolate com Brigadeiro",
           preco: 6.50,
-          img: "imagens/dellamama/esfiha-chocolate-com-brigadeiro.png",
+          img: "imagens/dellamama/esfihabrigadeiro.jpg",
           descricao: "Chocolate com Brigadeiro."
         },
         {
           nome: "Esfiha Chocolate com Leite Condensado e Coco Ralado",
           preco: 8.50,
-          img: "imagens/dellamama/esfiha-chocolate-com-leite-condensado-e-coco-ralado.png",
-          descricao: "Chocolate com Leite Condensado e Coco Ralado."
+          img: "imagens/dellamama/esfihalccr.jpg",
+          descricao: "Chocolate derretido com leite condensado e coco ralado."
         },
         {
           nome: "Esfiha Chocolate com Morango e Granulado",
           preco: 8.50,
-          img: "imagens/dellamama/esfiha-chocolate-com-morango-e-granulado.png",
-          descricao: "Chocolate com Morango e Granulado."
+          img: "imagens/dellamama/esfihachocolatemorango.jpg",
+          descricao: "Chocolate derretido com rodelas de morango e granulado."
         },
         {
           nome: "Esfiha Sonho de Valsa com Chocolate",
           preco: 9.50,
-          img: "imagens/dellamama/esfiha-sonho-de-valsa-com-chocolate.png",
-          descricao: "Sonho de Valsa com Chocolate."
+          img: "imagens/dellamama/esfihasonhodevalsa.jpg",
+          descricao: "Chocolate derretido com alguns pedaços de sonho de valsa."
         },
         {
           nome: "Esfiha Chocolate Branco com M&M",
           preco: 7.00,
-          img: "imagens/dellamama/esfiha-chocolate-branco-com-m-m.png",
-          descricao: "Chocolate Branco com M&M."
+          img: "imagens/dellamama/esfihachocbrmm.jpg",
+          descricao: "Chocolate branco derretido com M&M."
         },
         {
           nome: "Esfiha Nutella",
           preco: 10.00,
-          img: "imagens/dellamama/esfiha-nutella.png",
-          descricao: "Nutella."
+          img: "imagens/dellamama/esfihanutella.jpg",
+          descricao: "Nutella derretida."
         },
         {
           nome: "Esfiha Nutella com M&M",
           preco: 11.00,
-          img: "imagens/dellamama/esfiha-nutella-com-m-m.png",
-          descricao: "Nutella com M&M."
+          img: "imagens/dellamama/esfihanutellamm.jpg",
+          descricao: "Nutella derretida com gotas de M&M."
         },
         {
           nome: "Esfiha Nutella com Brigadeiro",
           preco: 11.00,
-          img: "imagens/dellamama/esfiha-nutella-com-brigadeiro.png",
-          descricao: "Nutella com Brigadeiro."
+          img: "imagens/dellamama/esfihanutellabrig.jpg",
+          descricao: "Nutella derretida com brigadeiro."
         }
       ],
 
@@ -1283,48 +1302,48 @@ const LOJAS = {
         {
           nome: "Porção Boi",
           preco: 23.00,
-          img: "imagens/dellamama/porcao-boi.png"
+          img: "imagens/dellamama/porcaoboi.jpg"
         },
         {
           nome: "Porção Frango",
           preco: 20.00,
-          img: "imagens/dellamama/porcao-frango.png"
+          img: "imagens/dellamama/porcaofrango.jpg"
         },
         {
           nome: "Porção Calabresa",
           preco: 22.00,
-          img: "imagens/dellamama/porcao-calabresa.png"
+          img: "imagens/dellamama/porcaocalabresa.jpg"
         },
         {
           nome: "Porção Mista",
           preco: 40.00,
-          img: "imagens/dellamama/porcao-mista.png",
+          img: "imagens/dellamama/porcaomista.jpg",
           descricao: "Calabresa, boi e frango."
         },
         {
           nome: "Porção Batata",
           preco: 14.00,
-          img: "imagens/dellamama/porcao-batata.png"
+          img: "imagens/dellamama/porcaobatatas.jpg"
         },
         {
           nome: "Porção Filé com Fritas",
           preco: 35.00,
-          img: "imagens/dellamama/porcao-file-com-fritas.png"
+          img: "imagens/dellamama/porcaofilecomfritas.jpg"
         },
         {
           nome: "Porção Batata Especial",
           preco: 23.00,
-          img: "imagens/dellamama/porcao-batata-especial.png"
+          img: "imagens/dellamama/porcaoespecial.jpg"
         },
         {
           nome: "Porção Batata com Cheddar",
           preco: 18.00,
-          img: "imagens/dellamama/porcao-batata-com-cheddar.png"
+          img: "imagens/dellamama/porcaobatatac.jpg"
         },
         {
           nome: "Porção Macaxeira Frita",
           preco: 12.00,
-          img: "imagens/dellamama/porcao-macaxeira-frita.png"
+          img: "imagens/dellamama/porcaomacaxeira.jpg"
         }
       ],
 
@@ -1333,7 +1352,7 @@ const LOJAS = {
         {
           nome: "Caipirinha",
           marcas: {
-            "Limão": { preco: 6.00, img: "imagens/dellamama/caipirinha-limao.png" },
+            "Limão": { preco: 6.00, img: "imagens/dellamama/caipirinhalimao.jpg" },
             "Morango": { preco: 9.00, img: "imagens/dellamama/caipirinha-morango.png" },
             "Maracujá": { preco: 8.50, img: "imagens/dellamama/caipirinha-maracuja.png" },
             "Abacaxi": { preco: 8.00, img: "imagens/dellamama/caipirinha-abacaxi.png" },
