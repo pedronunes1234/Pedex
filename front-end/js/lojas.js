@@ -1468,4 +1468,4 @@ if (enderecoLoja) {
     blocoEnderecoLoja.style.display = "";
     if (enderecoSalvo) enderecoLoja.textContent = enderecoSalvo;
   }
-}
+}     
