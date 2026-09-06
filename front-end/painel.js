@@ -43,7 +43,7 @@ function iniciarPainel() {
 
 // 💳 RENDERIZA O BOTÃO "CONECTAR MERCADO PAGO" OU O SELO "CONECTADO ✅"
 function atualizarStatusBotaoMP(usuario) {
-    const containerHeader = document.querySelector(".header-linha-topo") || document.querySelector(".header-painel");
+    const containerHeader = document.querySelector(".header-painel");
     if (!containerHeader) return;
 
     const btnAntigo = document.getElementById("btnConectarMP");
@@ -57,10 +57,10 @@ function atualizarStatusBotaoMP(usuario) {
         btnMP.style.cssText = `
             background: #2e9e4f; color: #ffffff; border: none;
             padding: 6px 14px; border-radius: 8px;
-            font-size: 13px; font-weight: bold; cursor: default; margin-left: 10px;
+            font-size: 13px; font-weight: bold; cursor: default; margin-left: auto;
         `;
     } else {
-        btnMP.textContent = "💳 Conectar Mercado Pago";
+        btnMP.textContent = "Conectar Mercado Pago";
         btnMP.style.cssText = `
             background: #ffffff; color: #c40000; border: 2px solid #c40000;
             padding: 6px 14px; border-radius: 8px;
