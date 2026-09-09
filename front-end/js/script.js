@@ -147,8 +147,24 @@ document.addEventListener("DOMContentLoaded", () => {
   // Um produto sem "tag" é sempre exibido. Um produto com "tag" só aparece
   // se essa tag estiver liberada para o período atual em loja.produtosPorPeriodo.
   function produtoDisponivelAgora(produto) {
-    // Lojas sem sistema de período (Burger House, Pizzaria) sempre mostram tudo
-    if (!loja.horarios) return true;
+    // Lojas sem sistema de período (Burger House, Pizzaria) 
+    if (!loja.horarios) {
+      if (!loja.abre || !loja.fecha) return true;
+
+      const agora = new Date();
+      const minutosAgora = agora.getHours() * 60 + agora.getMinutes();
+
+      const [abreH, abreM] = loja.abre.split(":").map(Number);
+      const [fechaH, fechaM] = loja.fecha.split(":").map(Number);
+
+      const minutosAbre = abreH * 60 + abreM;
+      const minutosFecha = fechaH * 60 + fechaM;
+
+      if (minutosAgora >= minutosAbre && minutosAgora <= minutosFecha) {
+        return true;
+      }
+      return false;
+    }
 
     // Loja com sistema de período: se estiver fechada agora, nada aparece
     const periodo = obterPeriodoAtual();

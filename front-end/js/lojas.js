@@ -819,17 +819,17 @@ const LOJAS = {
 
     horarios: {
       1: [
-        { id: "segunda-noite", periodo: "noite", inicio: "18:00", fim: "23:00" }
+        { id: "segunda-noite", periodo: "noite", inicio: "18:00", fim: "23:30" }
       ],
-      // 2 = terça-feira: dia de folga do dono, loja fechada (sem horário cadastrado)
+      // 2 = terça-feira: folga do dono, loja fechada
       3: [
-        { id: "quarta-noite", periodo: "noite", inicio: "18:00", fim: "23:00" }
+        { id: "quarta-noite", periodo: "noite", inicio: "18:00", fim: "23:30" }
       ],
       4: [
-        { id: "quinta-noite", periodo: "noite", inicio: "18:00", fim: "23:00" }
+        { id: "quinta-noite", periodo: "noite", inicio: "18:00", fim: "23:30" }
       ],
       5: [
-        { id: "sexta-noite", periodo: "noite", inicio: "18:00", fim: "23:00" }
+        { id: "sexta-noite", periodo: "noite", inicio: "18:00", fim: "23:30" }
       ],
       6: [
         { id: "sabado-noite", periodo: "noite", inicio: "18:00", fim: "00:00" }
@@ -1366,6 +1366,34 @@ const LOJAS = {
             "Maracujá": { preco: 8.50, img: "imagens/dellamama/caipivodka-maracuja.png" },
             "Abacaxi": { preco: 8.00, img: "imagens/dellamama/caipivodka-abacaxi.png" },
             "Kiwi": { preco: 9.00, img: "imagens/dellamama/caipivodka-kiwi.png" }
+          }
+        },
+        {
+          nome: "Refrigerante 2 Litros",
+          marcas: {
+            "Coca-Cola": { preco: 16.00, img: "imagens/bebidas/coca.2L.png" },
+            "Fanta": { preco: 16.00, img: "imagens/bebidas/fanta.2L.png" },
+            "Guaraná": { preco: 16.00, img: "imagens/bebidas/guara.2L.png" }
+          }
+        },
+        {
+          nome: "Refrigerante 1 Litro",
+          marcas: {
+            "Coca-Cola": { preco: 10.00, img: "imagens/bebidas/coca.1L.png" },
+            "Coca Zero": { preco: 10.00, img: "imagens/bebidas/coca.1LZ.png" },
+            "Guaraná": { preco: 10.00, img: "imagens/bebidas/guara.1L.png" },
+            "Fanta": { preco: 10.00, img: "imagens/babacu/fanta1L.png" },
+            "Cajuína": { preco: 12.00, img: "imagens/bebidas/cajuina.1L.png" }
+          }
+        },
+        {
+          nome: "Latinha",
+          marcas: {
+            "Coca-Cola": { preco: 6.00, img: "imagens/bebidas/coca.lata.png" },
+            "Fanta": { preco: 6.00, img: "imagens/bebidas/fanta.lata.png" },
+            "Fanta Uva": { preco: 6.00, img: "imagens/bebidas/fanta-uva.jpg" },
+            "Sprite": { preco: 6.00, img: "imagens/babacu/spritelata.png" },
+            "Guaraná": { preco: 6.00, img: "imagens/bebidas/guara.lata.png" }
           }
         }
       ]
