@@ -77,7 +77,7 @@ exports.callbackOAuth = async (req, res) => {
 
         const dados = await response.json();
 
-        // 🔒 Validação de Segurança: Se o Mercado Pago retornou erro, NUNCA salva no banco!
+        //  Validação de Segurança: Se o Mercado Pago retornou erro, não salva no banco!
         if (!dados.access_token) {
             console.error("Erro no retorno do Mercado Pago:", dados);
             return res.status(400).send(`Falha na autenticação do Mercado Pago: ${dados.message || dados.error || 'Token não gerado'}. Verifique as chaves MP_CLIENT_ID e MP_CLIENT_SECRET no Railway.`);
@@ -87,8 +87,7 @@ exports.callbackOAuth = async (req, res) => {
             "UPDATE usuarios SET mp_access_token = ?, mp_user_id = ? WHERE id = ?",
             [dados.access_token, String(dados.user_id), lojaId],
             (err) => {
-                if (err) return res.status(500).send("Erro ao salvar token no banco de dados");
-                res.redirect(`https://pedronunes1234.github.io/Pedex/front-end/painel.html?conectado=true`);
+            res.redirect(`https://pedexweb.com.br/painel.html?conectado=true`);
             }
         );
 
